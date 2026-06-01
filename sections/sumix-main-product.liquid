@@ -206,8 +206,9 @@
           {% endunless %}
 
           <div class="pdp-rewards">
-            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" style="color:var(--accent)"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-            <span>Earn <strong>SUMIX Points</strong> with this purchase.</span>
+            <span style="font-size:1.25rem; line-height:1">🪙</span>
+            {% assign earnable_tokens = product.selected_or_first_available_variant.price | divided_by: 100 | divided_by: settings.tokens_spend_amount | times: settings.tokens_earned %}
+            <span>Earn <strong style="color:var(--primary)">{{ earnable_tokens }} SUMIX Tokens</strong> on this purchase.</span>
           </div>
 
           <!-- Delivery -->

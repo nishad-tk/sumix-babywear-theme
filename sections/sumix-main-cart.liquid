@@ -114,8 +114,22 @@
           
           {% unless customer %}
             <div style="background:var(--accent-soft); padding:var(--space-3); border-radius:var(--radius-md); margin-bottom:var(--space-3);">
-              <p style="font-size:0.875rem; font-weight:700; margin-bottom:0.5rem">Got SUMIX Points?</p>
-              <a href="{{ routes.account_login_url }}" class="btn btn-primary btn-sm btn-full" style="background:var(--white); color:var(--primary);">Log In to Redeem</a>
+              <p style="font-size:0.875rem; font-weight:700; margin-bottom:0.5rem">Got SUMIX Tokens?</p>
+              <a href="{{ routes.account_login_url }}" class="btn btn-primary btn-sm btn-full" style="background:var(--white); color:var(--primary);">Log In to Redeem Vouchers</a>
+            </div>
+          {% else %}
+            {% assign earnable_tokens = cart.total_price | divided_by: 100 | divided_by: settings.tokens_spend_amount | times: settings.tokens_earned %}
+            <div style="background:var(--primary-soft); padding:var(--space-3); border-radius:var(--radius-md); margin-bottom:var(--space-3); text-align:center">
+              <div style="font-size:1.5rem; line-height:1">🪙</div>
+              <p style="font-size:0.875rem; font-weight:700; margin-top:var(--space-2)">This Order Will Earn <span style="color:var(--primary)">{{ earnable_tokens }} SUMIX Tokens</span></p>
+            </div>
+            
+            <div style="margin-bottom:var(--space-3)">
+              <p style="font-weight:700; margin-bottom:var(--space-2)">Use Your Available Voucher</p>
+              <div style="display:flex; gap:0.5rem">
+                <input type="text" name="discount" class="input" placeholder="SUMIX50">
+                <button type="button" class="btn btn-primary btn-sm" onclick="alert('Shopify limits discount application on cart page without AJAX API. This will apply at checkout.')">Apply</button>
+              </div>
             </div>
           {% endunless %}
 

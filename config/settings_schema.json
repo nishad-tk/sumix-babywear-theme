@@ -2346,6 +2346,95 @@
         "label": "Default Pre-filled Message",
         "default": "Hi SUMIX! I need some help with my order."
       }
+      }
+    ]
+  },
+  {
+    "name": "SUMIX Tokens (Rewards)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Earning Rules"
+      },
+      {
+        "type": "number",
+        "id": "tokens_spend_amount",
+        "label": "Spend Amount (₹)",
+        "default": 100
+      },
+      {
+        "type": "number",
+        "id": "tokens_earned",
+        "label": "Tokens Earned per Spend Amount",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "Voucher Tiers"
+      },
+      {
+        "type": "number",
+        "id": "voucher_1_tokens",
+        "label": "Tier 1: Tokens Required",
+        "default": 100
+      },
+      {
+        "type": "number",
+        "id": "voucher_1_value",
+        "label": "Tier 1: Voucher Value (₹)",
+        "default": 50
+      },
+      {
+        "type": "number",
+        "id": "voucher_2_tokens",
+        "label": "Tier 2: Tokens Required",
+        "default": 250
+      },
+      {
+        "type": "number",
+        "id": "voucher_2_value",
+        "label": "Tier 2: Voucher Value (₹)",
+        "default": 100
+      },
+      {
+        "type": "number",
+        "id": "voucher_3_tokens",
+        "label": "Tier 3: Tokens Required",
+        "default": 500
+      },
+      {
+        "type": "number",
+        "id": "voucher_3_value",
+        "label": "Tier 3: Voucher Value (₹)",
+        "default": 250
+      },
+      {
+        "type": "number",
+        "id": "voucher_4_tokens",
+        "label": "Tier 4: Tokens Required",
+        "default": 1000
+      },
+      {
+        "type": "number",
+        "id": "voucher_4_value",
+        "label": "Tier 4: Voucher Value (₹)",
+        "default": 500
+      },
+      {
+        "type": "header",
+        "content": "Voucher Expiry"
+      },
+      {
+        "type": "select",
+        "id": "voucher_expiry_days",
+        "label": "Expiry in Days",
+        "options": [
+          { "value": "30", "label": "30 Days" },
+          { "value": "60", "label": "60 Days" },
+          { "value": "90", "label": "90 Days" }
+        ],
+        "default": "30"
+      }
     ]
   }
 ]

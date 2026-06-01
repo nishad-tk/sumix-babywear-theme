@@ -1,153 +1,191 @@
-<main style="padding-top:var(--space-4)">
+<main style="padding-top:var(--space-4); padding-bottom:var(--space-10);">
   <div class="container">
     {% if customer %}
-      {% assign points = customer.metafields.loyalty.points.value | default: 0 %}
-      {% assign current_tier = 'Explorer' %}
-      {% assign next_tier = 'Silver' %}
-      {% assign points_to_next = 500 %}
+      {% assign tokens = customer.metafields.loyalty.points.value | default: 0 %}
+      {% assign v1_tokens = settings.voucher_1_tokens | default: 100 %}
+      {% assign v1_value = settings.voucher_1_value | default: 50 %}
+      {% assign v2_tokens = settings.voucher_2_tokens | default: 250 %}
+      {% assign v2_value = settings.voucher_2_value | default: 100 %}
+      {% assign v3_tokens = settings.voucher_3_tokens | default: 500 %}
+      {% assign v3_value = settings.voucher_3_value | default: 250 %}
+      {% assign v4_tokens = settings.voucher_4_tokens | default: 1000 %}
+      {% assign v4_value = settings.voucher_4_value | default: 500 %}
+
+      {% assign next_voucher_tokens = v1_tokens %}
+      {% assign next_voucher_value = v1_value %}
       
-      {% if points >= 500 and points < 1000 %}
-        {% assign current_tier = 'Silver' %}
-        {% assign next_tier = 'Gold' %}
-        {% assign points_to_next = 1000 | minus: points %}
-      {% elsif points >= 1000 and points < 2000 %}
-        {% assign current_tier = 'Gold' %}
-        {% assign next_tier = 'Platinum' %}
-        {% assign points_to_next = 2000 | minus: points %}
-      {% elsif points >= 2000 %}
-        {% assign current_tier = 'Platinum' %}
-        {% assign next_tier = 'Max Tier' %}
-        {% assign points_to_next = 0 %}
-      {% else %}
-        {% assign points_to_next = 500 | minus: points %}
+      {% if tokens >= v1_tokens and tokens < v2_tokens %}
+        {% assign next_voucher_tokens = v2_tokens %}
+        {% assign next_voucher_value = v2_value %}
+      {% elsif tokens >= v2_tokens and tokens < v3_tokens %}
+        {% assign next_voucher_tokens = v3_tokens %}
+        {% assign next_voucher_value = v3_value %}
+      {% elsif tokens >= v3_tokens and tokens < v4_tokens %}
+        {% assign next_voucher_tokens = v4_tokens %}
+        {% assign next_voucher_value = v4_value %}
+      {% elsif tokens >= v4_tokens %}
+        {% assign next_voucher_tokens = 0 %}
       {% endif %}
 
       <!-- Rewards Hero -->
-      <div class="rewards-hero">
-        <div style="font-size:0.875rem;opacity:0.9;margin-bottom:var(--space-1)">Your Current Tier</div>
-        <h2>{{ current_tier }} Member</h2>
-        <div style="font-size:1rem;opacity:0.9;margin-bottom:var(--space-2)">You are earning bigger benefits!</div>
-        <div class="points">{{ points }}</div>
-        <div style="font-size:1rem;opacity:0.9">Points Balance</div>
-        {% if points_to_next > 0 %}
-          <div class="tier-badge">⭐ {{ points_to_next }} points to {{ next_tier }}</div>
-        {% else %}
-          <div class="tier-badge">💎 You are at the top tier!</div>
-        {% endif %}
+      <div class="rewards-hero" style="background:var(--primary); color:var(--white); padding:var(--space-8); border-radius:var(--radius-xl); text-align:center; margin-bottom:var(--space-6)">
+        <div style="font-size:1rem; opacity:0.9; margin-bottom:var(--space-2)">Current Balance</div>
+        <div class="points" style="font-size:4rem; font-family:var(--font-heading); line-height:1; margin-bottom:var(--space-2)">
+          🪙 {{ tokens }}
+        </div>
+        <div style="font-size:1.25rem; font-weight:700">SUMIX Tokens</div>
+        
+        <div style="margin-top:var(--space-4); max-width:400px; margin-inline:auto; background:rgba(255,255,255,0.1); padding:var(--space-3); border-radius:var(--radius-md)">
+          {% if next_voucher_tokens > 0 %}
+            <div style="display:flex; justify-content:space-between; margin-bottom:var(--space-2); font-size:0.875rem">
+              <span>{{ tokens }} / {{ next_voucher_tokens }} Tokens</span>
+            </div>
+            <div style="width:100%; background:rgba(255,255,255,0.2); height:8px; border-radius:4px; overflow:hidden">
+              <div style="width:{{ tokens | times: 100.0 | divided_by: next_voucher_tokens }}%; background:var(--white); height:100%"></div>
+            </div>
+            <p style="margin-top:var(--space-2); font-size:0.875rem">Only {{ next_voucher_tokens | minus: tokens }} Tokens away from a ₹{{ next_voucher_value }} Voucher!</p>
+          {% else %}
+            <p style="font-size:1rem; font-weight:700">You've unlocked the highest tier of rewards!</p>
+          {% endif %}
+        </div>
       </div>
+
+      <!-- Vouchers Section -->
+      <h3 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:var(--space-4)">Available Vouchers</h3>
+      
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:var(--space-4); margin-bottom:var(--space-8)">
+        
+        {% if tokens >= v1_tokens %}
+          <div style="border:2px dashed var(--primary); border-radius:var(--radius-lg); padding:var(--space-4); display:flex; flex-direction:column; align-items:center; text-align:center">
+            <div style="font-size:2rem; font-family:var(--font-heading); color:var(--primary); margin-bottom:var(--space-1)">₹{{ v1_value }} OFF</div>
+            <p style="color:var(--gray-600); margin-bottom:var(--space-4)">Use {{ v1_tokens }} Tokens to redeem</p>
+            <button class="btn btn-primary btn-sm" onclick="alert('Redeeming tokens requires Shopify Flow or a custom App backend.')">Redeem Now</button>
+          </div>
+        {% else %}
+          <div style="border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:var(--space-4); display:flex; flex-direction:column; align-items:center; text-align:center; opacity:0.6; background:var(--gray-50)">
+            <div style="font-size:2rem; font-family:var(--font-heading); color:var(--gray-500); margin-bottom:var(--space-1)">₹{{ v1_value }} OFF</div>
+            <p style="color:var(--gray-500); margin-bottom:var(--space-4)">Requires {{ v1_tokens }} Tokens</p>
+            <button class="btn btn-secondary btn-sm" disabled>Locked</button>
+          </div>
+        {% endif %}
+
+        {% if tokens >= v2_tokens %}
+          <div style="border:2px dashed var(--primary); border-radius:var(--radius-lg); padding:var(--space-4); display:flex; flex-direction:column; align-items:center; text-align:center">
+            <div style="font-size:2rem; font-family:var(--font-heading); color:var(--primary); margin-bottom:var(--space-1)">₹{{ v2_value }} OFF</div>
+            <p style="color:var(--gray-600); margin-bottom:var(--space-4)">Use {{ v2_tokens }} Tokens to redeem</p>
+            <button class="btn btn-primary btn-sm" onclick="alert('Redeeming tokens requires Shopify Flow or a custom App backend.')">Redeem Now</button>
+          </div>
+        {% else %}
+          <div style="border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:var(--space-4); display:flex; flex-direction:column; align-items:center; text-align:center; opacity:0.6; background:var(--gray-50)">
+            <div style="font-size:2rem; font-family:var(--font-heading); color:var(--gray-500); margin-bottom:var(--space-1)">₹{{ v2_value }} OFF</div>
+            <p style="color:var(--gray-500); margin-bottom:var(--space-4)">Requires {{ v2_tokens }} Tokens</p>
+            <button class="btn btn-secondary btn-sm" disabled>Locked</button>
+          </div>
+        {% endif %}
+
+        {% if tokens >= v3_tokens %}
+          <div style="border:2px dashed var(--primary); border-radius:var(--radius-lg); padding:var(--space-4); display:flex; flex-direction:column; align-items:center; text-align:center">
+            <div style="font-size:2rem; font-family:var(--font-heading); color:var(--primary); margin-bottom:var(--space-1)">₹{{ v3_value }} OFF</div>
+            <p style="color:var(--gray-600); margin-bottom:var(--space-4)">Use {{ v3_tokens }} Tokens to redeem</p>
+            <button class="btn btn-primary btn-sm" onclick="alert('Redeeming tokens requires Shopify Flow or a custom App backend.')">Redeem Now</button>
+          </div>
+        {% else %}
+          <div style="border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:var(--space-4); display:flex; flex-direction:column; align-items:center; text-align:center; opacity:0.6; background:var(--gray-50)">
+            <div style="font-size:2rem; font-family:var(--font-heading); color:var(--gray-500); margin-bottom:var(--space-1)">₹{{ v3_value }} OFF</div>
+            <p style="color:var(--gray-500); margin-bottom:var(--space-4)">Requires {{ v3_tokens }} Tokens</p>
+            <button class="btn btn-secondary btn-sm" disabled>Locked</button>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <!-- Active Vouchers -->
+      <h3 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:var(--space-4)">My Active Vouchers</h3>
+      {% assign active_vouchers = customer.metafields.loyalty.active_vouchers.value %}
+      {% if active_vouchers != blank and active_vouchers.size > 0 %}
+        <div style="display:flex; flex-direction:column; gap:var(--space-3); margin-bottom:var(--space-8)">
+          {% for voucher in active_vouchers %}
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:var(--space-4); background:var(--cream); border-radius:var(--radius-lg)">
+              <div>
+                <h4 style="font-family:var(--font-heading); color:var(--primary); font-size:1.25rem">₹{{ voucher.value }} OFF</h4>
+                <p style="color:var(--gray-600); font-size:0.875rem">Code: <strong>{{ voucher.code }}</strong></p>
+              </div>
+              <div style="text-align:right">
+                <span style="display:inline-block; padding:4px 12px; background:var(--success); color:var(--white); border-radius:var(--radius-full); font-size:0.75rem; font-weight:700">ACTIVE</span>
+                <p style="font-size:0.75rem; color:var(--gray-500); margin-top:4px">Expires in {{ settings.voucher_expiry_days | default: 30 }} Days</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div style="padding:var(--space-6); background:var(--gray-50); border-radius:var(--radius-lg); text-align:center; margin-bottom:var(--space-8)">
+          <p style="color:var(--gray-600)">You have no active redeemed vouchers.</p>
+        </div>
+      {% endif %}
+
     {% else %}
-      <div class="rewards-hero">
-        <div style="font-size:0.875rem;opacity:0.9;margin-bottom:var(--space-1)">Join SUMIX Rewards</div>
-        <h2>Earn As You Shop</h2>
-        <div style="font-size:1rem;opacity:0.9;margin-bottom:var(--space-2)">Unlock exclusive benefits and discounts.</div>
-        <a href="{{ routes.account_register_url }}" class="btn btn-primary" style="background:var(--white);color:var(--primary);margin-top:1rem">Join Now for Free</a>
+      <!-- Logged Out State -->
+      <div class="rewards-hero" style="background:var(--primary); color:var(--white); padding:var(--space-10); border-radius:var(--radius-xl); text-align:center; margin-bottom:var(--space-8)">
+        <div style="font-size:4rem; margin-bottom:var(--space-2)">🪙</div>
+        <h2 style="font-size:2.5rem; font-family:var(--font-heading); margin-bottom:var(--space-2)">Earn SUMIX Tokens</h2>
+        <div style="font-size:1.125rem; opacity:0.9; margin-bottom:var(--space-6); max-width:500px; margin-inline:auto">Unlock exclusive vouchers, birthday rewards, and more when you join our family.</div>
+        <a href="{{ routes.account_register_url }}" class="btn btn-primary" style="background:var(--white); color:var(--primary); font-size:1.125rem; padding:12px 32px">Create Account</a>
+        <p style="margin-top:var(--space-4); font-size:0.875rem; opacity:0.8">Already a member? <a href="{{ routes.account_login_url }}" style="color:var(--white); text-decoration:underline">Sign In</a></p>
       </div>
     {% endif %}
 
-    <!-- Tiers -->
-    <div class="tiers-grid">
-      <div class="tier-card {% if current_tier == 'Explorer' %}active{% endif %}">
-        <div class="tier-icon">🔍</div>
-        <h4>Explorer</h4>
-        <p style="font-size:0.875rem;color:var(--gray-500)">0 – 500 points</p>
-        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
-          <li>✓ Earn 1 point per ₹1</li>
-          <li>✓ Birthday reward</li>
-          <li>✓ Free shipping above ₹999</li>
-        </ul>
-      </div>
-      <div class="tier-card {% if current_tier == 'Silver' %}active{% endif %}">
-        <div class="tier-icon">🥈</div>
-        <h4>Silver</h4>
-        <p style="font-size:0.875rem;color:var(--gray-500)">500 – 1,000 points</p>
-        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
-          <li>✓ Earn 1.5 points per ₹1</li>
-          <li>✓ Early access to sales</li>
-          <li>✓ Member-only discounts</li>
-        </ul>
-      </div>
-      <div class="tier-card {% if current_tier == 'Gold' %}active{% endif %}">
-        <div class="tier-icon">🥇</div>
-        <h4>Gold</h4>
-        <p style="font-size:0.875rem;color:var(--gray-500)">1,000 – 2,000 points</p>
-        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
-          <li>✓ Earn 2 points per ₹1</li>
-          <li>✓ Free express shipping</li>
-          <li>✓ Exclusive product drops</li>
-          <li>✓ Priority customer support</li>
-        </ul>
-      </div>
-      <div class="tier-card {% if current_tier == 'Platinum' %}active{% endif %}">
-        <div class="tier-icon">💎</div>
-        <h4>Platinum</h4>
-        <p style="font-size:0.875rem;color:var(--gray-500)">2,000+ points</p>
-        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
-          <li>✓ Earn 3 points per ₹1</li>
-          <li>✓ Free shipping always</li>
-          <li>✓ Personal stylist access</li>
-          <li>✓ Surprise gifts quarterly</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Ways to Earn / Redeem -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-8)">
-      <div class="account-main">
-        <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Ways to Earn</h3>
-        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-            <div style="width:40px;height:40px;background:var(--primary-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">🛍️</div>
-            <div style="flex:1">
-              <div style="font-weight:700">Make a Purchase</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Earn 2 points for every ₹1 spent</div>
-            </div>
-            <span style="font-weight:700;color:var(--primary)">+2 pts/₹1</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-            <div style="width:40px;height:40px;background:var(--primary-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">⭐</div>
-            <div style="flex:1">
-              <div style="font-weight:700">Write a Review</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Share your experience</div>
-            </div>
-            <span style="font-weight:700;color:var(--primary)">+50 pts</span>
+    <!-- How to Earn -->
+    <div class="account-main" style="margin-bottom:var(--space-8)">
+      <h3 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:var(--space-4)">How to Earn Tokens</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:var(--space-4)">
+        
+        <div style="display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3); background:var(--cream); border-radius:var(--radius-md)">
+          <div style="width:48px; height:48px; background:var(--primary-soft); border-radius:var(--radius-full); display:flex; align-items:center; justify-content:center; font-size:1.5rem">🛍️</div>
+          <div>
+            <div style="font-weight:700">Shop with us</div>
+            <div style="font-size:0.875rem; color:var(--gray-600)">Earn {{ settings.tokens_earned | default: 5 }} Tokens for every ₹{{ settings.tokens_spend_amount | default: 100 }} spent</div>
           </div>
         </div>
-      </div>
 
-      <div class="account-main">
-        <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Ways to Redeem</h3>
-        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-            <div style="width:40px;height:40px;background:var(--accent-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">🏷️</div>
-            <div style="flex:1">
-              <div style="font-weight:700">₹100 Off</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Discount on your order</div>
-            </div>
-            <span style="font-weight:700;color:var(--accent)">500 pts</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-            <div style="width:40px;height:40px;background:var(--accent-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">🚚</div>
-            <div style="flex:1">
-              <div style="font-weight:700">Free Express Shipping</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Any order, any time</div>
-            </div>
-            <span style="font-weight:700;color:var(--accent)">300 pts</span>
+        <div style="display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3); background:var(--cream); border-radius:var(--radius-md)">
+          <div style="width:48px; height:48px; background:var(--primary-soft); border-radius:var(--radius-full); display:flex; align-items:center; justify-content:center; font-size:1.5rem">🎉</div>
+          <div>
+            <div style="font-weight:700">Sign Up Bonus</div>
+            <div style="font-size:0.875rem; color:var(--gray-600)">Get +50 Tokens instantly</div>
           </div>
         </div>
+
+        <div style="display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3); background:var(--cream); border-radius:var(--radius-md)">
+          <div style="width:48px; height:48px; background:var(--primary-soft); border-radius:var(--radius-full); display:flex; align-items:center; justify-content:center; font-size:1.5rem">🎂</div>
+          <div>
+            <div style="font-weight:700">Child's Birthday</div>
+            <div style="font-size:0.875rem; color:var(--gray-600)">Get +100 Tokens every year</div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3); background:var(--cream); border-radius:var(--radius-md)">
+          <div style="width:48px; height:48px; background:var(--primary-soft); border-radius:var(--radius-full); display:flex; align-items:center; justify-content:center; font-size:1.5rem">⭐</div>
+          <div>
+            <div style="font-weight:700">Leave a Review</div>
+            <div style="font-size:0.875rem; color:var(--gray-600)">Get +25 Tokens per review</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- Referral -->
     {% if customer %}
-      <div class="account-main" style="text-align:center">
-        <h3 style="font-family:var(--font-heading);font-size:1.5rem;margin-bottom:var(--space-2)">Share the Love 💜</h3>
-        <p style="color:var(--gray-600);margin-bottom:var(--space-3);max-width:500px;margin-inline:auto">Invite your friends and earn ₹250 for each successful referral. They get ₹100 off their first order too!</p>
+      <div class="account-main" style="text-align:center; background:var(--accent-soft)">
+        <h3 style="font-family:var(--font-heading);font-size:1.75rem;margin-bottom:var(--space-2)">Refer a Friend</h3>
+        <p style="color:var(--gray-700);margin-bottom:var(--space-4);max-width:500px;margin-inline:auto">Give your friends ₹100 off their first order. When they buy, you earn <strong>+100 SUMIX Tokens!</strong></p>
         <div style="display:flex;gap:var(--space-2);max-width:400px;margin:0 auto">
-          <input type="text" class="input" value="{{ customer.first_name | upcase }}20" readonly style="text-align:center;font-weight:700;letter-spacing:2px">
-          <button class="btn btn-primary" onclick="showToast('Referral code copied! 📋', 'success')">Copy</button>
+          <input type="text" class="input" value="https://sumix.in/ref/{{ customer.id }}" readonly style="text-align:center;font-weight:700; background:var(--white)">
+          <button class="btn btn-primary" onclick="showToast('Referral link copied! 📋', 'success')">Copy Link</button>
         </div>
       </div>
     {% endif %}
+
   </div>
 </main>
 

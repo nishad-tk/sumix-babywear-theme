@@ -15,6 +15,7 @@
         <nav class="account-nav">
           <a href="{{ routes.account_url }}" class="account-nav-item active">🏠 Dashboard</a>
           <a href="{{ routes.account_url }}#orders" class="account-nav-item">📦 Orders</a>
+          <a href="/pages/child-profiles" class="account-nav-item">👶 Child Profiles</a>
           <a href="/pages/wishlist" class="account-nav-item">🤍 Wishlist</a>
           <a href="/pages/rewards" class="account-nav-item">🎁 Rewards</a>
           <a href="{{ routes.account_addresses_url }}" class="account-nav-item">📍 Addresses ({{ customer.addresses_count }})</a>
@@ -32,6 +33,11 @@
 
         <!-- Dashboard Widgets -->
         <div class="dashboard-widgets">
+          <div class="dashboard-widget" style="background:var(--primary); color:var(--white); border-color:var(--primary)">
+            <div class="value">🪙 {{ customer.metafields.loyalty.points.value | default: 0 }}</div>
+            <div class="label" style="color:var(--white); opacity:0.9">SUMIX Tokens</div>
+            <a href="/pages/rewards" style="font-size:0.75rem; color:var(--white); text-decoration:underline; display:inline-block; margin-top:8px">View Vouchers</a>
+          </div>
           <div class="dashboard-widget">
             <div class="value">{{ customer.orders_count }}</div>
             <div class="label">Orders Placed</div>
@@ -39,10 +45,6 @@
           <div class="dashboard-widget">
             <div class="value">{{ customer.addresses_count }}</div>
             <div class="label">Saved Addresses</div>
-          </div>
-          <div class="dashboard-widget">
-            <div class="value">{{ customer.total_spent | money_without_trailing_zeros }}</div>
-            <div class="label">Total Spent</div>
           </div>
         </div>
 

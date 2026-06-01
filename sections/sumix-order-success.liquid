@@ -15,6 +15,16 @@
   <h1>Order Confirmed!</h1>
   <p style="color:var(--gray-600); font-size:1.125rem">Thank you for your purchase. Your baby's new favorites are on the way.</p>
   
+  <div style="margin:var(--space-6) auto 0; max-width:600px; background:var(--primary-soft); border-radius:var(--radius-lg); padding:var(--space-4);">
+    <h3 style="font-family:var(--font-heading); font-size:1.5rem; color:var(--primary); margin-bottom:var(--space-2)">Congratulations! 🎉</h3>
+    {% assign order_price = 250000 %} <!-- Mock order price for template -->
+    {% assign earned = order_price | divided_by: 100 | divided_by: settings.tokens_spend_amount | times: settings.tokens_earned %}
+    {% assign current_balance = customer.metafields.loyalty.points.value | default: 0 %}
+    <p style="font-weight:700; font-size:1.125rem">You Earned {{ earned }} SUMIX Tokens</p>
+    <p style="color:var(--gray-600); font-size:0.875rem; margin-bottom:var(--space-3)">Current Balance: {{ current_balance | plus: earned }} Tokens</p>
+    <a href="/pages/rewards" class="btn btn-primary btn-sm">View Rewards</a>
+  </div>
+  
   <div class="order-details-card">
     <h3 style="margin-bottom:var(--space-4)">Order Summary</h3>
     <div class="order-row">
@@ -30,8 +40,8 @@
       <span style="font-weight:700">UPI / Prepaid</span>
     </div>
     <div class="order-row">
-      <span style="color:var(--gray-500)">Rewards Earned</span>
-      <span style="font-weight:700; color:var(--primary)">+250 Points 🎁</span>
+      <span style="color:var(--gray-500)">Tokens Earned</span>
+      <span style="font-weight:700; color:var(--primary)">+{{ earned }} 🪙</span>
     </div>
   </div>
 
@@ -44,8 +54,12 @@
   <div style="margin-top:var(--space-10)">
     <h3 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:var(--space-4)">Loved your shopping experience?</h3>
     <div style="background:var(--accent-soft); padding:var(--space-4); border-radius:var(--radius-lg); max-width:600px; margin:0 auto;">
-      <p style="margin-bottom:var(--space-3)">Refer a friend and both of you get ₹500 off your next purchase!</p>
-      <button class="btn btn-primary btn-sm" onclick="prompt('Copy your referral link:', 'https://sumix.in/refer/aarvimom')">Get Referral Link</button>
+      <p style="margin-bottom:var(--space-3)">Refer a friend and they get ₹100 off! You earn 100 SUMIX Tokens when they buy.</p>
+      {% if customer %}
+        <button class="btn btn-primary btn-sm" onclick="prompt('Copy your referral link:', 'https://sumix.in/ref/{{ customer.id }}')">Get Referral Link</button>
+      {% else %}
+        <a href="{{ routes.account_register_url }}" class="btn btn-primary btn-sm">Create Account to Refer</a>
+      {% endif %}
     </div>
   </div>
 </main>
