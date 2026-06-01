@@ -1,6 +1,25 @@
 <main style="padding-top:var(--space-4); padding-bottom:var(--space-10);">
   <div class="container">
-    {% if customer %}
+    <div class="account-layout">
+      <!-- Sidebar -->
+      <aside class="account-sidebar">
+        <div style="font-weight:700; padding:var(--space-2) var(--space-3); color:var(--gray-500); font-size:0.875rem; text-transform:uppercase; letter-spacing:1px">Member Hub</div>
+        <nav class="account-nav">
+          <a href="/pages/rewards" class="account-nav-item active">🎁 SUMIX Tokens</a>
+          <a href="/pages/child-profiles" class="account-nav-item">👶 Child Profiles</a>
+          <a href="/pages/wishlist" class="account-nav-item">🤍 Wishlist</a>
+        </nav>
+        
+        <div style="font-weight:700; padding:var(--space-4) var(--space-3) var(--space-2); color:var(--gray-500); font-size:0.875rem; text-transform:uppercase; letter-spacing:1px">Store Account</div>
+        <nav class="account-nav">
+          <a href="{{ routes.account_url }}" class="account-nav-item">📦 Orders & Addresses <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+          <a href="{{ routes.account_logout_url }}" class="account-nav-item">🚪 Logout</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div>
+        {% if customer %}
       {% assign tokens = customer.metafields.loyalty.points.value | default: 0 %}
       {% assign v1_tokens = settings.voucher_1_tokens | default: 100 %}
       {% assign v1_value = settings.voucher_1_value | default: 50 %}
@@ -184,9 +203,12 @@
           <button class="btn btn-primary" onclick="showToast('Referral link copied! 📋', 'success')">Copy Link</button>
         </div>
       </div>
+        </div>
+      </div>
     {% endif %}
-
-  </div>
+    
+    </div> <!-- /account-layout -->
+  </div> <!-- /container -->
 </main>
 
 {% schema %}

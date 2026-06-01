@@ -45,7 +45,7 @@
     <a href="{{ routes.all_products_collection_url }}" class="mobile-nav-item"><span style="font-size:1.25rem">🛍️</span>Shop</a>
     <a href="/pages/rewards" class="mobile-nav-item"><span style="font-size:1.25rem">🎁</span>Rewards</a>
     <a href="/pages/wishlist" class="mobile-nav-item"><span style="font-size:1.25rem">🤍</span>Wishlist</a>
-    <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="mobile-nav-item"><span style="font-size:1.25rem">👤</span>Account</a>
+    <a href="{% if customer %}/pages/rewards{% else %}{{ routes.account_login_url }}{% endif %}" class="mobile-nav-item"><span style="font-size:1.25rem">👤</span>Account</a>
   </div>
 </nav>
 

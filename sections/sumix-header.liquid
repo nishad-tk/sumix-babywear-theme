@@ -32,7 +32,7 @@
 
       <div class="header-actions">
         {% if shop.customer_accounts_enabled %}
-          <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="icon-btn" aria-label="Account">👤</a>
+          <a href="{% if customer %}/pages/rewards{% else %}{{ routes.account_login_url }}{% endif %}" class="icon-btn" aria-label="Account">👤</a>
         {% endif %}
         
         <a href="/pages/wishlist" class="icon-btn" aria-label="Wishlist">
