@@ -1,4 +1,4 @@
-<main style="padding-top:var(--space-4)">
+<main style="padding-top:var(--space-4); padding-bottom:var(--space-10);">
   <div class="container">
     <div class="account-layout">
       <!-- Sidebar -->
@@ -21,107 +21,171 @@
             <h1 class="text-h1">Child Profiles</h1>
             <p style="color:var(--gray-500)">Manage your little one's details for a personalized shopping experience</p>
           </div>
-          <button class="btn btn-primary" onclick="showToast('Feature coming soon', 'info')">+ Add Child</button>
+          <button class="btn btn-primary" onclick="document.getElementById('add-child-modal').classList.add('active')">+ Add Child</button>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3);margin-bottom:var(--space-4)">
-          <!-- Static Profile 1 -->
-          <div class="child-card active">
-            <div class="child-card-header">
-              <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=150&h=150&fit=crop" class="child-avatar" alt="Aarvi">
-              <div>
-                <h4>Aarvi</h4>
-                <p>2 years 4 months • Girl</p>
-                <p style="font-size:0.75rem;color:var(--gray-400)">Born Jun 10, 2022</p>
-              </div>
-              <span style="margin-left:auto;padding:0.25rem 0.75rem;background:var(--primary);color:var(--white);font-size:0.75rem;font-weight:700;border-radius:var(--radius-full)">Active</span>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2);margin-bottom:var(--space-3)">
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Current Size</div>
-                <div style="font-weight:700">2-3Y</div>
-              </div>
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Height</div>
-                <div style="font-weight:700">92 cm</div>
-              </div>
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Weight</div>
-                <div style="font-weight:700">13.2 kg</div>
-              </div>
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Next Size Up</div>
-                <div style="font-weight:700">3-4Y</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:var(--space-2)">
-              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary btn-sm" style="flex:1">Shop for Aarvi</a>
-              <button class="btn btn-ghost btn-sm">Edit Profile</button>
-            </div>
-          </div>
+        {% if customer %}
+          {% assign children = customer.metafields.sumix.children.value %}
           
-          <!-- Static Profile 2 -->
-          <div class="child-card">
-            <div class="child-card-header">
-              <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=150&h=150&fit=crop" class="child-avatar" alt="Vivaan">
-              <div>
-                <h4>Vivaan</h4>
-                <p>1 year 2 months • Boy</p>
-                <p style="font-size:0.75rem;color:var(--gray-400)">Born Aug 18, 2023</p>
-              </div>
+          {% if children != blank and children.size > 0 %}
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:var(--space-3);margin-bottom:var(--space-4)">
+              {% for child in children %}
+                <!-- Dynamic Profile -->
+                <div class="child-card {% if forloop.first %}active{% endif %}">
+                  <div class="child-card-header">
+                    {% if child.photo != blank %}
+                      <img src="{{ child.photo }}" class="child-avatar" alt="{{ child.name }}">
+                    {% else %}
+                      <div class="child-avatar" style="background:var(--primary-soft); display:flex; align-items:center; justify-content:center; color:var(--primary); font-weight:700">{{ child.name | slice: 0 }}</div>
+                    {% endif %}
+                    
+                    <div>
+                      <h4>{{ child.name }}</h4>
+                      <p>{{ child.age_string }} • {{ child.gender }}</p>
+                      <p style="font-size:0.75rem;color:var(--gray-400)">Born {{ child.dob | date: "%b %d, %Y" }}</p>
+                    </div>
+                    {% if forloop.first %}
+                      <span style="margin-left:auto;padding:0.25rem 0.75rem;background:var(--primary);color:var(--white);font-size:0.75rem;font-weight:700;border-radius:var(--radius-full)">Primary</span>
+                    {% endif %}
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2);margin-bottom:var(--space-3)">
+                    <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                      <div style="font-size:0.75rem;color:var(--gray-500)">Current Size</div>
+                      <div style="font-weight:700">{{ child.current_size | default: 'N/A' }}</div>
+                    </div>
+                    <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                      <div style="font-size:0.75rem;color:var(--gray-500)">Height</div>
+                      <div style="font-weight:700">{{ child.height | default: '--' }} cm</div>
+                    </div>
+                    <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                      <div style="font-size:0.75rem;color:var(--gray-500)">Weight</div>
+                      <div style="font-weight:700">{{ child.weight | default: '--' }} kg</div>
+                    </div>
+                    <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                      <div style="font-size:0.75rem;color:var(--gray-500)">Next Size Up</div>
+                      <div style="font-weight:700">{{ child.next_size | default: 'N/A' }}</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:var(--space-2)">
+                    <a href="{{ routes.all_products_collection_url }}?filter.p.m.custom.age_group={{ child.current_size | url_encode }}" class="btn btn-primary btn-sm" style="flex:1">Shop for {{ child.name }}</a>
+                    <button class="btn btn-ghost btn-sm" onclick="editChild('{{ child.id }}')">Edit</button>
+                    <button class="btn btn-ghost btn-sm" onclick="deleteChild('{{ child.id }}')" style="color:var(--error)">Delete</button>
+                  </div>
+                </div>
+              {% endfor %}
             </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2);margin-bottom:var(--space-3)">
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Current Size</div>
-                <div style="font-weight:700">12-18M</div>
-              </div>
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Height</div>
-                <div style="font-weight:700">78 cm</div>
-              </div>
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Weight</div>
-                <div style="font-weight:700">10.5 kg</div>
-              </div>
-              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
-                <div style="font-size:0.75rem;color:var(--gray-500)">Next Size Up</div>
-                <div style="font-weight:700">18-24M</div>
-              </div>
+            
+          {% else %}
+            <!-- Empty State -->
+            <div style="text-align:center; padding:var(--space-8); background:var(--cream); border-radius:var(--radius-xl); margin-bottom:var(--space-6)">
+              <div style="font-size:3rem; margin-bottom:var(--space-3)">👶</div>
+              <h3 style="font-family:var(--font-heading); margin-bottom:var(--space-2)">No Child Profiles Yet</h3>
+              <p style="color:var(--gray-600); margin-bottom:var(--space-4)">Add your little ones to get personalized size recommendations and birthday rewards.</p>
+              <button class="btn btn-primary" onclick="document.getElementById('add-child-modal').classList.add('active')">Create First Profile</button>
             </div>
-            <div style="display:flex;gap:var(--space-2)">
-              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary btn-sm" style="flex:1">Shop for Vivaan</a>
-              <button class="btn btn-ghost btn-sm">Edit Profile</button>
-            </div>
+          {% endif %}
+        {% else %}
+          <div style="text-align:center; padding:var(--space-8);">
+            <p style="margin-bottom:var(--space-4)">Please log in to manage child profiles.</p>
+            <a href="{{ routes.account_login_url }}" class="btn btn-primary">Login</a>
           </div>
-        </div>
-
+        {% endif %}
+        
         <!-- Growth Timeline -->
         <div class="account-main" style="margin-bottom:var(--space-4)">
-          <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Growth Timeline</h3>
-          <div class="timeline">
+          <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Milestone Reminders (Preview)</h3>
+          <p style="color:var(--gray-500); font-size:0.875rem; margin-bottom:var(--space-4)">Add your child's birth date to automatically generate milestone timelines.</p>
+          <div class="timeline" style="opacity:0.5">
             <div class="timeline-item">
               <div style="font-weight:700">Born</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Jun 10, 2022 • 3.2 kg • 50 cm</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">--</div>
             </div>
             <div class="timeline-item">
-              <div style="font-weight:700">First Steps</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Dec 15, 2022 • 11 months</div>
+              <div style="font-weight:700">First Birthday</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">12 months</div>
             </div>
             <div class="timeline-item">
-              <div style="font-weight:700">First Words</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Mar 20, 2023 • 14 months</div>
-            </div>
-            <div class="timeline-item">
-              <div style="font-weight:700">Current</div>
-              <div style="font-size:0.8125rem;color:var(--gray-500)">Today • 2 years 4 months</div>
+              <div style="font-weight:700">Starting Toddler Sizes</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">2 years</div>
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   </div>
 </main>
+
+<!-- Add Child Modal Form -->
+<div class="sumix-modal" id="add-child-modal">
+  <div class="sumix-modal-content">
+    <button class="sumix-modal-close" onclick="document.getElementById('add-child-modal').classList.remove('active')">&times;</button>
+    <h2 style="font-family:var(--font-heading); margin-bottom:var(--space-4)">Add Child Profile</h2>
+    <form id="add-child-form" onsubmit="event.preventDefault(); submitChildForm(this);">
+      <div style="display:grid; gap:var(--space-3)">
+        <div>
+          <label class="label">Child's Name</label>
+          <input type="text" name="name" class="input" required>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3)">
+          <div>
+            <label class="label">Date of Birth</label>
+            <input type="date" name="dob" class="input" required>
+          </div>
+          <div>
+            <label class="label">Gender</label>
+            <select name="gender" class="input">
+              <option value="Girl">Girl</option>
+              <option value="Boy">Boy</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3)">
+          <div>
+            <label class="label">Height (cm) <span style="color:var(--gray-400)">Optional</span></label>
+            <input type="number" name="height" class="input">
+          </div>
+          <div>
+            <label class="label">Weight (kg) <span style="color:var(--gray-400)">Optional</span></label>
+            <input type="number" name="weight" step="0.1" class="input">
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:var(--space-6); display:flex; gap:var(--space-3); justify-content:flex-end">
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('add-child-modal').classList.remove('active')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Profile</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function submitChildForm(form) {
+    // In a production Shopify environment without an App Proxy, Metafields cannot be written via frontend JS.
+    // This script mocks the API call and prompts the user that an App is required for persistence.
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Saving...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      document.getElementById('add-child-modal').classList.remove('active');
+      alert("Success! Note: To persist this data to Shopify Customer Metafields permanently, a Shopify App or Storefront API connection is required on the backend.");
+    }, 1000);
+  }
+
+  function editChild(id) {
+    alert("Edit functionality requires the Metafield JSON array to be updated via Storefront API.");
+  }
+
+  function deleteChild(id) {
+    if(confirm("Are you sure you want to remove this profile?")) {
+      alert("Delete requested. Requires backend API to execute.");
+    }
+  }
+</script>
 
 {% schema %}
 {

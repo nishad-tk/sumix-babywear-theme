@@ -303,30 +303,34 @@
     <!-- FAQ Section with Schema -->
     <div style="margin-top:var(--space-10); max-width:800px;">
       <h2 style="font-family:var(--font-heading); margin-bottom:var(--space-4)">Common Questions</h2>
-      <div class="faq-item" onclick="this.classList.toggle('active')">
-        <div class="faq-q">Is this fabric safe for sensitive skin? <span class="faq-icon">+</span></div>
-        <div class="faq-a">Yes! All SUMIX garments are made from 100% GOTS-certified organic cotton and colored using AZO-free, eco-friendly dyes to prevent any irritation.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('active')">
-        <div class="faq-q">Which size should I choose? <span class="faq-icon">+</span></div>
-        <div class="faq-a">Our sizes are true to fit. If your baby is between sizes or growing quickly, we recommend sizing up. Please check our Size Guide for exact measurements.</div>
-      </div>
-      <div class="faq-item" onclick="this.classList.toggle('active')">
-        <div class="faq-q">Does the fabric shrink? <span class="faq-icon">+</span></div>
-        <div class="faq-a">We pre-wash our fabrics to minimize shrinkage, but organic cotton may experience up to 5% shrinkage after the first wash if washed in warm water.</div>
-      </div>
+      {% for block in section.blocks %}
+        {% if block.type == 'faq' %}
+          <div class="faq-item" onclick="this.classList.toggle('active')" {{ block.shopify_attributes }}>
+            <div class="faq-q">{{ block.settings.question }} <span class="faq-icon">+</span></div>
+            <div class="faq-a">{{ block.settings.answer }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": [{
-        "@type": "Question", "name": "Is this fabric safe for sensitive skin?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! All SUMIX garments are made from 100% GOTS-certified organic cotton." }
-      }, {
-        "@type": "Question", "name": "Which size should I choose?", "acceptedAnswer": { "@type": "Answer", "text": "Our sizes are true to fit. We recommend sizing up if between sizes." }
-      }, {
-        "@type": "Question", "name": "Does the fabric shrink?", "acceptedAnswer": { "@type": "Answer", "text": "We pre-wash our fabrics, but organic cotton may experience up to 5% shrinkage." }
-      }]
+      "mainEntity": [
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' %}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | json }}
+              }
+            }{% unless forloop.last %},{% endunless %}
+          {% endif %}
+        {% endfor %}
+      ]
     }
     </script>
 
@@ -334,9 +338,20 @@
     <div style="margin-top:var(--space-8); padding-top:var(--space-4); border-top:1px solid var(--gray-200)">
       <h3 style="font-size:1rem; color:var(--gray-600)">Related Searches</h3>
       <div class="related-tags">
-        <a href="{{ routes.all_products_collection_url }}" class="related-tag">Organic Cotton Baby Wear</a>
-        <a href="{{ routes.all_products_collection_url }}" class="related-tag">Newborn Clothes India</a>
-        <a href="{{ routes.all_products_collection_url }}" class="related-tag">{{ product.type | default: "Premium Baby Clothing" }}</a>
+        {% if product.type != blank %}
+          <a href="{{ routes.search_url }}?q={{ product.type | url_encode }}" class="related-tag">{{ product.type }}</a>
+        {% endif %}
+        {% for collection in product.collections limit: 2 %}
+          <a href="{{ collection.url }}" class="related-tag">{{ collection.title }}</a>
+        {% endfor %}
+        {% if product.metafields.custom.material != blank %}
+          <a href="{{ routes.search_url }}?q={{ product.metafields.custom.material | url_encode }}" class="related-tag">{{ product.metafields.custom.material }} Babywear</a>
+        {% else %}
+          <a href="{{ routes.search_url }}?q=Organic+Cotton" class="related-tag">Organic Cotton</a>
+        {% endif %}
+        {% if product.metafields.custom.age_group != blank %}
+          <a href="{{ routes.search_url }}?q={{ product.metafields.custom.age_group | url_encode }}" class="related-tag">{{ product.metafields.custom.age_group }} Clothes</a>
+        {% endif %}
       </div>
     </div>
 
@@ -427,24 +442,37 @@
     }
   });
 
-  // Demo Child Profile Integration
+  // Dynamic Child Profile Integration
   document.addEventListener('DOMContentLoaded', function() {
-    // In a real app, this would read from a Liquid Customer Metafield or a local cookie
-    const demoChild = { name: 'Aarvi', size: '2-3Y' }; 
-    if(demoChild) {
-      document.getElementById('child-recommendation-banner').style.display = 'block';
-      document.getElementById('child-rec-name').innerText = demoChild.name;
-      document.getElementById('child-rec-size').innerText = demoChild.size;
+    {% if customer and customer.metafields.sumix.child_profile %}
+      const childName = {{ customer.metafields.sumix.child_profile.value.name | json }} || 'your child';
+      const childSize = {{ customer.metafields.sumix.child_profile.value.recommended_size | json }} || '';
       
-      document.getElementById('size-guide-personalization').style.display = 'block';
-      document.getElementById('rec-size-large').innerText = demoChild.size;
-    }
+      if (childSize) {
+        document.getElementById('child-recommendation-banner').style.display = 'block';
+        document.getElementById('child-rec-name').innerText = childName;
+        document.getElementById('child-rec-size').innerText = childSize;
+        
+        document.getElementById('size-guide-personalization').style.display = 'block';
+        document.getElementById('rec-size-large').innerText = childSize;
+      }
+    {% endif %}
   });
 </script>
 
 {% schema %}
 {
   "name": "Sumix Product Page",
-  "settings": []
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ]
 }
 {% endschema %}
