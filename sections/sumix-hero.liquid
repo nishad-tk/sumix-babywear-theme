@@ -1,0 +1,94 @@
+<section class="hero" style="background: linear-gradient(135deg, {{ section.settings.bg_color_1 }} 0%, {{ section.settings.bg_color_2 }} 100%);">
+  <div class="hero-content">
+    {% if section.settings.label != blank %}
+      <div class="hero-label">{{ section.settings.label }}</div>
+    {% endif %}
+    <h1 class="hero-title">{{ section.settings.title }}</h1>
+    <p class="hero-desc">{{ section.settings.description }}</p>
+    <div class="hero-actions">
+      {% if section.settings.btn_1_label != blank %}
+        <a href="{{ section.settings.btn_1_link }}" class="btn btn-primary btn-lg">{{ section.settings.btn_1_label }}</a>
+      {% endif %}
+      {% if section.settings.btn_2_label != blank %}
+        <a href="{{ section.settings.btn_2_link }}" class="btn btn-secondary btn-lg">{{ section.settings.btn_2_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-image">
+    {% if section.settings.image != blank %}
+      <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.image.alt }}">
+    {% else %}
+      <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=1200&h=800&fit=crop" alt="Hero Placeholder">
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Hero",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color_1",
+      "label": "Background Gradient Start",
+      "default": "#FDF8F3"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_2",
+      "label": "Background Gradient End",
+      "default": "#FAF5FF"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Badge Label",
+      "default": "✨ New Summer Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "<p>Gentle on Baby Skin.<br><span>Designed for Everyday Joy.</span></p>"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Thoughtful fabrics. Timeless designs. Made with love in Kerala from 100% GOTS-certified organic cotton."
+    },
+    {
+      "type": "text",
+      "id": "btn_1_label",
+      "label": "Primary Button Label",
+      "default": "Shop Newborn →"
+    },
+    {
+      "type": "url",
+      "id": "btn_1_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "btn_2_label",
+      "label": "Secondary Button Label",
+      "default": "Shop Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "btn_2_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Hero"
+    }
+  ]
+}
+{% endschema %}

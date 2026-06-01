@@ -1,0 +1,118 @@
+<section class="section" style="{% if section.settings.bg_color != blank %}background: {{ section.settings.bg_color }};{% endif %}">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">{{ section.settings.title }}</h2>
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+      {% if section.settings.link_label != blank %}
+        <a href="{{ section.settings.link_url }}" class="link-arrow">{{ section.settings.link_label }} →</a>
+      {% endif %}
+    </div>
+    <div class="product-grid {% if section.settings.columns == 3 %}product-grid-3{% endif %}">
+      {% assign collection = collections[section.settings.collection] %}
+      {% if collection != blank %}
+        {% for product in collection.products limit: section.settings.max_products %}
+          <div class="product-card">
+            <div class="product-image">
+              <a href="{{ product.url }}">
+                <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}">
+                {% if product.images[1] %}
+                  <img src="{{ product.images[1] | image_url: width: 400 }}" class="hover-img" alt="{{ product.title }}">
+                {% endif %}
+              </a>
+            </div>
+            <div class="product-info">
+              <a href="{{ product.url }}">
+                <h4 class="product-name">{{ product.title }}</h4>
+              </a>
+              <div class="product-price">
+                <span class="price-current">{{ product.price | money }}</span>
+                {% if product.compare_at_price > product.price %}
+                  <span class="price-original">{{ product.compare_at_price | money }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <!-- Placeholders -->
+        {% for i in (1..section.settings.max_products) %}
+          <div class="product-card">
+            <div class="product-image" style="background:#f4f4f4"></div>
+            <div class="product-info">
+              <h4 class="product-name">Example Product {{ i }}</h4>
+              <div class="product-price"><span class="price-current">₹599</span></div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Most loved by parents across India"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "View All Link Label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "View All Link"
+    },
+    {
+      "type": "color_background",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "transparent"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "options": [
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "4",
+      "label": "Desktop Columns"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Collection"
+    }
+  ]
+}
+{% endschema %}

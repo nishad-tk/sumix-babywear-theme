@@ -1,0 +1,60 @@
+<section class="trust-bar section-sm">
+  <div class="container">
+    <div class="trust-grid">
+      {% for block in section.blocks %}
+        <div class="trust-item" {{ block.shopify_attributes }}>
+          <div class="trust-icon">{{ block.settings.icon }}</div>
+          <div class="trust-text">
+            <h4>{{ block.settings.title }}</h4>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Trust Bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "trust_feature",
+      "name": "Feature",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji/Icon",
+          "default": "🌿"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Organic Cotton"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description",
+          "default": "100% GOTS certified"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Trust Bar",
+      "blocks": [
+        { "type": "trust_feature", "settings": { "icon": "🌿", "title": "Organic Cotton", "text": "100% GOTS certified" } },
+        { "type": "trust_feature", "settings": { "icon": "🚚", "title": "Free Shipping", "text": "On orders above ₹999" } },
+        { "type": "trust_feature", "settings": { "icon": "↩️", "title": "Easy Returns", "text": "7-day hassle-free returns" } },
+        { "type": "trust_feature", "settings": { "icon": "🔒", "title": "Secure Payments", "text": "100% protected checkout" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

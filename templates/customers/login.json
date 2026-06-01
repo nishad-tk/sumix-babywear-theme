@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "sumix-main-login",
+      "blocks": {
+        "feat1": { "type": "feature", "settings": { "icon": "🚀", "title": "Faster Checkout" } },
+        "feat2": { "type": "feature", "settings": { "icon": "🎁", "title": "Reward Points" } },
+        "feat3": { "type": "feature", "settings": { "icon": "📦", "title": "Order Tracking" } },
+        "feat4": { "type": "feature", "settings": { "icon": "🏷️", "title": "Exclusive Offers" } }
+      },
+      "block_order": ["feat1", "feat2", "feat3", "feat4"],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

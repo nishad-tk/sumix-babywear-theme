@@ -1,0 +1,186 @@
+{% style %}
+  .cart-shipping-bar { background: var(--gray-100); border-radius: var(--radius-full); height: 8px; overflow: hidden; margin: var(--space-2) 0 var(--space-4); position: relative; }
+  .cart-shipping-progress { background: var(--success); height: 100%; transition: width 0.3s; }
+  .cart-sticky-checkout {
+    display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white);
+    padding: var(--space-3); box-shadow: 0 -4px 12px rgba(0,0,0,0.08); z-index: 50;
+  }
+  @media(max-width: 767px) {
+    .cart-sticky-checkout { display: block; }
+    .cart-sidebar { display: none; } /* Hide sidebar on mobile to rely on sticky */
+    body { padding-bottom: 100px; }
+  }
+{% endstyle %}
+
+<main style="padding-top:var(--space-4)">
+  <div class="container">
+    <h1 class="text-h1" style="margin-bottom:var(--space-2)">Your Bag <span style="font-size:1rem;font-weight:400;color:var(--gray-500)">({{ cart.item_count }} items)</span></h1>
+
+    {% if cart.item_count > 0 %}
+      <!-- Shipping Progress Bar -->
+      {% assign free_shipping_threshold = 99900 %} <!-- ₹999 -->
+      {% if cart.total_price < free_shipping_threshold %}
+        {% assign amount_left = free_shipping_threshold | minus: cart.total_price %}
+        {% assign progress = cart.total_price | times: 100 | divided_by: free_shipping_threshold %}
+        <p style="font-weight:700">You're <span style="color:var(--primary)">{{ amount_left | money }}</span> away from Free Shipping! 🚚</p>
+      {% else %}
+        {% assign progress = 100 %}
+        <p style="font-weight:700; color:var(--success)">You've unlocked Free Shipping! 🎉</p>
+      {% endif %}
+      <div class="cart-shipping-bar">
+        <div class="cart-shipping-progress" style="width: {{ progress }}%"></div>
+      </div>
+
+      <form action="{{ routes.cart_url }}" method="post" id="cart" class="cart-layout">
+        <div>
+          <div class="cart-items">
+            {% for item in cart.items %}
+              <div class="cart-item">
+                <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" class="cart-item-img">
+                <div class="cart-item-info">
+                  <div style="display:flex; justify-content:space-between">
+                    <div>
+                      <h4 style="margin-bottom:4px"><a href="{{ item.url }}">{{ item.product.title }}</a></h4>
+                      {% unless item.product.has_only_default_variant %}
+                        <p style="font-size:0.875rem;color:var(--gray-500);margin-bottom:8px">{{ item.variant.title }}</p>
+                      {% endunless %}
+                      <div class="cart-item-price">
+                        <span class="price-current">{{ item.original_price | money }}</span>
+                      </div>
+                    </div>
+                    <div style="display:flex; gap:0.5rem; flex-direction:column; align-items:flex-end">
+                      <a href="{{ item.url_to_remove }}" class="icon-btn" aria-label="Remove" style="width:30px;height:30px;font-size:1rem">🗑️</a>
+                      <!-- Move to wishlist static dummy trigger -->
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="showToast('Moved to Wishlist', 'success'); location.href='{{ item.url_to_remove }}'" style="padding:0;font-size:0.75rem;color:var(--primary)">🤍 Move to Wishlist</button>
+                    </div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:1rem">
+                    <div class="qty-selector">
+                      <a href="/cart/change?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}" class="qty-btn">-</a>
+                      <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="qty-input">
+                      <a href="/cart/change?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}" class="qty-btn">+</a>
+                    </div>
+                    <span style="font-weight:700">{{ item.final_line_price | money }}</span>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="submit" name="update" class="btn btn-secondary btn-sm" style="margin-top:var(--space-4)">Update Cart</button>
+
+          <!-- Gift options / Notes -->
+          <div style="margin-top:var(--space-6); background:var(--cream); padding:var(--space-4); border-radius:var(--radius-lg)">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:700; cursor:pointer; margin-bottom:var(--space-2)">
+              <input type="checkbox" id="cart-gift-wrap" style="width:18px;height:18px;accent-color:var(--primary)">
+              🎁 Make this a gift?
+            </label>
+            <div id="gift-options" style="display:none; margin-top:var(--space-3)">
+              <textarea name="note" class="input" placeholder="Add a personalized message (printed on a beautiful card)..." rows="3">{{ cart.note }}</textarea>
+            </div>
+            <script>
+              document.getElementById('cart-gift-wrap').addEventListener('change', function() {
+                document.getElementById('gift-options').style.display = this.checked ? 'block' : 'none';
+              });
+            </script>
+          </div>
+
+          <!-- Product Recommendations -->
+          <div style="margin-top:var(--space-8)">
+            <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Frequently Bought Together</h3>
+            <div class="product-grid">
+              {% for product in collections.all.products limit: 4 %}
+                <div class="product-card">
+                  <div class="product-image">
+                    <a href="{{ product.url }}">
+                      <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}">
+                    </a>
+                  </div>
+                  <div class="product-info">
+                    <a href="{{ product.url }}"><h4 class="product-name">{{ product.title }}</h4></a>
+                    <div class="product-price"><span class="price-current">{{ product.price | money }}</span></div>
+                    <form action="/cart/add" method="post" style="margin-top:var(--space-2)">
+                      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                      <button type="submit" class="btn btn-primary btn-sm btn-full" {% unless product.available %}disabled{% endunless %}>{% if product.available %}Add to Bag{% else %}Sold Out{% endif %}</button>
+                    </form>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <aside class="cart-sidebar">
+          <h3>Order Summary</h3>
+          
+          {% unless customer %}
+            <div style="background:var(--accent-soft); padding:var(--space-3); border-radius:var(--radius-md); margin-bottom:var(--space-3);">
+              <p style="font-size:0.875rem; font-weight:700; margin-bottom:0.5rem">Got SUMIX Points?</p>
+              <a href="{{ routes.account_login_url }}" class="btn btn-primary btn-sm btn-full" style="background:var(--white); color:var(--primary);">Log In to Redeem</a>
+            </div>
+          {% endunless %}
+
+          <div class="cart-summary-row">
+            <span>Subtotal</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <div class="cart-summary-row">
+            <span>Shipping</span>
+            {% if progress == 100 %}
+              <span style="color:var(--success)">Free</span>
+            {% else %}
+              <span style="color:var(--gray-500)">Calculated at checkout</span>
+            {% endif %}
+          </div>
+          {% if cart.total_discounts > 0 %}
+            <div class="cart-summary-row">
+              <span>Discounts</span>
+              <span style="color:var(--success)">-{{ cart.total_discounts | money }}</span>
+            </div>
+          {% endif %}
+          <div class="cart-total">
+            <span>Total</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <p style="font-size:0.875rem;color:var(--gray-500);text-align:center;margin-bottom:1rem">Taxes included. Secure checkout.</p>
+          
+          <button type="submit" name="checkout" class="btn btn-primary btn-full btn-lg" {% unless customer %}onclick="event.preventDefault(); window.location.href='{{ routes.account_login_url }}'"{% endunless %}>
+            {% if customer %}Secure Checkout 🔒{% else %}Login to Checkout 🔒{% endif %}
+          </button>
+
+          <!-- Accepted Payments -->
+          <div style="display:flex; justify-content:center; gap:0.5rem; margin-top:1rem; flex-wrap:wrap">
+            <span style="font-size:0.75rem; padding:0.25rem 0.5rem; background:var(--gray-100); border-radius:4px">UPI</span>
+            <span style="font-size:0.75rem; padding:0.25rem 0.5rem; background:var(--gray-100); border-radius:4px">Visa</span>
+            <span style="font-size:0.75rem; padding:0.25rem 0.5rem; background:var(--gray-100); border-radius:4px">MC</span>
+            <span style="font-size:0.75rem; padding:0.25rem 0.5rem; background:var(--gray-100); border-radius:4px">COD</span>
+          </div>
+        </aside>
+
+        <!-- Sticky Checkout Mobile -->
+        <div class="cart-sticky-checkout">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-2)">
+            <span style="font-weight:700">Total ({{ cart.item_count }} items)</span>
+            <span style="font-weight:700; font-size:1.25rem">{{ cart.total_price | money }}</span>
+          </div>
+          <button type="submit" name="checkout" class="btn btn-primary btn-full btn-lg" {% unless customer %}onclick="event.preventDefault(); window.location.href='{{ routes.account_login_url }}'"{% endunless %}>
+            {% if customer %}Secure Checkout 🔒{% else %}Login to Checkout 🔒{% endif %}
+          </button>
+        </div>
+
+      </form>
+    {% else %}
+      <div style="text-align:center; padding:var(--space-8) 0">
+        <h2 style="font-family:var(--font-heading);font-size:2rem;margin-bottom:var(--space-3)">Your Bag is Empty</h2>
+        <p style="color:var(--gray-500);margin-bottom:var(--space-4)">Looks like you haven't added anything to your bag yet.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary btn-lg">Start Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Sumix Main Cart",
+  "settings": []
+}
+{% endschema %}

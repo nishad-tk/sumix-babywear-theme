@@ -1,0 +1,32 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "sumix_announcement": {
+      "type": "sumix-announcement",
+      "blocks": {
+        "msg1": { "type": "announcement", "settings": { "text": "🚚 Free Shipping Above ₹999" } },
+        "msg2": { "type": "announcement", "settings": { "text": "🌿 100% Organic Cotton Collection" } },
+        "msg3": { "type": "announcement", "settings": { "text": "↩️ Easy 7-Day Returns" } },
+        "msg4": { "type": "announcement", "settings": { "text": "💳 Cash on Delivery Available" } }
+      },
+      "block_order": ["msg1", "msg2", "msg3", "msg4"],
+      "settings": {
+        "bg_color": "#6B3FA0",
+        "text_color": "#FFFFFF"
+      }
+    },
+    "sumix_header": {
+      "type": "sumix-header",
+      "settings": {
+        "logo_height": 40,
+        "tagline": "baby wear & care",
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "sumix_announcement",
+    "sumix_header"
+  ]
+}

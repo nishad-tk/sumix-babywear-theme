@@ -1,0 +1,75 @@
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="section-header" style="justify-content:center;text-align:center">
+      <div>
+        <h2 class="section-title">{{ section.settings.title }}</h2>
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+    </div>
+    <div class="insta-grid">
+      {% for block in section.blocks %}
+        <div class="insta-item" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <img src="{{ block.settings.image | image_url: width: 300 }}" alt="Instagram Post">
+          {% else %}
+            <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=300&h=300&fit=crop" alt="Instagram Placeholder">
+          {% endif %}
+          <div class="insta-overlay">{{ section.settings.overlay_icon }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Instagram Feed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "@sumix.baby"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real families, real moments"
+    },
+    {
+      "type": "text",
+      "id": "overlay_icon",
+      "label": "Hover Overlay Icon",
+      "default": "❤️"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Instagram Feed",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

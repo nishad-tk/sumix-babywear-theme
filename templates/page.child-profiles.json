@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "sumix-main-child-profiles",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

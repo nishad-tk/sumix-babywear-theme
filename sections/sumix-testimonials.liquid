@@ -1,0 +1,97 @@
+<section class="section">
+  <div class="container">
+    <div class="section-header" style="justify-content:center;text-align:center">
+      <div>
+        <h2 class="section-title">{{ section.settings.title }}</h2>
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+    </div>
+    <div class="product-grid product-grid-3">
+      {% for block in section.blocks %}
+        <div class="testimonial-card" {{ block.shopify_attributes }}>
+          <div class="testimonial-stars">{{ block.settings.stars }}</div>
+          <p class="testimonial-text">"{{ block.settings.quote }}"</p>
+          <div class="testimonial-author">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 100 }}" alt="{{ block.settings.author }}">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" alt="Placeholder">
+            {% endif %}
+            <div>
+              <h5>{{ block.settings.author }}</h5>
+              <p>{{ block.settings.location }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Loved by Parents, Adored by Babies"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real stories from our SUMIX family"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "stars",
+          "label": "Stars",
+          "default": "★★★★★"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The fabric is unbelievably soft."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Author Image"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Anjali Nair"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Kochi, Kerala"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "author": "Anjali Nair", "location": "Kochi, Kerala", "quote": "The fabric is unbelievably soft and perfect for Kerala's weather. My baby sleeps so peacefully in the Dreamy Nights set. Worth every rupee!" } },
+        { "type": "testimonial", "settings": { "author": "Rahul Menon", "location": "Bangalore", "quote": "I've tried many brands but SUMIX is genuinely different. The organic cotton feels luxurious and the designs are so thoughtful. My go-to for baby gifts now." } },
+        { "type": "testimonial", "settings": { "author": "Priya Sharma", "location": "Mumbai", "quote": "The child profile feature is brilliant! I get size recommendations exactly when my daughter needs them. The birthday rewards are such a sweet touch too." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

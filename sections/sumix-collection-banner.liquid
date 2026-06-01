@@ -1,0 +1,68 @@
+<section class="section">
+  <div class="container">
+    <div class="collection-banner">
+      {% if section.settings.image != blank %}
+        <img src="{{ section.settings.image | image_url: width: 1400 }}" alt="{{ section.settings.title }}">
+      {% else %}
+        <img src="https://images.unsplash.com/photo-1522771930-78848dc92939?w=1400&h=500&fit=crop" alt="Organic Collection">
+      {% endif %}
+      <div class="collection-banner-content">
+        {% if section.settings.badge != blank %}
+          <span class="badge badge-new" style="margin-bottom:var(--space-2)">{{ section.settings.badge }}</span>
+        {% endif %}
+        <h2>{{ section.settings.title }}</h2>
+        <p>{{ section.settings.text }}</p>
+        {% if section.settings.btn_label != blank %}
+          <a href="{{ section.settings.btn_link }}" class="btn btn-primary btn-lg">{{ section.settings.btn_label }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Collection Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge Text",
+      "default": "New Collection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "100% Organic Cotton"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Sustainably sourced, naturally soft, and gentle on sensitive baby skin. Because your little one deserves the purest."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Explore Organic →"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Collection Banner"
+    }
+  ]
+}
+{% endschema %}

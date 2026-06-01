@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — SUMIX Babywear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-item">🚚 Free Shipping Above ₹999</div>
+      <div class="announcement-item">🌿 100% Organic Cotton Collection</div>
+      <div class="announcement-item">↩️ Easy 7-Day Returns</div>
+      <div class="announcement-item">💳 Cash on Delivery Available</div>
+      <div class="announcement-item">🎁 Free Gift Box on Orders Above ₹1499</div>
+      <div class="announcement-item">🚚 Free Shipping Above ₹999</div>
+      <div class="announcement-item">🌿 100% Organic Cotton Collection</div>
+      <div class="announcement-item">↩️ Easy 7-Day Returns</div>
+      <div class="announcement-item">💳 Cash on Delivery Available</div>
+      <div class="announcement-item">🎁 Free Gift Box on Orders Above ₹1499</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="index.html" class="logo">
+        <span class="logo-text">sümix</span>
+        <span class="logo-tagline">baby wear & care</span>
+      </a>
+
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link active ">Home</a><a href="collection.html" class="nav-link  has-mega">Catalog</a><a href="collection.html?cat=Gift+Sets" class="nav-link  ">Gift Sets</a><a href="#" class="nav-link  ">About Us</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:var(--space-2);flex:1;justify-content:flex-end">
+        <div class="search-bar">
+          <i>🔍</i>
+          <input type="text" placeholder="Search for products...">
+        </div>
+
+        <div class="header-actions">
+          <a href="account.html" class="icon-btn" aria-label="Account">👤</a>
+          <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+            🤍
+            <span class="count wishlist-count" style="display:none">0</span>
+          </a>
+          <button class="icon-btn" aria-label="Cart" onclick="openCartDrawer()">
+            🛒
+            <span class="count cart-count" style="display:none">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3>Your Bag</h3>
+      <button class="icon-btn" onclick="closeCartDrawer()" aria-label="Close">✕</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-body">
+      <!-- Populated by JS -->
+    </div>
+    <div class="cart-drawer-footer" id="cart-drawer-footer">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <main>
+    <div class="auth-layout">
+      <div class="auth-visual">
+        <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=500&h=600&fit=crop" alt="Happy baby" style="max-width:360px;width:100%">
+        <h2>Welcome to the SUMIX Family</h2>
+        <p>Join 50,000+ parents who trust us for their little one's comfort. Get exclusive rewards, early access, and personalized recommendations.</p>
+        <div style="display:flex;gap:var(--space-4);margin-top:var(--space-6);text-align:center">
+          <div>
+            <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700">🚀</div>
+            <div style="font-size:0.875rem;opacity:0.9">Faster Checkout</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700">🎁</div>
+            <div style="font-size:0.875rem;opacity:0.9">Reward Points</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700">📦</div>
+            <div style="font-size:0.875rem;opacity:0.9">Order Tracking</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700">🏷️</div>
+            <div style="font-size:0.875rem;opacity:0.9">Exclusive Offers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-form-wrap">
+        <div class="auth-form">
+          <div style="text-align:center;margin-bottom:var(--space-4)">
+            <div style="font-family:var(--font-heading);font-size:2.5rem;color:var(--primary);margin-bottom:var(--space-1)">sümix</div>
+            <h2 style="font-size:1.75rem;margin-bottom:var(--space-1)">Welcome Back!</h2>
+            <p style="color:var(--gray-500)">Sign in to access your account, rewards & orders</p>
+          </div>
+
+          <div class="social-login">
+            <button class="social-btn" onclick="showToast('Google login coming soon', 'info')">
+              <span style="font-size:1.25rem">🔍</span> Google
+            </button>
+            <button class="social-btn" onclick="showToast('Apple login coming soon', 'info')">
+              <span style="font-size:1.25rem">🍎</span> Apple
+            </button>
+          </div>
+
+          <div class="divider">or continue with email</div>
+
+          <form onsubmit="event.preventDefault(); showToast('Login successful! Welcome back 🎉', 'success'); setTimeout(()=>window.location.href='account.html', 1000);">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" class="input" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="input" placeholder="Enter your password" required>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;color:var(--gray-600);cursor:pointer">
+                <input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary)"> Remember me
+              </label>
+              <a href="#" style="font-size:0.875rem;color:var(--primary);font-weight:600">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full btn-lg">Sign In</button>
+          </form>
+
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin:var(--space-4) 0;padding:var(--space-3);background:var(--accent-soft);border-radius:var(--radius-lg)">
+            <span style="font-size:1.5rem">🎁</span>
+            <div>
+              <div style="font-weight:700;font-size:0.9375rem;color:#92400e">₹100 OFF Your First Order</div>
+              <div style="font-size:0.8125rem;color:#b45309">New members only. Auto-applied at checkout.</div>
+            </div>
+          </div>
+
+          <p style="text-align:center;font-size:0.9375rem;color:var(--gray-600)">
+            Don't have an account? <a href="signup.html" style="color:var(--primary);font-weight:700">Create one</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-text" style="font-size:2rem">sümix</div>
+          <p>Premium babywear and baby care, thoughtfully designed in Kerala for your little one's comfort and everyday joy.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Pinterest">📌</a>
+            <a href="#" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Shop</h4>
+          <a href="collection.html">New Arrivals</a>
+          <a href="collection.html">Best Sellers</a>
+          <a href="collection.html">Rompers</a>
+          <a href="collection.html">Onesies</a>
+          <a href="collection.html">Gift Sets</a>
+        </div>
+        <div class="footer-column">
+          <h4>Help</h4>
+          <a href="#">Track Order</a>
+          <a href="#">Shipping & Delivery</a>
+          <a href="#">Returns & Exchanges</a>
+          <a href="#">Size Guide</a>
+          <a href="#">FAQs</a>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Sustainability</a>
+          <a href="#">Careers</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Sumix Baby Wear & Care. All rights reserved.</p>
+        <div class="footer-payment">
+          <div class="payment-icon">UPI</div>
+          <div class="payment-icon">Visa</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">GPay</div>
+          <div class="payment-icon">Paytm</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

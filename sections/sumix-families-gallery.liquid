@@ -1,0 +1,137 @@
+{% style %}
+  .sumix-gallery {
+    padding: var(--space-8) 0;
+    overflow: hidden;
+  }
+  .gallery-header {
+    text-align: center;
+    margin-bottom: var(--space-6);
+  }
+  .gallery-header h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--primary);
+  }
+  
+  .gallery-track-wrap {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+  .gallery-track-wrap::-webkit-scrollbar { display: none; }
+  
+  .gallery-track {
+    display: inline-flex;
+    gap: var(--space-4);
+    padding: 0 var(--space-4);
+  }
+  
+  .gallery-card {
+    position: relative;
+    width: 280px;
+    height: 350px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+  @media(min-width: 768px) {
+    .gallery-card { width: 320px; height: 400px; }
+  }
+  
+  .gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .gallery-card:hover img { transform: scale(1.05); }
+  
+  .gallery-card-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: var(--space-4);
+    color: var(--white);
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  
+  .gallery-handle { font-weight: 700; font-size: 0.9375rem; margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+  .gallery-quote { font-size: 0.8125rem; opacity: 0.9; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+{% endstyle %}
+
+<section class="sumix-gallery">
+  <div class="gallery-header">
+    <h2>{{ section.settings.title }}</h2>
+    <p style="color:var(--gray-600)">{{ section.settings.subtitle }}</p>
+  </div>
+  
+  <div class="gallery-track-wrap" id="gallery-track-{{ section.id }}">
+    <div class="gallery-track">
+      {% for block in section.blocks %}
+        <div class="gallery-card" {{ block.shopify_attributes }}>
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.handle | escape }}" loading="lazy">
+          {% else %}
+            <div style="background:var(--gray-300); width:100%; height:100%;"></div>
+          {% endif %}
+          
+          <div class="gallery-card-overlay">
+            <div class="gallery-handle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              {{ block.settings.handle }}
+            </div>
+            {% if block.settings.quote != blank %}
+              <div class="gallery-quote">"{{ block.settings.quote }}"</div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SUMIX Families Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "The SUMIX Family"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Tag @sumix.baby to be featured"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Customer Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "handle", "label": "Social Handle or Name", "default": "@sumix_baby" },
+        { "type": "textarea", "id": "quote", "label": "Quote/Review", "default": "Absolutely love the soft organic cotton!" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SUMIX Families Gallery",
+      "blocks": [
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

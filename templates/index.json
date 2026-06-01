@@ -1,0 +1,218 @@
+{
+  "sections": {
+    "sumix_banner_carousel": {
+      "type": "sumix-banner-carousel",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "title": "Summer Collection",
+            "subheading": "Soft, breathable organic cotton for everyday play.",
+            "button_label": "Shop Now",
+            "button_link": "shopify:\/\/collections\/all"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "title": "Flat 20% Off",
+            "subheading": "On all newborn essentials.",
+            "button_label": "Explore",
+            "button_link": "shopify:\/\/collections\/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "autoplay": true,
+        "interval": 5
+      }
+    },
+    "sumix_trust_bar": {
+      "type": "sumix-trust-bar",
+      "blocks": {
+        "block_1": {
+          "type": "trust_feature",
+          "settings": { "icon": "🌿", "title": "Organic Cotton", "text": "100% GOTS certified" }
+        },
+        "block_2": {
+          "type": "trust_feature",
+          "settings": { "icon": "🚚", "title": "Free Shipping", "text": "On orders above ₹999" }
+        },
+        "block_3": {
+          "type": "trust_feature",
+          "settings": { "icon": "↩️", "title": "Easy Returns", "text": "7-day hassle-free returns" }
+        },
+        "block_4": {
+          "type": "trust_feature",
+          "settings": { "icon": "🔒", "title": "Secure Payments", "text": "100% protected checkout" }
+        }
+      },
+      "block_order": ["block_1", "block_2", "block_3", "block_4"],
+      "settings": {}
+    },
+    "sumix_shop_by_age": {
+      "type": "sumix-shop-by-age",
+      "blocks": {
+        "age_1": { "type": "age_group", "settings": { "emoji": "👶", "title": "Newborn", "subtitle": "0–3 Months" } },
+        "age_2": { "type": "age_group", "settings": { "emoji": "🍼", "title": "Infant", "subtitle": "3–6 Months" } },
+        "age_3": { "type": "age_group", "settings": { "emoji": "🧸", "title": "Baby", "subtitle": "6–12 Months" } },
+        "age_4": { "type": "age_group", "settings": { "emoji": "🎈", "title": "Toddler", "subtitle": "1–2 Years" } },
+        "age_5": { "type": "age_group", "settings": { "emoji": "🌟", "title": "Kid", "subtitle": "2–4 Years" } }
+      },
+      "block_order": ["age_1", "age_2", "age_3", "age_4", "age_5"],
+      "settings": {
+        "title": "Whose wardrobe are you shopping for?",
+        "subtitle": "Personalized picks for your little one"
+      }
+    },
+    "sumix_shop_by_category": {
+      "type": "sumix-shop-by-category",
+      "blocks": {
+        "cat_1": { "type": "category", "settings": { "title": "Rompers" } },
+        "cat_2": { "type": "category", "settings": { "title": "Onesies" } },
+        "cat_3": { "type": "category", "settings": { "title": "Dresses" } },
+        "cat_4": { "type": "category", "settings": { "title": "Sleepwear" } },
+        "cat_5": { "type": "category", "settings": { "title": "Essentials" } },
+        "cat_6": { "type": "category", "settings": { "title": "Gift Sets" } }
+      },
+      "block_order": ["cat_1", "cat_2", "cat_3", "cat_4", "cat_5", "cat_6"],
+      "settings": {
+        "title": "Shop by Category",
+        "subtitle": "Curated collections for every moment",
+        "link_label": "View All"
+      }
+    },
+    "sumix_best_sellers": {
+      "type": "sumix-collection",
+      "settings": {
+        "title": "Best Sellers",
+        "subtitle": "Most loved by parents across India",
+        "link_label": "View All",
+        "max_products": 4,
+        "columns": "4",
+        "collection": "frontpage"
+      }
+    },
+    "sumix_collection_banner": {
+      "type": "sumix-collection-banner",
+      "settings": {
+        "badge": "New Collection",
+        "title": "100% Organic Cotton",
+        "text": "Sustainably sourced, naturally soft, and gentle on sensitive baby skin. Because your little one deserves the purest.",
+        "btn_label": "Explore Organic →"
+      }
+    },
+    "sumix_new_arrivals": {
+      "type": "sumix-collection",
+      "settings": {
+        "title": "New Arrivals",
+        "subtitle": "Fresh styles just dropped this week",
+        "link_label": "View All",
+        "bg_color": "var(--white)",
+        "max_products": 4,
+        "columns": "4",
+        "collection": "frontpage"
+      }
+    },
+    "sumix_bundle_save": {
+      "type": "sumix-collection",
+      "settings": {
+        "title": "Bundle & Save",
+        "subtitle": "Curated sets at special prices",
+        "link_label": "",
+        "max_products": 3,
+        "columns": "3",
+        "collection": "frontpage"
+      }
+    },
+    "sumix_gift_collection": {
+      "type": "sumix-collection",
+      "settings": {
+        "title": "The Gift Collection",
+        "subtitle": "Thoughtful presents for precious little ones",
+        "link_label": "Shop Gifts →",
+        "bg_color": "linear-gradient(135deg,var(--primary-soft) 0%,var(--cream) 100%)",
+        "max_products": 4,
+        "columns": "4",
+        "collection": "frontpage"
+      }
+    },
+    "sumix_testimonials": {
+      "type": "sumix-testimonials",
+      "blocks": {
+        "test_1": { "type": "testimonial", "settings": { "author": "Anjali Nair", "location": "Kochi, Kerala", "quote": "The fabric is unbelievably soft and perfect for Kerala's weather. My baby sleeps so peacefully in the Dreamy Nights set. Worth every rupee!" } },
+        "test_2": { "type": "testimonial", "settings": { "author": "Rahul Menon", "location": "Bangalore", "quote": "I've tried many brands but SUMIX is genuinely different. The organic cotton feels luxurious and the designs are so thoughtful. My go-to for baby gifts now." } },
+        "test_3": { "type": "testimonial", "settings": { "author": "Priya Sharma", "location": "Mumbai", "quote": "The child profile feature is brilliant! I get size recommendations exactly when my daughter needs them. The birthday rewards are such a sweet touch too." } }
+      },
+      "block_order": ["test_1", "test_2", "test_3"],
+      "settings": {
+        "title": "Loved by Parents, Adored by Babies",
+        "subtitle": "Real stories from our SUMIX family"
+      }
+    },
+    "sumix_rewards_banner": {
+      "type": "sumix-rewards-banner",
+      "blocks": {
+        "perk_1": { "type": "perk", "settings": { "icon": "🎁", "text": "Birthday Treats" } },
+        "perk_2": { "type": "perk", "settings": { "icon": "⭐", "text": "Early Access" } },
+        "perk_3": { "type": "perk", "settings": { "icon": "🚚", "text": "Free Shipping" } }
+      },
+      "block_order": ["perk_1", "perk_2", "perk_3"],
+      "settings": {
+        "title": "Join SUMIX Rewards ✨",
+        "text": "Earn points on every purchase, unlock exclusive rewards, and enjoy member-only perks.",
+        "btn_label": "Join Now — It's Free"
+      }
+    },
+    "sumix_blog": {
+      "type": "sumix-blog-section",
+      "settings": {
+        "title": "Parenting Journal",
+        "subtitle": "Tips, stories & inspiration for your journey",
+        "link_label": "Read All",
+        "post_limit": 3
+      }
+    },
+    "sumix_families_gallery": {
+      "type": "sumix-families-gallery",
+      "blocks": {
+        "photo_1": { "type": "photo", "settings": { "handle": "@aarvis_mom", "quote": "The softest onesies we own!" } },
+        "photo_2": { "type": "photo", "settings": { "handle": "@baby_vivaan", "quote": "Beautiful colors and great fit." } },
+        "photo_3": { "type": "photo", "settings": { "handle": "@kerala_diaries", "quote": "So happy to support a local brand." } },
+        "photo_4": { "type": "photo", "settings": { "handle": "@newparents", "quote": "Perfect for gifting!" } }
+      },
+      "block_order": ["photo_1", "photo_2", "photo_3", "photo_4"],
+      "settings": {
+        "title": "The SUMIX Family",
+        "subtitle": "Tag @sumix.baby to be featured"
+      }
+    },
+    "sumix_newsletter": {
+      "type": "sumix-newsletter",
+      "settings": {
+        "title": "Stay in the Loop",
+        "subtitle": "Get early access to new arrivals, exclusive offers & parenting tips delivered to your inbox."
+      }
+    }
+  },
+  "order": [
+    "sumix_banner_carousel",
+    "sumix_trust_bar",
+    "sumix_shop_by_age",
+    "sumix_shop_by_category",
+    "sumix_best_sellers",
+    "sumix_collection_banner",
+    "sumix_new_arrivals",
+    "sumix_bundle_save",
+    "sumix_gift_collection",
+    "sumix_testimonials",
+    "sumix_rewards_banner",
+    "sumix_blog",
+    "sumix_families_gallery",
+    "sumix_newsletter"
+  ]
+}

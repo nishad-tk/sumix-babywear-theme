@@ -1,0 +1,22 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "sumix_footer": {
+      "type": "sumix-footer",
+      "blocks": {
+        "menu1": { "type": "link_list", "settings": { "title": "Shop", "menu": "footer" } },
+        "menu2": { "type": "link_list", "settings": { "title": "Help", "menu": "footer" } },
+        "menu3": { "type": "link_list", "settings": { "title": "Company", "menu": "footer" } }
+      },
+      "block_order": ["menu1", "menu2", "menu3"],
+      "settings": {
+        "logo_height": 40,
+        "brand_text": "Premium babywear and baby care, thoughtfully designed in Kerala for your little one's comfort and everyday joy."
+      }
+    }
+  },
+  "order": [
+    "sumix_footer"
+  ]
+}

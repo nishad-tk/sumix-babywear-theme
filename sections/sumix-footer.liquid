@@ -1,0 +1,108 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" style="max-height: {{ section.settings.logo_height }}px">
+        {% else %}
+          <div class="logo-text" style="font-size:2rem">{{ shop.name }}</div>
+        {% endif %}
+        <p>{{ section.settings.brand_text }}</p>
+        <div class="footer-social">
+          {% if settings.social_instagram_link != blank %}<a href="{{ settings.social_instagram_link }}" aria-label="Instagram">📷</a>{% endif %}
+          {% if settings.social_facebook_link != blank %}<a href="{{ settings.social_facebook_link }}" aria-label="Facebook">📘</a>{% endif %}
+          {% if settings.social_pinterest_link != blank %}<a href="{{ settings.social_pinterest_link }}" aria-label="Pinterest">📌</a>{% endif %}
+          {% if settings.social_youtube_link != blank %}<a href="{{ settings.social_youtube_link }}" aria-label="YouTube">▶️</a>{% endif %}
+        </div>
+      </div>
+      
+      {% for block in section.blocks %}
+        <div class="footer-column" {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.title }}</h4>
+          {% for link in linklists[block.settings.menu].links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.</p>
+      <div class="footer-payment">
+        <div class="payment-icon">UPI</div>
+        <div class="payment-icon">Visa</div>
+        <div class="payment-icon">MC</div>
+        <div class="payment-icon">GPay</div>
+        <div class="payment-icon">Paytm</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile Bottom Nav (Global) -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="{{ routes.root_url }}" class="mobile-nav-item active"><span style="font-size:1.25rem">🏠</span>Home</a>
+    <a href="{{ routes.all_products_collection_url }}" class="mobile-nav-item"><span style="font-size:1.25rem">🛍️</span>Shop</a>
+    <a href="/pages/rewards" class="mobile-nav-item"><span style="font-size:1.25rem">🎁</span>Rewards</a>
+    <a href="/pages/wishlist" class="mobile-nav-item"><span style="font-size:1.25rem">🤍</span>Wishlist</a>
+    <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="mobile-nav-item"><span style="font-size:1.25rem">👤</span>Account</a>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Sumix Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "default": 40,
+      "label": "Logo Height"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_text",
+      "label": "Brand Text",
+      "default": "Premium babywear and baby care, thoughtfully designed in Kerala for your little one's comfort and everyday joy."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Footer",
+      "blocks": [
+        { "type": "link_list", "settings": { "title": "Shop", "menu": "footer" } },
+        { "type": "link_list", "settings": { "title": "Help", "menu": "footer" } },
+        { "type": "link_list", "settings": { "title": "Company", "menu": "footer" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

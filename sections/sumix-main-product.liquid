@@ -1,0 +1,450 @@
+{% style %}
+  /* New Sticky Mobile Cart */
+  .pdp-sticky-cart {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--white);
+    padding: var(--space-3);
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+    z-index: 50;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  @media(max-width: 767px) {
+    .pdp-sticky-cart { display: flex; }
+    .pdp-sticky-cart.hidden { transform: translateY(100%); transition: transform 0.3s; }
+  }
+  /* Modals */
+  .sumix-modal {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.5); z-index: 100;
+    display: none; align-items: center; justify-content: center;
+  }
+  .sumix-modal.active { display: flex; }
+  .sumix-modal-content {
+    background: var(--white); width: 90%; max-width: 600px;
+    border-radius: var(--radius-lg); padding: var(--space-4);
+    position: relative; max-height: 90vh; overflow-y: auto;
+  }
+  .sumix-modal-close { position:absolute; top:var(--space-3); right:var(--space-3); background:none; border:none; font-size:1.5rem; cursor:pointer;}
+  @media(max-width: 767px) {
+    .sumix-modal { align-items: flex-end; }
+    .sumix-modal-content { width: 100%; border-radius: var(--radius-xl) var(--radius-xl) 0 0; padding-bottom: 2rem; }
+  }
+  /* FAQ Accordion */
+  .faq-item { border-bottom: 1px solid var(--gray-200); padding: var(--space-3) 0; }
+  .faq-q { font-weight: 700; display: flex; justify-content: space-between; cursor: pointer; color: var(--gray-800); }
+  .faq-a { color: var(--gray-600); margin-top: var(--space-2); display: none; }
+  .faq-item.active .faq-a { display: block; }
+  .faq-item.active .faq-icon { transform: rotate(45deg); }
+  
+  /* Related Tags */
+  .related-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+  .related-tag { padding: 0.5rem 1rem; background: var(--gray-100); border-radius: var(--radius-full); font-size: 0.875rem; color: var(--gray-700); text-decoration: none; }
+{% endstyle %}
+
+<!-- SEO Schema: Product -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "image": [
+    {{ product.featured_image | image_url: width: 1024 | prepend: "https:" | json }}
+  ],
+  "description": {{ product.description | strip_html | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": "SUMIX"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": {{ request.origin | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+  }
+}
+</script>
+
+<main style="padding-top:var(--space-4); padding-bottom: 80px;">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" style="margin-bottom:var(--space-3)">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span>/</span>
+      {% if collection %}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span>/</span>
+      {% endif %}
+      <span>{{ product.title }}</span>
+    </div>
+
+    <!-- Personalization (JS controlled) -->
+    <div id="child-recommendation-banner" style="display:none; background:var(--primary-soft); padding:var(--space-2); border-radius:var(--radius-md); margin-bottom:var(--space-3); border:1px solid var(--primary-light);">
+      <span style="font-weight:700; color:var(--primary);">✨ Recommended for <span id="child-rec-name">your child</span></span> based on profile size (<span id="child-rec-size"></span>).
+    </div>
+
+    <div class="pdp-grid">
+      <!-- Gallery -->
+      <div class="pdp-gallery">
+        <div class="gallery-main">
+          {% if product.selected_or_first_available_variant.featured_image %}
+            <img id="gallery-main-img" src="{{ product.selected_or_first_available_variant.featured_image | image_url: width: 800 }}" alt="{{ product.title }}">
+          {% elsif product.featured_image %}
+            <img id="gallery-main-img" src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}">
+          {% else %}
+            <div style="width:100%; height:400px; background:#f4f4f4"></div>
+          {% endif %}
+        </div>
+        {% if product.images.size > 1 %}
+          <div class="gallery-thumbs">
+            {% for image in product.images %}
+              <div class="gallery-thumb {% if forloop.first %}active{% endif %}" onclick="document.getElementById('gallery-main-img').src='{{ image | image_url: width: 800 }}'; document.querySelectorAll('.gallery-thumb').forEach(el=>el.classList.remove('active')); this.classList.add('active');">
+                <img src="{{ image | image_url: width: 150 }}" alt="{{ image.alt | escape }}">
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Product Info -->
+      <div class="pdp-info">
+        <div class="pdp-badges">
+          {% for tag in product.tags %}
+            {% if tag contains 'badge:' %}
+              <span class="badge badge-new">{{ tag | remove: 'badge:' }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <h1 class="pdp-title">{{ product.title }}</h1>
+
+        <div class="pdp-rating">
+          <span style="color:#FBBF24;font-size:1.125rem">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </span>
+          <span style="font-weight:700">5.0</span>
+          <span style="color:var(--gray-500)">(42 reviews)</span>
+        </div>
+
+        {% form 'product', product, id: 'product-form-installment', class: 'installment' %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="product-variant-id">
+          
+          <div class="pdp-price-wrap">
+            <span class="pdp-price" id="price-current">{{ product.selected_or_first_available_variant.price | money }}</span>
+            {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+              <span class="pdp-mrp" id="price-original">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+              <span class="pdp-discount">Save {{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Variants -->
+          {% unless product.has_only_default_variant %}
+            <div style="margin-top:var(--space-4); margin-bottom:var(--space-4)">
+              {% for option in product.options_with_values %}
+                <div class="size-section">
+                  <div class="size-header" style="display:flex; justify-content:space-between">
+                    <h4>{{ option.name }}: <span style="font-weight:400" id="selected-{{ option.name | handleize }}">{{ option.selected_value }}</span></h4>
+                    {% if option.name == 'Size' %}
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('size-guide-modal').classList.add('active')" style="color:var(--primary); text-decoration:underline;">Size Guide</button>
+                    {% endif %}
+                  </div>
+                  <div class="size-options">
+                    {% for value in option.values %}
+                      <label class="size-option {% if option.selected_value == value %}active{% endif %}" onclick="updateVariantSelection(this, '{{ option.name | handleize }}', '{{ value | escape }}')">
+                        {{ value }}
+                        <input type="radio" style="display:none" name="options[{{ option.name }}]" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %} class="variant-radio">
+                      </label>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            
+            <script>
+              const variants = {{ product.variants | json }};
+              function updateVariantSelection(labelEl, optionHandle, val) {
+                // UI update
+                labelEl.parentElement.querySelectorAll('.size-option').forEach(el=>el.classList.remove('active'));
+                labelEl.classList.add('active');
+                document.getElementById('selected-' + optionHandle).innerText = val;
+                labelEl.querySelector('input').checked = true;
+
+                // Find matching variant
+                const radios = document.querySelectorAll('.variant-radio:checked');
+                const selectedOptions = Array.from(radios).map(r => r.value);
+                
+                const matchedVariant = variants.find(v => {
+                  return v.options.every((opt, i) => opt === selectedOptions[i]);
+                });
+
+                if(matchedVariant) {
+                  document.getElementById('product-variant-id').value = matchedVariant.id;
+                  // format money is complex in JS without liquid, but we can do a simple replace
+                  document.getElementById('price-current').innerText = '₹' + (matchedVariant.price / 100).toFixed(2);
+                  const btn = document.getElementById('add-to-cart-btn');
+                  const stickyBtn = document.getElementById('sticky-add-btn');
+                  if(matchedVariant.available) {
+                    btn.disabled = false; btn.innerHTML = '🛍️ Add to Bag';
+                    stickyBtn.disabled = false; stickyBtn.innerHTML = 'Add to Bag';
+                  } else {
+                    btn.disabled = true; btn.innerHTML = 'Sold Out';
+                    stickyBtn.disabled = true; stickyBtn.innerHTML = 'Sold Out';
+                  }
+                }
+              }
+            </script>
+          {% endunless %}
+
+          <div class="pdp-rewards">
+            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" style="color:var(--accent)"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            <span>Earn <strong>SUMIX Points</strong> with this purchase.</span>
+          </div>
+
+          <!-- Delivery -->
+          <div class="delivery-widget">
+            <h4><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" style="vertical-align:text-bottom"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> Delivery Options</h4>
+            <div class="pincode-check">
+              <input type="text" class="input" placeholder="Enter pincode (6 digits)" maxlength="6">
+              <button type="button" class="btn btn-primary btn-sm" style="white-space:nowrap" onclick="this.innerHTML='✓ Available'">Check</button>
+            </div>
+            <div class="delivery-info" style="margin-top:var(--space-2)">
+              <span>✓ Free shipping above ₹999</span>
+              <span>✓ Easy 7-day returns</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="pdp-actions">
+            <button type="submit" name="add" id="add-to-cart-btn" class="btn btn-primary btn-lg" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} style="position:relative; overflow:hidden;">
+              {% if product.selected_or_first_available_variant.available %}
+                🛍️ Add to Bag
+              {% else %}
+                Sold Out
+              {% endif %}
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="document.querySelector('#product-form-installment').insertAdjacentHTML('beforeend', '<input type=\'hidden\' name=\'return_to\' value=\'/checkout\'>'); document.querySelector('#product-form-installment').submit();">⚡ Buy Now</button>
+          </div>
+          
+          <button type="button" class="btn btn-ghost btn-full" style="margin-top:var(--space-2)" onclick="Store && Store.toggleWishlist({{ product.id }}); showToast('Added to Wishlist🤍', 'success')">🤍 Save to Wishlist</button>
+
+        {% endform %}
+
+        <!-- Trust Pills -->
+        <div class="pdp-trust" style="margin-top:var(--space-6)">
+          <div class="trust-pill">🌿 Organic Certified</div>
+          <div class="trust-pill">👶 Safe For Babies</div>
+          <div class="trust-pill">↩️ Easy Returns</div>
+          <div class="trust-pill">🔒 Secure Checkout</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequently Bought Together -->
+    <div style="margin-top:var(--space-8); padding:var(--space-4); background:var(--gray-50); border-radius:var(--radius-xl)">
+      <h3 style="font-family:var(--font-heading); margin-bottom:var(--space-3)">Frequently Bought Together</h3>
+      <div style="display:flex; flex-wrap:wrap; gap:var(--space-4); align-items:center;">
+        <div style="width:100px;"><img src="{{ product.featured_image | image_url: width: 200 }}" style="border-radius:var(--radius-md)"></div>
+        <span style="font-size:1.5rem; color:var(--gray-400)">+</span>
+        {% assign related = collections.all.products | where: "id", "!=", product.id | first %}
+        {% if related %}
+          <div style="width:100px;"><img src="{{ related.featured_image | image_url: width: 200 }}" style="border-radius:var(--radius-md)"></div>
+          <div style="flex:1; min-width:200px;">
+            <p style="font-weight:700">This item + {{ related.title }}</p>
+            <p style="font-weight:700; color:var(--primary)">Total: {{ product.price | plus: related.price | money }}</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:var(--space-2)">Add Both To Cart</button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Tabs & Education -->
+    <div style="margin-top:var(--space-8)">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab(0)">Description</button>
+        <button class="tab-btn" onclick="showTab(1)">Material & Care</button>
+        <button class="tab-btn" onclick="showTab(2)">Delivery & Returns</button>
+      </div>
+      <div class="tab-content active" id="tab-0">
+        <div style="max-width:800px; font-size:1rem;line-height:1.8;color:var(--gray-700)">
+          {{ product.description }}
+        </div>
+      </div>
+      <div class="tab-content" id="tab-1" style="display:none">
+        <div style="max-width:600px; line-height:1.8; color:var(--gray-700)">
+          <p style="margin-bottom:var(--space-2)"><strong>Why Organic Cotton?</strong></p>
+          <p>Conventional cotton uses heavy pesticides which can irritate a baby's delicate skin. Our GOTS-certified organic cotton is grown without toxic chemicals, making it hypoallergenic, breathable, and incredibly soft.</p>
+          <p style="margin-top:var(--space-4); margin-bottom:var(--space-2)"><strong>Wash Care:</strong></p>
+          <ul style="margin-left:var(--space-4);">
+            <li>Machine wash cold with like colors</li>
+            <li>Use mild, baby-safe detergent</li>
+            <li>Tumble dry low or line dry</li>
+            <li>Do not bleach</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-2" style="display:none">
+        <div style="max-width:600px; line-height:1.8; color:var(--gray-700)">
+          <p><strong>Shipping:</strong> Free shipping on all orders over ₹999. Standard delivery takes 3-5 business days. Express delivery (1-2 days) is available at checkout.</p>
+          <p style="margin-top:var(--space-2)"><strong>Returns:</strong> We offer a hassle-free 7-day return policy. Items must be unworn and unwashed with original tags attached.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- FAQ Section with Schema -->
+    <div style="margin-top:var(--space-10); max-width:800px;">
+      <h2 style="font-family:var(--font-heading); margin-bottom:var(--space-4)">Common Questions</h2>
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Is this fabric safe for sensitive skin? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes! All SUMIX garments are made from 100% GOTS-certified organic cotton and colored using AZO-free, eco-friendly dyes to prevent any irritation.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Which size should I choose? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Our sizes are true to fit. If your baby is between sizes or growing quickly, we recommend sizing up. Please check our Size Guide for exact measurements.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Does the fabric shrink? <span class="faq-icon">+</span></div>
+        <div class="faq-a">We pre-wash our fabrics to minimize shrinkage, but organic cotton may experience up to 5% shrinkage after the first wash if washed in warm water.</div>
+      </div>
+    </div>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question", "name": "Is this fabric safe for sensitive skin?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! All SUMIX garments are made from 100% GOTS-certified organic cotton." }
+      }, {
+        "@type": "Question", "name": "Which size should I choose?", "acceptedAnswer": { "@type": "Answer", "text": "Our sizes are true to fit. We recommend sizing up if between sizes." }
+      }, {
+        "@type": "Question", "name": "Does the fabric shrink?", "acceptedAnswer": { "@type": "Answer", "text": "We pre-wash our fabrics, but organic cotton may experience up to 5% shrinkage." }
+      }]
+    }
+    </script>
+
+    <!-- Related Searches -->
+    <div style="margin-top:var(--space-8); padding-top:var(--space-4); border-top:1px solid var(--gray-200)">
+      <h3 style="font-size:1rem; color:var(--gray-600)">Related Searches</h3>
+      <div class="related-tags">
+        <a href="{{ routes.all_products_collection_url }}" class="related-tag">Organic Cotton Baby Wear</a>
+        <a href="{{ routes.all_products_collection_url }}" class="related-tag">Newborn Clothes India</a>
+        <a href="{{ routes.all_products_collection_url }}" class="related-tag">{{ product.type | default: "Premium Baby Clothing" }}</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Sticky Mobile Cart -->
+<div class="pdp-sticky-cart">
+  <div style="flex:1; display:flex; flex-direction:column;">
+    <span style="font-weight:700; font-size:0.9rem" class="text-truncate">{{ product.title }}</span>
+    <span style="color:var(--primary); font-weight:700">{{ product.selected_or_first_available_variant.price | money }}</span>
+  </div>
+  <button class="btn btn-primary" id="sticky-add-btn" onclick="document.querySelector('#product-form-installment').submit()" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+    {% if product.selected_or_first_available_variant.available %}Add to Bag{% else %}Sold Out{% endif %}
+  </button>
+</div>
+
+<!-- Size Guide Modal -->
+<div class="sumix-modal" id="size-guide-modal">
+  <div class="sumix-modal-content">
+    <button class="sumix-modal-close" onclick="document.getElementById('size-guide-modal').classList.remove('active')">&times;</button>
+    <h2 style="font-family:var(--font-heading); margin-bottom:var(--space-4)">Size Guide</h2>
+    
+    <div id="size-guide-personalization" style="display:none; background:var(--accent-soft); padding:var(--space-3); border-radius:var(--radius-md); margin-bottom:var(--space-4);">
+      <strong>Based on your child's profile, we recommend:</strong>
+      <div style="font-size:1.5rem; font-weight:700; color:var(--primary); margin-top:0.5rem" id="rec-size-large"></div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%; text-align:left; border-collapse:collapse;">
+        <tr style="border-bottom:2px solid var(--gray-200)">
+          <th style="padding:0.75rem">Size</th>
+          <th style="padding:0.75rem">Age</th>
+          <th style="padding:0.75rem">Height (cm)</th>
+          <th style="padding:0.75rem">Weight (kg)</th>
+        </tr>
+        <tr style="border-bottom:1px solid var(--gray-100)">
+          <td style="padding:0.75rem">NB</td><td style="padding:0.75rem">Newborn</td><td style="padding:0.75rem">Up to 50</td><td style="padding:0.75rem">Up to 3.5</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--gray-100)">
+          <td style="padding:0.75rem">0-3M</td><td style="padding:0.75rem">0-3 Months</td><td style="padding:0.75rem">50-60</td><td style="padding:0.75rem">3.5-5.5</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--gray-100)">
+          <td style="padding:0.75rem">3-6M</td><td style="padding:0.75rem">3-6 Months</td><td style="padding:0.75rem">60-68</td><td style="padding:0.75rem">5.5-8.0</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--gray-100)">
+          <td style="padding:0.75rem">6-12M</td><td style="padding:0.75rem">6-12 Months</td><td style="padding:0.75rem">68-76</td><td style="padding:0.75rem">8.0-10.0</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--gray-100)">
+          <td style="padding:0.75rem">12-18M</td><td style="padding:0.75rem">12-18 Months</td><td style="padding:0.75rem">76-84</td><td style="padding:0.75rem">10.0-12.0</td>
+        </tr>
+        <tr>
+          <td style="padding:0.75rem">18-24M</td><td style="padding:0.75rem">18-24 Months</td><td style="padding:0.75rem">84-92</td><td style="padding:0.75rem">12.0-14.0</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showTab(index) {
+    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+      if (i === index) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-content').forEach((content, i) => {
+      if (i === index) {
+        content.classList.add('active');
+        content.style.display = 'block';
+      } else {
+        content.classList.remove('active');
+        content.style.display = 'none';
+      }
+    });
+  }
+
+  // Handle sticky mobile cart visibility on scroll
+  document.addEventListener('scroll', function() {
+    const stickyCart = document.querySelector('.pdp-sticky-cart');
+    const mainCartBtn = document.getElementById('add-to-cart-btn');
+    if(!mainCartBtn || !stickyCart || window.innerWidth > 767) return;
+    
+    const rect = mainCartBtn.getBoundingClientRect();
+    if(rect.bottom < 0) {
+      stickyCart.style.display = 'flex';
+    } else {
+      stickyCart.style.display = 'none';
+    }
+  });
+
+  // Demo Child Profile Integration
+  document.addEventListener('DOMContentLoaded', function() {
+    // In a real app, this would read from a Liquid Customer Metafield or a local cookie
+    const demoChild = { name: 'Aarvi', size: '2-3Y' }; 
+    if(demoChild) {
+      document.getElementById('child-recommendation-banner').style.display = 'block';
+      document.getElementById('child-rec-name').innerText = demoChild.name;
+      document.getElementById('child-rec-size').innerText = demoChild.size;
+      
+      document.getElementById('size-guide-personalization').style.display = 'block';
+      document.getElementById('rec-size-large').innerText = demoChild.size;
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Sumix Product Page",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,58 @@
+{% style %}
+  .order-success { padding: var(--space-10) 0; text-align: center; }
+  .order-success-icon { width: 80px; height: 80px; background: var(--success); color: var(--white); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: var(--space-4); }
+  .order-success h1 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: var(--space-2); }
+  .order-details-card { background: var(--gray-50); border-radius: var(--radius-xl); padding: var(--space-6); max-width: 600px; margin: var(--space-6) auto; text-align: left; }
+  .order-row { display: flex; justify-content: space-between; margin-bottom: var(--space-2); border-bottom: 1px solid var(--gray-200); padding-bottom: var(--space-2); }
+  .order-row:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+  .order-actions { display: flex; gap: var(--space-3); justify-content: center; margin-top: var(--space-6); flex-wrap: wrap; }
+{% endstyle %}
+
+<main class="container order-success">
+  <div class="order-success-icon">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  </div>
+  <h1>Order Confirmed!</h1>
+  <p style="color:var(--gray-600); font-size:1.125rem">Thank you for your purchase. Your baby's new favorites are on the way.</p>
+  
+  <div class="order-details-card">
+    <h3 style="margin-bottom:var(--space-4)">Order Summary</h3>
+    <div class="order-row">
+      <span style="color:var(--gray-500)">Order Number</span>
+      <span style="font-weight:700">#SMX-12948</span>
+    </div>
+    <div class="order-row">
+      <span style="color:var(--gray-500)">Estimated Delivery</span>
+      <span style="font-weight:700">3-5 Business Days</span>
+    </div>
+    <div class="order-row">
+      <span style="color:var(--gray-500)">Payment Method</span>
+      <span style="font-weight:700">UPI / Prepaid</span>
+    </div>
+    <div class="order-row">
+      <span style="color:var(--gray-500)">Rewards Earned</span>
+      <span style="font-weight:700; color:var(--primary)">+250 Points 🎁</span>
+    </div>
+  </div>
+
+  <div class="order-actions">
+    <button class="btn btn-primary" onclick="alert('Tracking feature requires shipping provider integration.')">Track Order</button>
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn-secondary">Continue Shopping</a>
+    <button class="btn btn-ghost" style="text-decoration:underline">Download Invoice</button>
+  </div>
+  
+  <div style="margin-top:var(--space-10)">
+    <h3 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:var(--space-4)">Loved your shopping experience?</h3>
+    <div style="background:var(--accent-soft); padding:var(--space-4); border-radius:var(--radius-lg); max-width:600px; margin:0 auto;">
+      <p style="margin-bottom:var(--space-3)">Refer a friend and both of you get ₹500 off your next purchase!</p>
+      <button class="btn btn-primary btn-sm" onclick="prompt('Copy your referral link:', 'https://sumix.in/refer/aarvimom')">Get Referral Link</button>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Order Success",
+  "settings": []
+}
+{% endschema %}

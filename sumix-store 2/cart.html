@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Bag — SUMIX Babywear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="cart-page">
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-item">🚚 Free Shipping Above ₹999</div>
+      <div class="announcement-item">🌿 100% Organic Cotton Collection</div>
+      <div class="announcement-item">↩️ Easy 7-Day Returns</div>
+      <div class="announcement-item">💳 Cash on Delivery Available</div>
+      <div class="announcement-item">🎁 Free Gift Box on Orders Above ₹1499</div>
+      <div class="announcement-item">🚚 Free Shipping Above ₹999</div>
+      <div class="announcement-item">🌿 100% Organic Cotton Collection</div>
+      <div class="announcement-item">↩️ Easy 7-Day Returns</div>
+      <div class="announcement-item">💳 Cash on Delivery Available</div>
+      <div class="announcement-item">🎁 Free Gift Box on Orders Above ₹1499</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="index.html" class="logo">
+        <span class="logo-text">sümix</span>
+        <span class="logo-tagline">baby wear & care</span>
+      </a>
+
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link active ">Home</a><a href="collection.html" class="nav-link  has-mega">Catalog</a><a href="collection.html?cat=Gift+Sets" class="nav-link  ">Gift Sets</a><a href="#" class="nav-link  ">About Us</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:var(--space-2);flex:1;justify-content:flex-end">
+        <div class="search-bar">
+          <i>🔍</i>
+          <input type="text" placeholder="Search for products...">
+        </div>
+
+        <div class="header-actions">
+          <a href="account.html" class="icon-btn" aria-label="Account">👤</a>
+          <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+            🤍
+            <span class="count wishlist-count" style="display:none">0</span>
+          </a>
+          <button class="icon-btn" aria-label="Cart" onclick="openCartDrawer()">
+            🛒
+            <span class="count cart-count" style="display:none">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3>Your Bag</h3>
+      <button class="icon-btn" onclick="closeCartDrawer()" aria-label="Close">✕</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-body">
+      <!-- Populated by JS -->
+    </div>
+    <div class="cart-drawer-footer" id="cart-drawer-footer">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+
+  <main style="padding-top:var(--space-4)">
+    <div class="container">
+      <h1 class="text-h1" style="margin-bottom:var(--space-4)">Your Bag <span style="font-size:1rem;font-weight:400;color:var(--gray-500)">(<span id="cart-page-count">0</span> items)</span></h1>
+
+      <div class="cart-layout">
+        <div>
+          <div class="cart-items" id="cart-items-container">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Saved for Later -->
+          <div style="margin-top:var(--space-4)">
+            <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Saved for Later</h3>
+            <div class="product-grid" id="saved-later-grid"></div>
+          </div>
+        </div>
+
+        <aside class="cart-sidebar" id="cart-sidebar">
+          <!-- Populated by JS -->
+        </aside>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-text" style="font-size:2rem">sümix</div>
+          <p>Premium babywear and baby care, thoughtfully designed in Kerala for your little one's comfort and everyday joy.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Pinterest">📌</a>
+            <a href="#" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Shop</h4>
+          <a href="collection.html">New Arrivals</a>
+          <a href="collection.html">Best Sellers</a>
+          <a href="collection.html">Rompers</a>
+          <a href="collection.html">Onesies</a>
+          <a href="collection.html">Gift Sets</a>
+        </div>
+        <div class="footer-column">
+          <h4>Help</h4>
+          <a href="#">Track Order</a>
+          <a href="#">Shipping & Delivery</a>
+          <a href="#">Returns & Exchanges</a>
+          <a href="#">Size Guide</a>
+          <a href="#">FAQs</a>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Sustainability</a>
+          <a href="#">Careers</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Sumix Baby Wear & Care. All rights reserved.</p>
+        <div class="footer-payment">
+          <div class="payment-icon">UPI</div>
+          <div class="payment-icon">Visa</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">GPay</div>
+          <div class="payment-icon">Paytm</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <a href="index.html" class="mobile-nav-item active"><span style="font-size:1.25rem">🏠</span>Home</a><a href="collection.html" class="mobile-nav-item "><span style="font-size:1.25rem">🛍️</span>Shop</a><a href="account.html?tab=rewards" class="mobile-nav-item "><span style="font-size:1.25rem">🎁</span>Rewards</a><a href="wishlist.html" class="mobile-nav-item "><span style="font-size:1.25rem">🤍</span>Wishlist</a><a href="account.html" class="mobile-nav-item "><span style="font-size:1.25rem">👤</span>Account</a>
+    </div>
+  </nav>
+
+
+  <script src="js/app.js"></script>
+  <script>
+    renderCartPage();
+    document.getElementById('cart-page-count').textContent = Store.getCartCount();
+
+    // Saved for later demo
+    const saved = PRODUCTS.slice(8, 12);
+    document.getElementById('saved-later-grid').innerHTML = saved.map(p => renderProductCard(p, false)).join('');
+  </script>
+</body>
+</html>

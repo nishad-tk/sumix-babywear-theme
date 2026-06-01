@@ -1,0 +1,157 @@
+{% style %}
+  .story-hero {
+    position: relative;
+    padding: var(--space-10) 0;
+    text-align: center;
+    background: var(--cream);
+    overflow: hidden;
+  }
+  .story-hero-img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.15; z-index: 0;
+  }
+  .story-content {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+  }
+  .story-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: var(--primary); margin-bottom: var(--space-4); }
+  .story-content p { font-size: clamp(1.125rem, 2vw, 1.25rem); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--space-4); }
+  
+  .story-grid {
+    display: grid; grid-template-columns: 1fr; gap: var(--space-8);
+    padding: var(--space-8) 0; align-items: center;
+  }
+  @media(min-width: 768px) {
+    .story-grid { grid-template-columns: 1fr 1fr; }
+    .story-grid.reverse .story-grid-text { order: 2; }
+    .story-grid.reverse .story-grid-img { order: 1; }
+  }
+  .story-grid-img img { width: 100%; border-radius: var(--radius-xl); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+  .story-grid-text h2 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: var(--space-4); color: var(--primary); }
+  .story-grid-text p { color: var(--gray-600); line-height: 1.8; margin-bottom: var(--space-4); }
+  
+  .story-values {
+    background: var(--primary-soft); padding: var(--space-10) 0; text-align: center;
+  }
+  .story-values-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6); margin-top: var(--space-6);
+  }
+  .story-value-card {
+    background: var(--white); padding: var(--space-6); border-radius: var(--radius-xl);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  .story-value-card svg { width: 48px; height: 48px; color: var(--primary); margin-bottom: var(--space-3); }
+{% endstyle %}
+
+<main>
+  <!-- Hero -->
+  <section class="story-hero">
+    {% if section.settings.hero_image %}
+      <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="SUMIX Story" class="story-hero-img">
+    {% endif %}
+    <div class="container story-content">
+      <h1>{{ section.settings.hero_title }}</h1>
+      <p>{{ section.settings.hero_text }}</p>
+    </div>
+  </section>
+
+  <!-- Blocks (Grid) -->
+  <div class="container">
+    {% for block in section.blocks %}
+      {% if block.type == 'text_with_image' %}
+        <div class="story-grid {% cycle '', 'reverse' %}" {{ block.shopify_attributes }}>
+          <div class="story-grid-text">
+            <h2>{{ block.settings.title }}</h2>
+            <p>{{ block.settings.text }}</p>
+          </div>
+          <div class="story-grid-img">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}">
+            {% else %}
+              <div style="background:var(--gray-200); width:100%; height:400px; border-radius:var(--radius-xl)"></div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Values -->
+  <section class="story-values">
+    <div class="container">
+      <h2 style="font-family:var(--font-heading); font-size:2.5rem; color:var(--primary)">Our Promises</h2>
+      <div class="story-values-grid">
+        <div class="story-value-card">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <h3 style="margin-bottom:0.5rem">100% Safe</h3>
+          <p style="font-size:0.875rem; color:var(--gray-600)">GOTS certified organic cotton and non-toxic AZO-free dyes.</p>
+        </div>
+        <div class="story-value-card">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <h3 style="margin-bottom:0.5rem">Ethically Made</h3>
+          <p style="font-size:0.875rem; color:var(--gray-600)">Manufactured with love and fair wages in Kerala, India.</p>
+        </div>
+        <div class="story-value-card">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+          <h3 style="margin-bottom:0.5rem">Designed for Joy</h3>
+          <p style="font-size:0.875rem; color:var(--gray-600)">Breathable, stretchable, and soft—perfect for playtime and naptime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Join CTA -->
+  <section style="padding:var(--space-10) 0; text-align:center;">
+    <div class="container">
+      <h2 style="font-family:var(--font-heading); font-size:2rem; margin-bottom:var(--space-4)">Join the SUMIX Family</h2>
+      <p style="color:var(--gray-600); margin-bottom:var(--space-6); max-width:600px; margin-inline:auto;">Discover our latest arrivals and experience the unmatched comfort of premium organic babywear.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary btn-lg">Explore the Collection</a>
+    </div>
+  </section>
+</main>
+
+{% schema %}
+{
+  "name": "Our Story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Designed in Kerala. Made for Everyday Joy."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text",
+      "label": "Hero Text",
+      "default": "We believe babywear should be gentle on the skin and kind to the planet."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_with_image",
+      "name": "Text with Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Why We Started" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "It started with a simple idea..." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story",
+      "blocks": [
+        { "type": "text_with_image" },
+        { "type": "text_with_image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

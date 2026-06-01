@@ -1,0 +1,90 @@
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div style="background:linear-gradient(135deg,var(--primary) 0%,#8B5CF6 100%);border-radius:var(--radius-2xl);padding:var(--space-8);color:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);align-items:center">
+      <div>
+        <h2 style="color:var(--white);font-size:clamp(1.5rem,3vw,2rem);margin-bottom:var(--space-2)">{{ section.settings.title }}</h2>
+        <p style="color:rgba(255,255,255,0.9);font-size:1.125rem;margin-bottom:var(--space-4)">{{ section.settings.text }}</p>
+        <div style="display:flex;gap:var(--space-3);margin-bottom:var(--space-4)">
+          {% for block in section.blocks %}
+            <div style="text-align:center" {{ block.shopify_attributes }}>
+              <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700">{{ block.settings.icon }}</div>
+              <div style="font-size:0.875rem;opacity:0.9">{{ block.settings.text }}</div>
+            </div>
+          {% endfor %}
+        </div>
+        <a href="{{ section.settings.btn_link }}" class="btn btn-accent btn-lg">{{ section.settings.btn_label }}</a>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:var(--font-heading);font-size:5rem;font-weight:800;opacity:0.2">{{ section.settings.large_letter }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sumix Rewards Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Join SUMIX Rewards ✨"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Earn points on every purchase, unlock exclusive rewards, and enjoy member-only perks."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Join Now — It's Free"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "large_letter",
+      "label": "Large Background Letter",
+      "default": "S"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Perk",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon/Emoji",
+          "default": "🎁"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Birthday Treats"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Rewards Banner",
+      "blocks": [
+        { "type": "perk", "settings": { "icon": "🎁", "text": "Birthday Treats" } },
+        { "type": "perk", "settings": { "icon": "⭐", "text": "Early Access" } },
+        { "type": "perk", "settings": { "icon": "🚚", "text": "Free Shipping" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

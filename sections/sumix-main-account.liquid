@@ -1,0 +1,99 @@
+<main style="padding-top:var(--space-4)">
+  <div class="container">
+    <div class="account-layout">
+      <!-- Sidebar -->
+      <aside class="account-sidebar">
+        <div style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);margin-bottom:var(--space-3)">
+          <div style="width:56px;height:56px;border-radius:var(--radius-full);background:var(--primary);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700">
+            {{ customer.first_name | slice: 0 }}
+          </div>
+          <div>
+            <div style="font-weight:700">{{ customer.name }}</div>
+            <div style="font-size:0.8125rem;color:var(--gray-500)">{{ customer.email }}</div>
+          </div>
+        </div>
+        <nav class="account-nav">
+          <a href="{{ routes.account_url }}" class="account-nav-item active">🏠 Dashboard</a>
+          <a href="{{ routes.account_url }}#orders" class="account-nav-item">📦 Orders</a>
+          <a href="/pages/wishlist" class="account-nav-item">🤍 Wishlist</a>
+          <a href="/pages/rewards" class="account-nav-item">🎁 Rewards</a>
+          <a href="{{ routes.account_addresses_url }}" class="account-nav-item">📍 Addresses ({{ customer.addresses_count }})</a>
+          <a href="{{ routes.account_logout_url }}" class="account-nav-item">🚪 Logout</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div>
+        <!-- Welcome Banner -->
+        <div style="background:linear-gradient(135deg,var(--primary-soft) 0%,var(--cream) 100%);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-4);border:1px solid var(--primary-light)">
+          <h2 style="font-family:var(--font-heading);font-size:1.5rem;margin-bottom:var(--space-1)">Welcome back, {{ customer.first_name }}! 👋</h2>
+          <p style="color:var(--gray-600)">You're part of something special. Thank you for choosing {{ shop.name }} for your little ones.</p>
+        </div>
+
+        <!-- Dashboard Widgets -->
+        <div class="dashboard-widgets">
+          <div class="dashboard-widget">
+            <div class="value">{{ customer.orders_count }}</div>
+            <div class="label">Orders Placed</div>
+          </div>
+          <div class="dashboard-widget">
+            <div class="value">{{ customer.addresses_count }}</div>
+            <div class="label">Saved Addresses</div>
+          </div>
+          <div class="dashboard-widget">
+            <div class="value">{{ customer.total_spent | money_without_trailing_zeros }}</div>
+            <div class="label">Total Spent</div>
+          </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="account-main" id="orders" style="margin-bottom:var(--space-4)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)">
+            <h3 style="font-family:var(--font-heading);font-size:1.25rem">Order History</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+            {% if customer.orders.size > 0 %}
+              {% for order in customer.orders %}
+                <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--gray-50);border-radius:var(--radius-md)">
+                  <div style="flex:1">
+                    <div style="font-weight:700;font-size:0.9375rem">Order {{ order.name }}</div>
+                    <div style="font-size:0.8125rem;color:var(--gray-500)">{{ order.created_at | date: "%B %d, %Y" }} • {{ order.item_count }} items</div>
+                  </div>
+                  <span style="padding:0.25rem 0.75rem;background:var(--gray-200);color:var(--gray-700);font-size:0.75rem;font-weight:700;border-radius:var(--radius-full)">{{ order.fulfillment_status_label }}</span>
+                  <span style="font-weight:700">{{ order.total_price | money }}</span>
+                  <a href="{{ order.customer_url }}" class="btn btn-sm" style="font-size:0.75rem">View</a>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p style="color:var(--gray-500)">You haven't placed any orders yet.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary" style="align-self:flex-start; margin-top:1rem">Start Shopping</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Address Info -->
+        <div class="account-main">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)">
+            <h3 style="font-family:var(--font-heading);font-size:1.25rem">Default Address</h3>
+            <a href="{{ routes.account_addresses_url }}" class="link-arrow">Manage Addresses →</a>
+          </div>
+          <div style="padding:var(--space-3);background:var(--gray-50);border-radius:var(--radius-md)">
+            {% if customer.default_address %}
+              {{ customer.default_address | format_address }}
+            {% else %}
+              <p style="color:var(--gray-500)">No default address set.</p>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Sumix Account Dashboard",
+  "settings": []
+}
+{% endschema %}

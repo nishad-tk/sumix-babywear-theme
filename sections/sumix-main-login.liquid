@@ -1,0 +1,93 @@
+<div class="auth-layout">
+  <div class="auth-visual">
+    {% if section.settings.image != blank %}
+      <img src="{{ section.settings.image | image_url: width: 500 }}" alt="{{ section.settings.title }}" style="max-width:360px;width:100%">
+    {% else %}
+      <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=500&h=600&fit=crop" alt="Happy baby" style="max-width:360px;width:100%">
+    {% endif %}
+    <h2>{{ section.settings.title }}</h2>
+    <p>{{ section.settings.text }}</p>
+    <div style="display:flex;gap:var(--space-4);margin-top:var(--space-6);text-align:center">
+      {% for block in section.blocks %}
+        <div {{ block.shopify_attributes }}>
+          <div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700">{{ block.settings.icon }}</div>
+          <div style="font-size:0.875rem;opacity:0.9">{{ block.settings.title }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="auth-form-wrap">
+    <div class="auth-form">
+      <div style="text-align:center;margin-bottom:var(--space-4)">
+        <div style="font-family:var(--font-heading);font-size:2.5rem;color:var(--primary);margin-bottom:var(--space-1)">{{ shop.name }}</div>
+        <h2 style="font-size:1.75rem;margin-bottom:var(--space-1)">Welcome Back!</h2>
+        <p style="color:var(--gray-500)">Sign in to access your account, rewards & orders</p>
+      </div>
+
+      {% form 'customer_login' %}
+        {{ form.errors | default_errors }}
+        
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="customer[email]" class="input" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="customer[password]" class="input" placeholder="Enter your password" required>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
+          <a href="#recover" id="RecoverPassword" style="font-size:0.875rem;color:var(--primary);font-weight:600">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg">Sign In</button>
+      {% endform %}
+
+      <div style="display:flex;align-items:center;gap:var(--space-2);margin:var(--space-4) 0;padding:var(--space-3);background:var(--accent-soft);border-radius:var(--radius-lg)">
+        <span style="font-size:1.5rem">🎁</span>
+        <div>
+          <div style="font-weight:700;font-size:0.9375rem;color:#92400e">₹100 OFF Your First Order</div>
+          <div style="font-size:0.8125rem;color:#b45309">New members only. Auto-applied at checkout.</div>
+        </div>
+      </div>
+
+      <p style="text-align:center;font-size:0.9375rem;color:var(--gray-600)">
+        Don't have an account? <a href="{{ routes.account_register_url }}" style="color:var(--primary);font-weight:700">Create one</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Login",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Welcome to the SUMIX Family"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Join 50,000+ parents who trust us for their little one's comfort."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon/Emoji", "default": "🚀" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Faster Checkout" }
+      ]
+    }
+  ]
+}
+{% endschema %}

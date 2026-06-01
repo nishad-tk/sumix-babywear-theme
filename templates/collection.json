@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "sumix-main-collection",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

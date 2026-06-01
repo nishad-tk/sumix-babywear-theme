@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "sumix-seo-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

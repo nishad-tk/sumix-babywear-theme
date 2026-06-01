@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "sumix-main-product",
+      "settings": {}
+    },
+    "related": {
+      "type": "sumix-collection",
+      "settings": {
+        "title": "You May Also Like",
+        "subtitle": "Complete the look with these picks",
+        "link_label": "",
+        "max_products": 4,
+        "columns": "4",
+        "collection": "frontpage"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related"
+  ]
+}

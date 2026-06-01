@@ -1,0 +1,124 @@
+<main style="padding-top:var(--space-4)">
+  <!-- Collection Banner -->
+  <div class="container">
+    <div class="collection-banner" style="min-height:280px;margin-bottom:var(--space-6)">
+      {% if collection.image %}
+        <img src="{{ collection.image | image_url: width: 1400 }}" alt="{{ collection.title }}">
+      {% else %}
+        <img src="https://images.unsplash.com/photo-1522771930-78848dc92939?w=1400&h=400&fit=crop" alt="{{ collection.title }}">
+      {% endif %}
+      <div class="collection-banner-content">
+        <h2>{{ collection.title }}</h2>
+        {% if collection.description != blank %}
+          <p>{{ collection.description | strip_html }}</p>
+        {% else %}
+          <p>Easy-to-wear, super-soft pieces for playtime, naptime, and everything in between.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="collection-layout">
+      <!-- Filters Sidebar -->
+      <aside class="filter-sidebar">
+        <form class="filter-form">
+          {% for filter in collection.filters %}
+            <div class="filter-group">
+              <h4>{{ filter.label }} ▾</h4>
+              {% case filter.type %}
+                {% when 'list' %}
+                  {% for value in filter.values %}
+                    <label class="filter-option">
+                      <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="Filter-{{ filter.param_name }}-{{ forloop.index }}" {% if value.active %}checked{% endif %}>
+                      {{ value.label }}
+                      <span style="margin-left:auto;color:var(--gray-400)">({{ value.count }})</span>
+                    </label>
+                  {% endfor %}
+                {% when 'price_range' %}
+                  <!-- Simplified price range -->
+                  <div style="display:flex;gap:10px">
+                    <input type="number" class="input" name="{{ filter.min_value.param_name }}" placeholder="Min">
+                    <input type="number" class="input" name="{{ filter.max_value.param_name }}" placeholder="Max">
+                  </div>
+              {% endcase %}
+            </div>
+          {% endfor %}
+          <noscript>
+            <button type="submit" class="btn btn-primary btn-sm">Apply Filters</button>
+          </noscript>
+        </form>
+      </aside>
+
+      <!-- Product Grid -->
+      <div>
+        <div class="collection-toolbar">
+          <div class="breadcrumb">
+            <a href="{{ routes.root_url }}">Home</a>
+            <span>/</span>
+            <span>{{ collection.title }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-3)">
+            <span style="font-size:0.875rem;color:var(--gray-500)">{{ collection.products_count }} items</span>
+            <select class="input select" style="width:auto;padding:0.5rem 2rem 0.5rem 1rem;font-size:0.875rem" onchange="location.href='?sort_by='+this.value">
+              {% for option in collection.sort_options %}
+                <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>Sort by: {{ option.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        
+        {% paginate collection.products by 24 %}
+          <div class="product-grid" id="collection-grid">
+            {% for product in collection.products %}
+              <div class="product-card">
+                <div class="product-image">
+                  <a href="{{ product.url }}">
+                    <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}">
+                    {% if product.images[1] %}
+                      <img src="{{ product.images[1] | image_url: width: 400 }}" class="hover-img" alt="{{ product.title }}">
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="product-info">
+                  <a href="{{ product.url }}">
+                    <h4 class="product-name">{{ product.title }}</h4>
+                  </a>
+                  <div class="product-price">
+                    <span class="price-current">{{ product.price | money }}</span>
+                    {% if product.compare_at_price > product.price %}
+                      <span class="price-original">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              <p>No products found in this collection.</p>
+            {% endfor %}
+          </div>
+          {% if paginate.pages > 1 %}
+            <div style="margin-top:var(--space-6); text-align:center;">
+              {{ paginate | default_pagination }}
+            </div>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Simple auto-submit for filters
+  document.querySelectorAll('.filter-form input[type="checkbox"], .filter-form input[type="number"]').forEach(el => {
+    el.addEventListener('change', () => {
+      document.querySelector('.filter-form').submit();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Sumix Collection Page",
+  "settings": []
+}
+{% endschema %}

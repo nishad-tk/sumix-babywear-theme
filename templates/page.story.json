@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "main": {
+      "type": "sumix-our-story",
+      "blocks": {
+        "block1": {
+          "type": "text_with_image",
+          "settings": {
+            "title": "Why SUMIX Started",
+            "text": "When we became parents, we struggled to find high-quality, organic cotton clothing that was both affordable and stylish. So we decided to create it ourselves right here in Kerala."
+          }
+        },
+        "block2": {
+          "type": "text_with_image",
+          "settings": {
+            "title": "Our Organic Cotton Promise",
+            "text": "Every single piece of SUMIX babywear is crafted from 100% GOTS-certified organic cotton. This means no pesticides, no toxic chemicals, and a much softer touch for your baby's delicate skin."
+          }
+        }
+      },
+      "block_order": [
+        "block1",
+        "block2"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

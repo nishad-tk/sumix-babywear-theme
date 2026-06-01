@@ -1,0 +1,134 @@
+<main style="padding-top:var(--space-4)">
+  <div class="container">
+    {% if customer %}
+      <!-- Rewards Hero -->
+      <div class="rewards-hero">
+        <div style="font-size:0.875rem;opacity:0.9;margin-bottom:var(--space-1)">Your Current Tier</div>
+        <h2>Gold Member</h2>
+        <div style="font-size:1rem;opacity:0.9;margin-bottom:var(--space-2)">You are earning bigger benefits!</div>
+        <div class="points">1,250</div>
+        <div style="font-size:1rem;opacity:0.9">Points Balance</div>
+        <div class="tier-badge">⭐ 750 points to Platinum</div>
+      </div>
+    {% else %}
+      <div class="rewards-hero">
+        <div style="font-size:0.875rem;opacity:0.9;margin-bottom:var(--space-1)">Join SUMIX Rewards</div>
+        <h2>Earn As You Shop</h2>
+        <div style="font-size:1rem;opacity:0.9;margin-bottom:var(--space-2)">Unlock exclusive benefits and discounts.</div>
+        <a href="{{ routes.account_register_url }}" class="btn btn-primary" style="background:var(--white);color:var(--primary);margin-top:1rem">Join Now for Free</a>
+      </div>
+    {% endif %}
+
+    <!-- Tiers -->
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <div class="tier-icon">🔍</div>
+        <h4>Explorer</h4>
+        <p style="font-size:0.875rem;color:var(--gray-500)">0 – 500 points</p>
+        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
+          <li>✓ Earn 1 point per ₹1</li>
+          <li>✓ Birthday reward</li>
+          <li>✓ Free shipping above ₹999</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon">🥈</div>
+        <h4>Silver</h4>
+        <p style="font-size:0.875rem;color:var(--gray-500)">500 – 1,000 points</p>
+        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
+          <li>✓ Earn 1.5 points per ₹1</li>
+          <li>✓ Early access to sales</li>
+          <li>✓ Member-only discounts</li>
+        </ul>
+      </div>
+      <div class="tier-card active">
+        <div class="tier-icon">🥇</div>
+        <h4>Gold</h4>
+        <p style="font-size:0.875rem;color:var(--gray-500)">1,000 – 2,000 points</p>
+        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
+          <li>✓ Earn 2 points per ₹1</li>
+          <li>✓ Free express shipping</li>
+          <li>✓ Exclusive product drops</li>
+          <li>✓ Priority customer support</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon">💎</div>
+        <h4>Platinum</h4>
+        <p style="font-size:0.875rem;color:var(--gray-500)">2,000+ points</p>
+        <ul style="font-size:0.8125rem;color:var(--gray-600);text-align:left;margin-top:var(--space-2);display:flex;flex-direction:column;gap:4px">
+          <li>✓ Earn 3 points per ₹1</li>
+          <li>✓ Free shipping always</li>
+          <li>✓ Personal stylist access</li>
+          <li>✓ Surprise gifts quarterly</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ways to Earn / Redeem -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-8)">
+      <div class="account-main">
+        <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Ways to Earn</h3>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+            <div style="width:40px;height:40px;background:var(--primary-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">🛍️</div>
+            <div style="flex:1">
+              <div style="font-weight:700">Make a Purchase</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">Earn 2 points for every ₹1 spent</div>
+            </div>
+            <span style="font-weight:700;color:var(--primary)">+2 pts/₹1</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+            <div style="width:40px;height:40px;background:var(--primary-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">⭐</div>
+            <div style="flex:1">
+              <div style="font-weight:700">Write a Review</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">Share your experience</div>
+            </div>
+            <span style="font-weight:700;color:var(--primary)">+50 pts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-main">
+        <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Ways to Redeem</h3>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+            <div style="width:40px;height:40px;background:var(--accent-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">🏷️</div>
+            <div style="flex:1">
+              <div style="font-weight:700">₹100 Off</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">Discount on your order</div>
+            </div>
+            <span style="font-weight:700;color:var(--accent)">500 pts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+            <div style="width:40px;height:40px;background:var(--accent-soft);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.25rem">🚚</div>
+            <div style="flex:1">
+              <div style="font-weight:700">Free Express Shipping</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">Any order, any time</div>
+            </div>
+            <span style="font-weight:700;color:var(--accent)">300 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referral -->
+    {% if customer %}
+      <div class="account-main" style="text-align:center">
+        <h3 style="font-family:var(--font-heading);font-size:1.5rem;margin-bottom:var(--space-2)">Share the Love 💜</h3>
+        <p style="color:var(--gray-600);margin-bottom:var(--space-3);max-width:500px;margin-inline:auto">Invite your friends and earn ₹250 for each successful referral. They get ₹100 off their first order too!</p>
+        <div style="display:flex;gap:var(--space-2);max-width:400px;margin:0 auto">
+          <input type="text" class="input" value="{{ customer.first_name | upcase }}20" readonly style="text-align:center;font-weight:700;letter-spacing:2px">
+          <button class="btn btn-primary" onclick="showToast('Referral code copied! 📋', 'success')">Copy</button>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "Sumix Rewards Page",
+  "settings": []
+}
+{% endschema %}

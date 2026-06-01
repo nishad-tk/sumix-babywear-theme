@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account — SUMIX Babywear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-item">🚚 Free Shipping Above ₹999</div>
+      <div class="announcement-item">🌿 100% Organic Cotton Collection</div>
+      <div class="announcement-item">↩️ Easy 7-Day Returns</div>
+      <div class="announcement-item">💳 Cash on Delivery Available</div>
+      <div class="announcement-item">🎁 Free Gift Box on Orders Above ₹1499</div>
+      <div class="announcement-item">🚚 Free Shipping Above ₹999</div>
+      <div class="announcement-item">🌿 100% Organic Cotton Collection</div>
+      <div class="announcement-item">↩️ Easy 7-Day Returns</div>
+      <div class="announcement-item">💳 Cash on Delivery Available</div>
+      <div class="announcement-item">🎁 Free Gift Box on Orders Above ₹1499</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="index.html" class="logo">
+        <span class="logo-text">sümix</span>
+        <span class="logo-tagline">baby wear & care</span>
+      </a>
+
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link active ">Home</a><a href="collection.html" class="nav-link  has-mega">Catalog</a><a href="collection.html?cat=Gift+Sets" class="nav-link  ">Gift Sets</a><a href="#" class="nav-link  ">About Us</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:var(--space-2);flex:1;justify-content:flex-end">
+        <div class="search-bar">
+          <i>🔍</i>
+          <input type="text" placeholder="Search for products...">
+        </div>
+
+        <div class="header-actions">
+          <a href="account.html" class="icon-btn" aria-label="Account">👤</a>
+          <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+            🤍
+            <span class="count wishlist-count" style="display:none">0</span>
+          </a>
+          <button class="icon-btn" aria-label="Cart" onclick="openCartDrawer()">
+            🛒
+            <span class="count cart-count" style="display:none">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3>Your Bag</h3>
+      <button class="icon-btn" onclick="closeCartDrawer()" aria-label="Close">✕</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-body">
+      <!-- Populated by JS -->
+    </div>
+    <div class="cart-drawer-footer" id="cart-drawer-footer">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+
+  <main style="padding-top:var(--space-4)">
+    <div class="container">
+      <div class="account-layout">
+        <!-- Sidebar -->
+        <aside class="account-sidebar">
+          <div style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);margin-bottom:var(--space-3)">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" style="width:56px;height:56px;border-radius:var(--radius-full);object-fit:cover;border:3px solid var(--primary-light)">
+            <div>
+              <div style="font-weight:700">Anjali Nair</div>
+              <div style="font-size:0.8125rem;color:var(--gray-500)">anjali.nair@email.com</div>
+              <span style="display:inline-block;margin-top:2px;padding:0.125rem 0.5rem;background:var(--accent-soft);color:#92400e;font-size:0.6875rem;font-weight:700;border-radius:var(--radius-full)">⭐ Gold Member</span>
+            </div>
+          </div>
+          <nav class="account-nav">
+            <a href="account.html" class="account-nav-item active">🏠 Dashboard</a>
+            <a href="#" class="account-nav-item">📦 Orders</a>
+            <a href="child-profiles.html" class="account-nav-item">👶 Child Profiles</a>
+            <a href="wishlist.html" class="account-nav-item">🤍 Wishlist</a>
+            <a href="#" class="account-nav-item">🎁 Rewards</a>
+            <a href="#" class="account-nav-item">📍 Addresses</a>
+            <a href="#" class="account-nav-item">↩️ Returns</a>
+            <a href="#" class="account-nav-item">⚙️ Settings</a>
+            <a href="login.html" class="account-nav-item">🚪 Logout</a>
+          </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div>
+          <!-- Welcome Banner -->
+          <div style="background:linear-gradient(135deg,var(--primary-soft) 0%,var(--cream) 100%);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-4);border:1px solid var(--primary-light)">
+            <h2 style="font-family:var(--font-heading);font-size:1.5rem;margin-bottom:var(--space-1)">Welcome back, Anjali! 👋</h2>
+            <p style="color:var(--gray-600)">You're part of something special. Thank you for choosing SUMIX for your little ones.</p>
+          </div>
+
+          <!-- Dashboard Widgets -->
+          <div class="dashboard-widgets">
+            <div class="dashboard-widget">
+              <div class="value">1,250</div>
+              <div class="label">Reward Points</div>
+            </div>
+            <div class="dashboard-widget">
+              <div class="value">12</div>
+              <div class="label">Orders Placed</div>
+            </div>
+            <div class="dashboard-widget">
+              <div class="value">6</div>
+              <div class="label">Wishlist Items</div>
+            </div>
+          </div>
+
+          <!-- Recent Orders -->
+          <div class="account-main" style="margin-bottom:var(--space-4)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)">
+              <h3 style="font-family:var(--font-heading);font-size:1.25rem">Recent Orders</h3>
+              <a href="#" class="link-arrow">View All →</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+              <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--gray-50);border-radius:var(--radius-md)">
+                <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=80&h=80&fit=crop" style="width:56px;height:56px;border-radius:var(--radius-md);object-fit:cover">
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:0.9375rem">Order #SUMIX1256</div>
+                  <div style="font-size:0.8125rem;color:var(--gray-500)">May 10, 2024 • 3 items</div>
+                </div>
+                <span style="padding:0.25rem 0.75rem;background:var(--success-light);color:var(--success);font-size:0.75rem;font-weight:700;border-radius:var(--radius-full)">Delivered</span>
+                <span style="font-weight:700">₹2,547</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2);background:var(--gray-50);border-radius:var(--radius-md)">
+                <img src="https://images.unsplash.com/photo-1562157873-818bc0726f68?w=80&h=80&fit=crop" style="width:56px;height:56px;border-radius:var(--radius-md);object-fit:cover">
+                <div style="flex:1">
+                  <div style="font-weight:700;font-size:0.9375rem">Order #SUMIX1123</div>
+                  <div style="font-size:0.8125rem;color:var(--gray-500)">Apr 28, 2024 • 2 items</div>
+                </div>
+                <span style="padding:0.25rem 0.75rem;background:var(--warning-light);color:#b45309;font-size:0.75rem;font-weight:700;border-radius:var(--radius-full)">Shipped</span>
+                <span style="font-weight:700">₹1,698</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rewards Progress -->
+          <div class="account-main">
+            <h3 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-3)">Rewards Progress</h3>
+            <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+              <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-1)">
+                  <span style="font-weight:700">Gold Member</span>
+                  <span style="font-size:0.875rem;color:var(--gray-500)">750 points to Platinum</span>
+                </div>
+                <div class="progress-track" style="height:10px"><div class="progress-fill" style="width:62%"></div></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2);text-align:center">
+              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                <div style="font-size:1.25rem">💰</div>
+                <div style="font-size:0.75rem;font-weight:700;margin-top:2px">Exclusive Prices</div>
+              </div>
+              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                <div style="font-size:1.25rem">🚀</div>
+                <div style="font-size:0.75rem;font-weight:700;margin-top:2px">Early Access</div>
+              </div>
+              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                <div style="font-size:1.25rem">🎂</div>
+                <div style="font-size:0.75rem;font-weight:700;margin-top:2px">Birthday Treats</div>
+              </div>
+              <div style="padding:var(--space-2);background:var(--cream);border-radius:var(--radius-md)">
+                <div style="font-size:1.25rem">🎧</div>
+                <div style="font-size:0.75rem;font-weight:700;margin-top:2px">Priority Support</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-text" style="font-size:2rem">sümix</div>
+          <p>Premium babywear and baby care, thoughtfully designed in Kerala for your little one's comfort and everyday joy.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Pinterest">📌</a>
+            <a href="#" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Shop</h4>
+          <a href="collection.html">New Arrivals</a>
+          <a href="collection.html">Best Sellers</a>
+          <a href="collection.html">Rompers</a>
+          <a href="collection.html">Onesies</a>
+          <a href="collection.html">Gift Sets</a>
+        </div>
+        <div class="footer-column">
+          <h4>Help</h4>
+          <a href="#">Track Order</a>
+          <a href="#">Shipping & Delivery</a>
+          <a href="#">Returns & Exchanges</a>
+          <a href="#">Size Guide</a>
+          <a href="#">FAQs</a>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Sustainability</a>
+          <a href="#">Careers</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Sumix Baby Wear & Care. All rights reserved.</p>
+        <div class="footer-payment">
+          <div class="payment-icon">UPI</div>
+          <div class="payment-icon">Visa</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">GPay</div>
+          <div class="payment-icon">Paytm</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <a href="index.html" class="mobile-nav-item "><span style="font-size:1.25rem">🏠</span>Home</a><a href="collection.html" class="mobile-nav-item "><span style="font-size:1.25rem">🛍️</span>Shop</a><a href="account.html?tab=rewards" class="mobile-nav-item "><span style="font-size:1.25rem">🎁</span>Rewards</a><a href="wishlist.html" class="mobile-nav-item "><span style="font-size:1.25rem">🤍</span>Wishlist</a><a href="account.html" class="mobile-nav-item active"><span style="font-size:1.25rem">👤</span>Account</a>
+    </div>
+  </nav>
+
+
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% style %}
+  .seo-article { max-width: 800px; margin: 0 auto; padding: var(--space-8) var(--space-4); }
+  .seo-article h1 { font-size: clamp(2rem, 4vw, 3rem); font-family: var(--font-heading); color: var(--primary); margin-bottom: var(--space-4); text-align: center; }
+  .seo-article .content { font-size: 1.125rem; line-height: 1.8; color: var(--gray-700); }
+  .seo-article .content h2 { font-size: 1.75rem; margin-top: var(--space-8); margin-bottom: var(--space-3); color: var(--gray-900); }
+  .seo-article .content h3 { font-size: 1.25rem; margin-top: var(--space-6); margin-bottom: var(--space-2); color: var(--gray-800); }
+  .seo-article .content p { margin-bottom: var(--space-4); }
+  .seo-article .content ul { margin-left: var(--space-4); margin-bottom: var(--space-4); }
+  .seo-article .content li { margin-bottom: 0.5rem; }
+  
+  .seo-cta { background: var(--primary-soft); padding: var(--space-6); border-radius: var(--radius-xl); text-align: center; margin: var(--space-8) 0; border: 1px solid var(--primary-light); }
+  .seo-cta h3 { font-family: var(--font-heading); font-size: 1.5rem; color: var(--primary); margin-bottom: var(--space-2); }
+  
+  /* FAQ for SEO Pages */
+  .seo-faq { margin-top: var(--space-10); border-top: 1px solid var(--gray-200); padding-top: var(--space-6); }
+  .seo-faq h2 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: var(--space-4); text-align: center; }
+{% endstyle %}
+
+<main class="container">
+  <article class="seo-article">
+    <h1>{{ page.title }}</h1>
+    
+    <div class="content">
+      {{ page.content }}
+      
+      <!-- Built-in CTA block if assigned in settings -->
+      {% if section.settings.show_cta %}
+        <div class="seo-cta">
+          <h3>{{ section.settings.cta_title }}</h3>
+          <p>{{ section.settings.cta_text }}</p>
+          <a href="{{ section.settings.cta_link }}" class="btn btn-primary" style="margin-top:var(--space-2)">{{ section.settings.cta_button }}</a>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="seo-faq">
+        <h2>Frequently Asked Questions</h2>
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' %}
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+              <div class="faq-q">{{ block.settings.question }} <span class="faq-icon">+</span></div>
+              <div class="faq-a">{{ block.settings.answer }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      
+      <!-- Dynamic FAQ Schema JSON-LD -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {% for block in section.blocks %}
+            {% if block.type == 'faq' %}
+              {
+                "@type": "Question",
+                "name": {{ block.settings.question | json }},
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": {{ block.settings.answer | json }}
+                }
+              }{% unless forloop.last %},{% endunless %}
+            {% endif %}
+          {% endfor %}
+        ]
+      }
+      </script>
+    {% endif %}
+  </article>
+</main>
+
+{% schema %}
+{
+  "name": "SEO Content Page",
+  "settings": [
+    { "type": "checkbox", "id": "show_cta", "label": "Show Call to Action", "default": true },
+    { "type": "text", "id": "cta_title", "label": "CTA Title", "default": "Shop the Collection" },
+    { "type": "textarea", "id": "cta_text", "label": "CTA Text", "default": "Explore our premium organic babywear." },
+    { "type": "url", "id": "cta_link", "label": "CTA Link" },
+    { "type": "text", "id": "cta_button", "label": "CTA Button", "default": "Shop Now" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "SEO Content Page" }
+  ]
+}
+{% endschema %}
