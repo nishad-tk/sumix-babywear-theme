@@ -159,7 +159,7 @@ function renderCartDrawer() {
         <div style="font-size:3rem;margin-bottom:var(--space-2)">🛍️</div>
         <h4 style="font-family:var(--font-heading);font-size:1.25rem;margin-bottom:var(--space-1)">Your bag is empty</h4>
         <p style="color:var(--gray-500);margin-bottom:var(--space-3)">Discover our softest organic cotton pieces for your little one.</p>
-        <a href="collection.html" class="btn btn-primary">Start Shopping</a>
+        <a href="/collections/all" class="btn btn-primary">Start Shopping</a>
       </div>`;
     if (footer) footer.innerHTML = '';
     return;
@@ -202,7 +202,7 @@ function renderCartDrawer() {
         <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
       </div>
       <div class="cart-summary-row total"><span>Total</span><span>₹${total}</span></div>
-      <a href="checkout.html" class="btn btn-primary btn-full" style="margin-top:var(--space-2)">Proceed to Checkout</a>`;
+      <a href="/checkout" class="btn btn-primary btn-full" style="margin-top:var(--space-2)">Proceed to Checkout</a>`;
   }
 }
 
@@ -341,7 +341,7 @@ function renderProductCard(product, showQuickAdd = true) {
           <span class="stars">★★★★★</span>
           <span class="count">${product.rating} (${product.reviews})</span>
         </div>
-        <h3 class="product-name"><a href="product.html?id=${product.id}">${product.name}</a></h3>
+        <h3 class="product-name"><a href="#">${product.name}</a></h3>
         <p class="product-meta">${product.age} • ${product.color}</p>
         <div class="product-price">
           <span class="price-current">₹${product.price}</span>
@@ -363,7 +363,7 @@ function renderCartPage() {
         <div style="font-size:4rem;margin-bottom:var(--space-3)">🛍️</div>
         <h2 style="font-family:var(--font-heading);font-size:1.75rem;margin-bottom:var(--space-2)">Your bag is empty</h2>
         <p style="color:var(--gray-500);margin-bottom:var(--space-4);max-width:400px;margin-inline:auto">Looks like you haven't added anything yet. Explore our softest organic cotton pieces for your little one.</p>
-        <a href="collection.html" class="btn btn-primary btn-lg">Continue Shopping</a>
+        <a href="/collections/all" class="btn btn-primary btn-lg">Continue Shopping</a>
       </div>`;
     if (sidebar) sidebar.style.display = 'none';
     return;
@@ -386,7 +386,7 @@ function renderCartPage() {
         <div class="cart-item-main">
           <img src="${product.image}" alt="${product.name}">
           <div class="cart-item-info">
-            <h4><a href="product.html?id=${product.id}">${product.name}</a></h4>
+            <h4><a href="#">${product.name}</a></h4>
             <p>Size: ${item.size} • Color: ${product.color}</p>
             <div class="product-price" style="margin-bottom:0">
               <span class="price-current">₹${product.price}</span>
@@ -422,7 +422,7 @@ function renderCartPage() {
         <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? 'FREE' : '₹' + shipping}</span></div>
         <div class="summary-row total"><span>Total</span><span>₹${total}</span></div>
         <div style="font-size:0.8125rem;color:var(--gray-500);margin-top:var(--space-1)">Inclusive of all taxes</div>
-        <a href="checkout.html" class="btn btn-primary btn-full" style="margin-top:var(--space-3)">Proceed to Checkout</a>
+        <a href="/checkout" class="btn btn-primary btn-full" style="margin-top:var(--space-3)">Proceed to Checkout</a>
         <div class="gift-options" style="margin-top:var(--space-3)">
           <h4>🎁 Gift Options</h4>
           <label class="gift-option"><input type="checkbox"> Premium Gift Wrap (+₹49)</label>
