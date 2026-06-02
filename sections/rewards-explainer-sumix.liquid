@@ -1,0 +1,355 @@
+{% style %}
+  .rewards-explainer-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .explainer-header {
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 4rem auto;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .explainer-hero-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem auto;
+    color: {{ section.settings.primary_color }};
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .explainer-hero-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .explainer-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .explainer-text {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .btn-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: {{ section.settings.primary_color }};
+    color: var(--white);
+    padding: 1.125rem 3.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .btn-join:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  /* Benefits Grid */
+  .rewards-explainer-sumix-{{ section.id }} .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: {{ section.settings.primary_color }};
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .rewards-explainer-sumix-{{ section.id }} .benefit-text {
+    font-size: 1rem;
+    opacity: 0.75;
+    line-height: 1.5;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  @media (max-width: 900px) {
+    .rewards-explainer-sumix-{{ section.id }} .explainer-header {
+      margin-bottom: 3rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .rewards-explainer-sumix-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+    .rewards-explainer-sumix-{{ section.id }} .benefits-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .rewards-explainer-sumix-{{ section.id }} .benefit-card {
+      flex-direction: column;
+      padding: 2rem;
+      align-items: center;
+      text-align: center;
+    }
+  }
+{% endstyle %}
+
+<div class="rewards-explainer-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <div class="explainer-header">
+      <div class="explainer-hero-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor" stroke="none"/></svg>
+      </div>
+      
+      {% if section.settings.heading != blank %}
+        <h1 class="explainer-title">{{ section.settings.heading }}</h1>
+      {% endif %}
+      
+      {% if section.settings.text != blank %}
+        <p class="explainer-text">{{ section.settings.text }}</p>
+      {% endif %}
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="btn-join">
+          {{ section.settings.cta_label }}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="benefits-grid">
+        {% for block in section.blocks %}
+          <div class="benefit-card" {{ block.shopify_attributes }}>
+            <div class="benefit-icon">
+              {% if block.settings.icon_svg != blank %}
+                {{ block.settings.icon_svg }}
+              {% else %}
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              {% endif %}
+            </div>
+            <div class="benefit-content">
+              {% if block.settings.title != blank %}
+                <h3 class="benefit-title">{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <p class="benefit-text">{{ block.settings.text }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Rewards Explainer",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sumix Rewards"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Join our family and earn tokens every time you shop. Redeem your tokens for exclusive discounts, free shipping, and early access to new collections."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Join for Free"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link",
+      "default": "/account/register"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Accent Color",
+      "default": "#6D28D9",
+      "info": "Used for the main button and icons."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Benefit Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Describe the benefit here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Rewards Explainer",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Earn Tokens",
+            "text": "Get 1 token for every ₹100 spent. Redeem tokens for direct cash discounts on future orders.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"8\" r=\"7\"/><polyline points=\"8.21 13.89 7 23 12 20 17 23 15.79 13.88\"/></svg>"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Birthday Bonus",
+            "text": "We celebrate your little one's special day with a surprise gift of 500 bonus tokens.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M20 12v10H4V12M12 2v6M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM8 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM16 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2 12h20\" stroke=\"currentColor\" stroke-width=\"2\" fill=\"none\"/></svg>"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Refer a Friend",
+            "text": "Give a friend 15% off their first order, and get ₹500 in tokens when they purchase.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75\" stroke=\"currentColor\" stroke-width=\"2\" fill=\"none\"/></svg>"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Early Access",
+            "text": "Get VIP access to our new seasonal collections and sales 24 hours before everyone else.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\" stroke=\"currentColor\" stroke-width=\"2\" fill=\"none\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
