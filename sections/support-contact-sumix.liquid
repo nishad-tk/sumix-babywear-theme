@@ -1,0 +1,491 @@
+{% style %}
+  .contact-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .contact-sumix-{{ section.id }} .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  /* Header */
+  .contact-sumix-{{ section.id }} .contact-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  
+  .contact-sumix-{{ section.id }} .contact-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+  }
+  
+  .contact-sumix-{{ section.id }} .contact-intro {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.6;
+  }
+  
+  .contact-sumix-{{ section.id }} .contact-response-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,0,0,0.04);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .contact-sumix-{{ section.id }} .contact-response-time::before {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #10B981; /* Green indicator */
+    border-radius: 50%;
+  }
+
+  /* Support Channels Grid */
+  .contact-sumix-{{ section.id }} .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .contact-sumix-{{ section.id }} .channel-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    text-decoration: none;
+    color: {{ section.settings.text_color }};
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .contact-sumix-{{ section.id }} .channel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+  }
+
+  .contact-sumix-{{ section.id }} .channel-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(0,0,0,0.03);
+    color: {{ section.settings.icon_color }};
+    border-radius: 16px;
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .contact-sumix-{{ section.id }} .channel-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+  }
+
+  .contact-sumix-{{ section.id }} .channel-title {
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .contact-sumix-{{ section.id }} .channel-text {
+    font-size: 0.9375rem;
+    opacity: 0.75;
+    margin: 0 0 1rem 0;
+  }
+  
+  .contact-sumix-{{ section.id }} .channel-link {
+    font-weight: 600;
+    font-size: 1rem;
+    color: {{ section.settings.icon_color }};
+    display: block;
+  }
+
+  /* Contact Form Area */
+  .contact-sumix-{{ section.id }} .form-wrapper {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 3.5rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+  }
+  
+  .contact-sumix-{{ section.id }} .form-title {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+    color: {{ section.settings.text_color }};
+  }
+  
+  .contact-sumix-{{ section.id }} .form-intro {
+    text-align: center;
+    font-size: 1.0625rem;
+    opacity: 0.8;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .contact-sumix-{{ section.id }} .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-sumix-{{ section.id }} .form-field {
+    margin-bottom: 1.5rem;
+  }
+  
+  .contact-sumix-{{ section.id }} .form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .contact-sumix-{{ section.id }} .form-input {
+    width: 100%;
+    padding: 1.125rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    font-size: 1rem;
+    font-family: inherit;
+    background: #FAFAFA;
+    color: {{ section.settings.text_color }};
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  
+  .contact-sumix-{{ section.id }} .form-input:focus {
+    border-color: {{ section.settings.icon_color }};
+    outline: none;
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+  }
+  
+  .contact-sumix-{{ section.id }} textarea.form-input {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  .contact-sumix-{{ section.id }} .btn-submit {
+    width: 100%;
+    background: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    padding: 1.25rem;
+    border: none;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .contact-sumix-{{ section.id }} .btn-submit:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .contact-sumix-{{ section.id }} .form-success {
+    background: #D1FAE5;
+    color: #065F46;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  @media (max-width: 767px) {
+    .contact-sumix-{{ section.id }} .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .contact-sumix-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+    .contact-sumix-{{ section.id }} .form-wrapper {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+{% endstyle %}
+
+<div class="contact-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="contact-header">
+      {% if section.settings.heading != blank %}
+        <h1 class="contact-title">{{ section.settings.heading }}</h1>
+      {% endif %}
+      
+      {% if section.settings.intro != blank %}
+        <p class="contact-intro">{{ section.settings.intro }}</p>
+      {% endif %}
+      
+      {% if section.settings.response_time != blank %}
+        <div class="contact-response-time">{{ section.settings.response_time }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Channels -->
+    {% if section.blocks.size > 0 %}
+      <div class="contact-grid">
+        {% for block in section.blocks %}
+          <a href="{{ block.settings.link_url }}" class="channel-card" {{ block.shopify_attributes }}>
+            <div class="channel-icon">
+              {% if block.settings.icon_svg != blank %}
+                {{ block.settings.icon_svg }}
+              {% else %}
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              {% endif %}
+            </div>
+            
+            {% if block.settings.title != blank %}
+              <h3 class="channel-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            
+            {% if block.settings.text != blank %}
+              <p class="channel-text">{{ block.settings.text }}</p>
+            {% endif %}
+            
+            {% if block.settings.link_label != blank %}
+              <span class="channel-link">{{ block.settings.link_label }}</span>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Form -->
+    {% if section.settings.show_form %}
+      <div class="form-wrapper">
+        {% if section.settings.form_heading != blank %}
+          <h2 class="form-title">{{ section.settings.form_heading }}</h2>
+        {% endif %}
+        
+        {% if section.settings.form_intro != blank %}
+          <p class="form-intro">{{ section.settings.form_intro }}</p>
+        {% endif %}
+
+        {%- form 'contact', id: 'ContactFormSumix' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="form-success">
+              Thanks for reaching out! We will get back to you shortly.
+            </div>
+          {%- endif -%}
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="ContactForm-name">Name</label>
+              <input class="form-input" autocomplete="name" type="text" id="ContactForm-name" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="Jane Doe" required>
+            </div>
+            
+            <div class="form-field">
+              <label class="form-label" for="ContactForm-email">Email <span aria-hidden="true">*</span></label>
+              <input class="form-input" autocomplete="email" type="email" id="ContactForm-email" name="contact[email]" spellcheck="false" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" placeholder="jane@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="ContactForm-order">Order Number (Optional)</label>
+            <input class="form-input" type="text" id="ContactForm-order" name="contact[order_number]" placeholder="#1023">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="ContactForm-body">Message <span aria-hidden="true">*</span></label>
+            <textarea class="form-input" rows="5" id="ContactForm-body" name="contact[body]" placeholder="How can we help you today?" required>{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            Send Message
+          </button>
+        {%- endform -%}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Contact Support",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Page Intro"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How can we help?"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "Whether you have a question about an order, sizing, or our materials, our support team is ready to assist you."
+    },
+    {
+      "type": "text",
+      "id": "response_time",
+      "label": "Response Time Note",
+      "default": "We usually reply within 24 hours"
+    },
+    {
+      "type": "header",
+      "content": "Contact Form"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_form",
+      "label": "Show Contact Form",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form Heading",
+      "default": "Send us a message"
+    },
+    {
+      "type": "text",
+      "id": "form_intro",
+      "label": "Form Introduction",
+      "default": "Fill out the form below and we'll get back to you via email."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Accent / Icon Color",
+      "default": "#6D28D9"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "channel",
+      "name": "Support Channel",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Channel Name"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description",
+          "default": "Available Mon-Fri, 9am - 5pm"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link Text",
+          "default": "Contact us"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Contact Support",
+      "blocks": [
+        {
+          "type": "channel",
+          "settings": {
+            "title": "Email Us",
+            "text": "For general inquiries and support.",
+            "link_label": "hello@sumix.com",
+            "link_url": "mailto:hello@sumix.com",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z\"/></svg>"
+          }
+        },
+        {
+          "type": "channel",
+          "settings": {
+            "title": "WhatsApp Support",
+            "text": "Get faster replies directly on your phone.",
+            "link_label": "Message us",
+            "link_url": "https://wa.me/",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
