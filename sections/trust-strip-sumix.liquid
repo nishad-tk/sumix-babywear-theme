@@ -1,0 +1,368 @@
+{% style %}
+  .trust-strip-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    {% if section.settings.show_divider %}
+      border-top: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+    {% endif %}
+    overflow: hidden;
+  }
+
+  .trust-strip-sumix-{{ section.id }} .trust-container {
+    padding: 0 var(--space-4);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Inline Row Layout */
+  .trust-strip-sumix-{{ section.id }} .trust-grid.layout-inline {
+    display: flex;
+    justify-content: {% if section.settings.alignment == 'center' %}center{% elsif section.settings.alignment == 'right' %}flex-end{% else %}space-between{% endif %};
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+  }
+  
+  {% if section.settings.alignment == 'left' %}
+    .trust-strip-sumix-{{ section.id }} .trust-grid.layout-inline {
+      justify-content: flex-start;
+    }
+  {% endif %}
+  
+  .trust-strip-sumix-{{ section.id }} .trust-grid.layout-inline .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  /* Cards Layout */
+  .trust-strip-sumix-{{ section.id }} .trust-grid.layout-cards {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size }}, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .trust-strip-sumix-{{ section.id }} .trust-grid.layout-cards .trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: {{ section.settings.alignment }};
+    text-align: {{ section.settings.alignment }};
+    background: var(--white);
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    gap: 1rem;
+    border: 1px solid rgba(0,0,0,0.03);
+  }
+
+  /* Base Item Styles */
+  .trust-strip-sumix-{{ section.id }} .trust-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    flex-shrink: 0;
+    color: {{ section.settings.icon_color }};
+  }
+  
+  .trust-strip-sumix-{{ section.id }} .trust-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .trust-strip-sumix-{{ section.id }} .trust-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .trust-strip-sumix-{{ section.id }} .trust-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trust-strip-sumix-{{ section.id }} .trust-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .trust-strip-sumix-{{ section.id }} .trust-text {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin: 0.25rem 0 0 0;
+    line-height: 1.4;
+  }
+
+  /* Mobile Behavior */
+  @media (max-width: 767px) {
+    {% if section.settings.mobile_behavior == 'scroll' %}
+      .trust-strip-sumix-{{ section.id }} .trust-grid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+        scrollbar-width: none;
+        gap: 1rem !important;
+      }
+      .trust-strip-sumix-{{ section.id }} .trust-grid::-webkit-scrollbar {
+        display: none;
+      }
+      .trust-strip-sumix-{{ section.id }} .trust-item {
+        flex: 0 0 calc(75% - 1rem);
+        scroll-snap-align: start;
+      }
+      .trust-strip-sumix-{{ section.id }} .trust-item:last-child {
+        margin-right: var(--space-4);
+      }
+      .trust-strip-sumix-{{ section.id }} .trust-grid.layout-inline .trust-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        background: var(--white);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      }
+    {% else %}
+      /* Grid on Mobile */
+      .trust-strip-sumix-{{ section.id }} .trust-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem 1rem !important;
+      }
+      .trust-strip-sumix-{{ section.id }} .trust-grid.layout-inline .trust-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-width: 0;
+      }
+    {% endif %}
+  }
+{% endstyle %}
+
+<div class="trust-strip-sumix-{{ section.id }}">
+  <div class="trust-container">
+    <div class="trust-grid layout-{{ section.settings.layout_mode }}">
+      {% for block in section.blocks %}
+        <div class="trust-item" {{ block.shopify_attributes }}>
+          
+          <div class="trust-icon">
+            {% if block.settings.icon_image != blank %}
+              <img src="{{ block.settings.icon_image | image_url: width: 100 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% elsif block.settings.icon_svg != blank %}
+              {{ block.settings.icon_svg }}
+            {% else %}
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            {% endif %}
+          </div>
+          
+          <div class="trust-content">
+            {% if block.settings.title != blank %}
+              <h4 class="trust-title">{{ block.settings.title }}</h4>
+            {% endif %}
+            
+            {% if block.settings.text != blank %}
+              <p class="trust-text">{{ block.settings.text }}</p>
+            {% endif %}
+          </div>
+          
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Trust Strip",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_mode",
+      "label": "Desktop Layout",
+      "options": [
+        { "value": "inline", "label": "Inline Row (Icon next to text)" },
+        { "value": "cards", "label": "Cards (Icon above text in boxes)" }
+      ],
+      "default": "inline"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Item Alignment",
+      "info": "Affects card text alignment and row justification.",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "space-between", "label": "Space Between (Row only)" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_behavior",
+      "label": "Mobile Layout",
+      "options": [
+        { "value": "scroll", "label": "Horizontal Scroll" },
+        { "value": "grid", "label": "2x2 Grid" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show top & bottom borders",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#6D28D9"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image",
+          "info": "Upload an icon (PNG/SVG recommended). Overrides SVG code below."
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code",
+          "info": "Paste raw SVG code here for crisp icons that match the Icon Color setting."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Premium Quality"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Short Text",
+          "default": "Made with 100% GOTS certified organic cotton."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Trust Strip",
+      "blocks": [
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "GOTS Certified",
+            "text": "100% organic cotton",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z\"/></svg>"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "Free Shipping",
+            "text": "On all orders over ₹999",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M22 11h-4l-3-9H3a2 2 0 0 0-2 2v16h2a3 3 0 0 0 6 0h6a3 3 0 0 0 6 0h1a2 2 0 0 0 2-2v-5c0-1.66-1.34-3-3-3zm-13 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm8 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm-1.5-6h-11V6h9.5l2.67 8z\"/></svg>"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "Easy Returns",
+            "text": "15-day hassle-free returns",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z\"/></svg>"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "Secure Payment",
+            "text": "UPI, Cards, and COD",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
