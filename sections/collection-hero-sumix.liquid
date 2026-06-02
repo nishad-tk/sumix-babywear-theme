@@ -1,0 +1,252 @@
+{% style %}
+  .collection-hero-sumix-{{ section.id }} {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: {% if section.settings.alignment == 'left' %}flex-start{% elsif section.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    min-height: {{ section.settings.min_height }}px;
+    overflow: hidden;
+  }
+
+  .collection-hero-sumix-{{ section.id }} .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .collection-hero-sumix-{{ section.id }} .hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .collection-hero-sumix-{{ section.id }} .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .collection-hero-sumix-{{ section.id }} .hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: {{ section.settings.content_width }}px;
+    padding: 0 var(--space-4);
+    text-align: {{ section.settings.alignment }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .collection-hero-sumix-{{ section.id }} .collection-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+  }
+
+  .collection-hero-sumix-{{ section.id }} .collection-desc {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    line-height: 1.5;
+    margin: 0 auto;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 767px) {
+    .collection-hero-sumix-{{ section.id }} {
+      min-height: {{ section.settings.min_height_mobile }}px;
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+  }
+{% endstyle %}
+
+{%- assign hero_image = section.settings.custom_image | default: collection.image | default: section.settings.fallback_image -%}
+
+<div class="collection-hero-sumix-{{ section.id }}">
+  {% if hero_image != blank %}
+    <div class="hero-bg">
+      <img src="{{ hero_image | image_url: width: 2000 }}" 
+           alt="{{ collection.title | escape }}" 
+           loading="eager"
+           fetchpriority="high">
+    </div>
+    <div class="hero-overlay"></div>
+  {% endif %}
+
+  <div class="hero-content">
+    <h1 class="collection-title">{{ collection.title }}</h1>
+    
+    {% if section.settings.show_collection_description and collection.description != blank %}
+      <div class="collection-desc">{{ collection.description }}</div>
+    {% endif %}
+
+    {% if section.settings.custom_intro != blank %}
+      <div class="collection-desc" style="margin-top: 0.5rem;">{{ section.settings.custom_intro }}</div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Collection Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "paragraph",
+      "content": "By default, this section will use the Collection Image uploaded in the Shopify Admin. You can override it below."
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Custom Image Override",
+      "info": "Overrides the default collection image."
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback Image",
+      "info": "Used if the collection has no image and no custom image is set."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "label": "Show Collection Description",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "custom_intro",
+      "label": "Custom Intro Copy",
+      "info": "Displays underneath the collection description if needed."
+    },
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Max Content Width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum Height (Desktop)",
+      "min": 150,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "min_height_mobile",
+      "label": "Minimum Height (Mobile)",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F9F8F6",
+      "info": "Visible if no image is present."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Image Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Collection Hero"
+    }
+  ]
+}
+{% endschema %}
