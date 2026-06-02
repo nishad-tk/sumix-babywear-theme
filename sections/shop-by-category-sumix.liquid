@@ -1,0 +1,446 @@
+{% style %}
+  .shop-by-cat-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    padding: 0 var(--space-4);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .header-content {
+    max-width: 600px;
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: {{ section.settings.text_color }};
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .section-subtitle {
+    font-size: 1rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.spacing }}px;
+    padding: 0 var(--space-4);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-card {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-image {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--gray-100);
+    margin-bottom: 1rem;
+    
+    {% if section.settings.image_shape == 'circle' %}
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+    {% elsif section.settings.image_shape == 'square' %}
+      aspect-ratio: 1 / 1;
+      border-radius: {{ section.settings.image_radius }}px;
+    {% else %}
+      aspect-ratio: 4 / 5;
+      border-radius: {{ section.settings.image_radius }}px;
+    {% endif %}
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-card:hover .cat-image img {
+    transform: scale(1.05);
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 3;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  {% if section.settings.image_shape == 'circle' %}
+    .shop-by-cat-sumix-{{ section.id }} .badge {
+      top: 15%;
+      right: 0;
+      transform: translate(10%, -50%);
+    }
+  {% endif %}
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-content {
+    text-align: {{ section.settings.text_alignment }};
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .shop-by-cat-sumix-{{ section.id }} .cat-text {
+    font-size: 0.875rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  /* Mobile Swipe Behavior */
+  @media (max-width: 767px) {
+    .shop-by-cat-sumix-{{ section.id }} .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    {% if section.settings.mobile_swipe %}
+      .shop-by-cat-sumix-{{ section.id }} .cat-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        grid-template-columns: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+        scrollbar-width: none;
+        scroll-padding-left: var(--space-4);
+      }
+      
+      .shop-by-cat-sumix-{{ section.id }} .cat-grid::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .shop-by-cat-sumix-{{ section.id }} .cat-card-wrapper {
+        flex: 0 0 calc(65% - {{ section.settings.spacing }}px);
+        scroll-snap-align: start;
+      }
+      
+      {% if section.settings.image_shape == 'circle' %}
+        .shop-by-cat-sumix-{{ section.id }} .cat-card-wrapper {
+          flex: 0 0 calc(45% - {{ section.settings.spacing }}px);
+        }
+      {% endif %}
+      
+      .shop-by-cat-sumix-{{ section.id }} .cat-card-wrapper:last-child {
+        margin-right: var(--space-4);
+      }
+    {% else %}
+      .shop-by-cat-sumix-{{ section.id }} .cat-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    {% endif %}
+  }
+{% endstyle %}
+
+<div class="shop-by-cat-sumix-{{ section.id }}">
+  {% if section.settings.heading != blank or section.settings.intro_text != blank or section.settings.cta_label != blank %}
+    <div class="section-header">
+      <div class="header-content">
+        {% if section.settings.heading != blank %}
+          <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.intro_text != blank %}
+          <p class="section-subtitle">{{ section.settings.intro_text }}</p>
+        {% endif %}
+      </div>
+      
+      {% if section.settings.cta_label != blank %}
+        <a href="{{ section.settings.cta_link }}" class="btn btn-outline" style="color:{{ section.settings.text_color }}; border-color:{{ section.settings.text_color }}">{{ section.settings.cta_label }}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="cat-grid">
+    {% for block in section.blocks %}
+      <div class="cat-card-wrapper" {{ block.shopify_attributes }}>
+        <a href="{{ block.settings.link | default: '#' }}" class="cat-card">
+          
+          <div class="cat-image">
+            {% if block.settings.badge != blank %}
+              <span class="badge">{{ block.settings.badge }}</span>
+            {% endif %}
+            
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 600 }}" 
+                   alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                   loading="lazy">
+            {% else %}
+              {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          
+          <div class="cat-content">
+            {% if block.settings.title != blank %}
+              <h3 class="cat-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            
+            {% if block.settings.text != blank %}
+              <p class="cat-text">{{ block.settings.text }}</p>
+            {% endif %}
+          </div>
+          
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Shop by Category",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "intro_text",
+      "label": "Intro Text",
+      "default": "Explore our curated collections for your little one."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_swipe",
+      "label": "Enable swipe on mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Card Spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "label": "Image Shape",
+      "options": [
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "circle", "label": "Circle" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Corner Radius (If not Circle)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category Name"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Supporting Text",
+          "default": "Shop collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Category Link"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Optional Badge Text",
+          "info": "e.g. New"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Shop by Category",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Rompers",
+            "text": "Everyday comfort",
+            "badge": "Popular"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Sleepwear",
+            "text": "Dreamy nights"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Essentials",
+            "text": "Daily basics"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Dresses",
+            "text": "Special moments"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Gift Sets",
+            "text": "Perfect presents",
+            "badge": "New"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
