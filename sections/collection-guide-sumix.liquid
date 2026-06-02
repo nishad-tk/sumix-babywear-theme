@@ -1,0 +1,411 @@
+{% style %}
+  .collection-guide-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    overflow: hidden;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+  }
+
+  {% if section.settings.layout == 'image_right' %}
+    .collection-guide-sumix-{{ section.id }} .container {
+      flex-direction: row-reverse;
+    }
+  {% endif %}
+
+  .collection-guide-sumix-{{ section.id }} .guide-image {
+    flex: 1;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  }
+
+  .collection-guide-sumix-{{ section.id }} .guide-image::before {
+    content: "";
+    display: block;
+    padding-bottom: 125%; /* 4:5 Aspect Ratio */
+  }
+
+  .collection-guide-sumix-{{ section.id }} .guide-image img,
+  .collection-guide-sumix-{{ section.id }} .guide-image svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .guide-content {
+    flex: 1;
+    max-width: 600px;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .guide-eyebrow {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: {{ section.settings.icon_color }};
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .guide-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+  }
+
+  .collection-guide-sumix-{{ section.id }} .guide-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin-bottom: 3rem;
+    color: {{ section.settings.text_color }};
+  }
+
+  /* Highlights Grid */
+  .collection-guide-sumix-{{ section.id }} .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 2rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .highlight-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .highlight-icon {
+    width: 44px;
+    height: 44px;
+    color: {{ section.settings.icon_color }};
+    background: rgba(0,0,0,0.04);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .highlight-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .highlight-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .highlight-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .collection-guide-sumix-{{ section.id }} .highlight-text {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin: 0;
+    line-height: 1.4;
+    color: {{ section.settings.text_color }};
+  }
+
+  .collection-guide-sumix-{{ section.id }} .btn-guide {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .collection-guide-sumix-{{ section.id }} .btn-guide:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 900px) {
+    .collection-guide-sumix-{{ section.id }} .container {
+      flex-direction: column !important;
+      gap: 3rem;
+    }
+    
+    .collection-guide-sumix-{{ section.id }} .guide-image {
+      width: 100%;
+    }
+    
+    .collection-guide-sumix-{{ section.id }} .guide-content {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .collection-guide-sumix-{{ section.id }} .highlights-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+{% endstyle %}
+
+<div class="collection-guide-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <div class="guide-image">
+      {% if section.settings.image != blank %}
+        <img src="{{ section.settings.image | image_url: width: 1000 }}" 
+             alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}" 
+             loading="lazy">
+      {% else %}
+        {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+
+    <div class="guide-content">
+      {% if section.settings.eyebrow != blank %}
+        <span class="guide-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      
+      {% if section.settings.heading != blank %}
+        <h2 class="guide-title">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="guide-text">{{ section.settings.text }}</div>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <div class="highlights-grid">
+          {% for block in section.blocks %}
+            <div class="highlight-item" {{ block.shopify_attributes }}>
+              
+              <div class="highlight-icon">
+                {% if block.settings.icon_svg != blank %}
+                  {{ block.settings.icon_svg }}
+                {% else %}
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                {% endif %}
+              </div>
+              
+              <div class="highlight-content">
+                {% if block.settings.title != blank %}
+                  <h4 class="highlight-title">{{ block.settings.title }}</h4>
+                {% endif %}
+                
+                {% if block.settings.text != blank %}
+                  <p class="highlight-text">{{ block.settings.text }}</p>
+                {% endif %}
+              </div>
+              
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="btn-guide">{{ section.settings.cta_label }}</a>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Collection Guide",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images & Layout"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Editorial Image",
+      "info": "Automatically crops to a premium 4:5 portrait ratio."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image Placement",
+      "options": [
+        { "value": "image_left", "label": "Image Left" },
+        { "value": "image_right", "label": "Image Right" }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Buyer's Guide"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What to look for in baby essentials"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Main Text",
+      "default": "<p>When shopping for your little one, comfort and safety should always come first. Here are the most important things to consider when building their everyday wardrobe.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Read Full Guide"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F9F8F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2D2D2D"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon & Eyebrow Color",
+      "default": "#6D28D9"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "Guide Highlight",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code",
+          "info": "Paste raw SVG code for the icon."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Easy Changes"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Short Text",
+          "default": "Look for two-way zippers or snap buttons."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Collection Guide",
+      "blocks": [
+        {
+          "type": "highlight",
+          "settings": {
+            "title": "Fabric Matters",
+            "text": "Stick to 100% organic cotton to prevent skin irritation.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\"/></svg>"
+          }
+        },
+        {
+          "type": "highlight",
+          "settings": {
+            "title": "Room to Grow",
+            "text": "Babies grow fast. Consider sizing up for longevity.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\"/></svg>"
+          }
+        },
+        {
+          "type": "highlight",
+          "settings": {
+            "title": "Easy Changes",
+            "text": "Two-way zippers make midnight changes a breeze.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\"/></svg>"
+          }
+        },
+        {
+          "type": "highlight",
+          "settings": {
+            "title": "Layering Pieces",
+            "text": "Build outfits with breathable base layers.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
