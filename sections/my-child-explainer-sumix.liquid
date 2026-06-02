@@ -1,0 +1,402 @@
+{% style %}
+  .child-explainer-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    overflow: hidden;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+  }
+
+  {% if section.settings.layout == 'image_right' %}
+    .child-explainer-sumix-{{ section.id }} .container {
+      flex-direction: row-reverse;
+    }
+  {% endif %}
+
+  .child-explainer-sumix-{{ section.id }} .explainer-image {
+    flex: 1;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  }
+
+  .child-explainer-sumix-{{ section.id }} .explainer-image::before {
+    content: "";
+    display: block;
+    padding-bottom: 120%; /* 5:6 aspect ratio */
+  }
+
+  .child-explainer-sumix-{{ section.id }} .explainer-image img,
+  .child-explainer-sumix-{{ section.id }} .explainer-image svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .explainer-content {
+    flex: 1;
+    max-width: 550px;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .explainer-eyebrow {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: {{ section.settings.icon_color }};
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .explainer-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+    margin: 0 0 1.25rem 0;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+  }
+
+  .child-explainer-sumix-{{ section.id }} .explainer-text {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0 0 3rem 0;
+  }
+
+  /* Feature List */
+  .child-explainer-sumix-{{ section.id }} .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: {{ section.settings.icon_color }};
+  }
+
+  .child-explainer-sumix-{{ section.id }} .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .feature-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 2px;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .feature-title {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .child-explainer-sumix-{{ section.id }} .feature-text {
+    font-size: 0.9375rem;
+    opacity: 0.75;
+    line-height: 1.5;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .child-explainer-sumix-{{ section.id }} .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    padding: 1.125rem 3rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .child-explainer-sumix-{{ section.id }} .btn-primary:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  @media (max-width: 900px) {
+    .child-explainer-sumix-{{ section.id }} .container {
+      flex-direction: column !important;
+      gap: 3.5rem;
+    }
+    .child-explainer-sumix-{{ section.id }} .explainer-image {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .child-explainer-sumix-{{ section.id }} .explainer-content {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .child-explainer-sumix-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+    .child-explainer-sumix-{{ section.id }} .btn-primary {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="child-explainer-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <div class="explainer-image">
+      {% if section.settings.image != blank %}
+        <img src="{{ section.settings.image | image_url: width: 1200 }}" 
+             alt="{{ section.settings.heading | escape }}" 
+             loading="lazy">
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+
+    <div class="explainer-content">
+      {% if section.settings.eyebrow != blank %}
+        <span class="explainer-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      
+      {% if section.settings.heading != blank %}
+        <h2 class="explainer-title">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <p class="explainer-text">{{ section.settings.text }}</p>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <div class="feature-list">
+          {% for block in section.blocks %}
+            <div class="feature-item" {{ block.shopify_attributes }}>
+              <div class="feature-icon">
+                {% if block.settings.icon_svg != blank %}
+                  {{ block.settings.icon_svg }}
+                {% else %}
+                  <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                {% endif %}
+              </div>
+              <div class="feature-content">
+                {% if block.settings.title != blank %}
+                  <h4 class="feature-title">{{ block.settings.title }}</h4>
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <p class="feature-text">{{ block.settings.text }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="btn-primary">{{ section.settings.cta_label }}</a>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Child Profiles",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image & Layout"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Editorial Image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop Image Placement",
+      "options": [
+        { "value": "image_left", "label": "Image Left" },
+        { "value": "image_right", "label": "Image Right" }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Personalized Shopping"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shopping for them just got easier."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Create a secure profile for your child and we'll take the guesswork out of sizing and styling as they grow."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Create a Profile"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link",
+      "default": "/account"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F9F8F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2D2D2D"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon & Eyebrow Color",
+      "default": "#6D28D9"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Highlight",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Explain the benefit here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Child Profiles",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Smart Size Memory",
+            "text": "Never wonder what size to buy again. We track their age and recommend the perfect fit automatically.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M2 12C2 6.48 6.48 2 12 2s10 4.48 10 10-4.48 10-10 10S2 17.52 2 12zm10 5c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z\"/></svg>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Birthday Reminders",
+            "text": "Get early access to special birthday discounts and curated gift sets sent right to your inbox.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 20.93a1 1 0 01-.64-.23l-7.25-6.23a4.7 4.7 0 010-6.62 4.75 4.75 0 016.7 0l1.19 1.18 1.19-1.18a4.75 4.75 0 016.7 0 4.7 4.7 0 010 6.62l-7.25 6.23a1 1 0 01-.64.23z\"/></svg>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Personalized Store",
+            "text": "Shop a customized version of our store showing only colors, styles, and sizes that match their profile.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z\"/><polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"/><line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
