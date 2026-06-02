@@ -1,0 +1,405 @@
+{% style %}
+  .account-dash-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  .account-dash-sumix-{{ section.id }} .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .account-dash-sumix-{{ section.id }} .dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .account-dash-sumix-{{ section.id }} .dash-welcome {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .account-dash-sumix-{{ section.id }} .dash-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: {{ section.settings.text_color }};
+    line-height: 1.1;
+  }
+
+  .account-dash-sumix-{{ section.id }} .dash-subtitle {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .account-dash-sumix-{{ section.id }} .dash-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .account-dash-sumix-{{ section.id }} .btn-dash {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  
+  .account-dash-sumix-{{ section.id }} .btn-dash:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+  }
+
+  .account-dash-sumix-{{ section.id }} .btn-rewards {
+    background: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    border: 1px solid {{ section.settings.text_color }};
+  }
+
+  .account-dash-sumix-{{ section.id }} .btn-support {
+    background: transparent;
+    color: {{ section.settings.text_color }};
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .account-dash-sumix-{{ section.id }} .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Dashboard Cards */
+  .account-dash-sumix-{{ section.id }} .dash-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 2.25rem 2rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    text-decoration: none;
+    color: {{ section.settings.text_color }};
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .account-dash-sumix-{{ section.id }} .dash-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.1);
+  }
+
+  .account-dash-sumix-{{ section.id }} .card-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.03);
+    color: {{ section.settings.icon_color }};
+  }
+  
+  .account-dash-sumix-{{ section.id }} .card-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  .account-dash-sumix-{{ section.id }} .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .account-dash-sumix-{{ section.id }} .card-title {
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .account-dash-sumix-{{ section.id }} .card-text {
+    font-size: 0.9375rem;
+    opacity: 0.7;
+    margin: 0;
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+  }
+  
+  .account-dash-sumix-{{ section.id }} .card-arrow {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: {{ section.settings.icon_color }};
+    opacity: 0.8;
+  }
+
+  @media (max-width: 600px) {
+    .account-dash-sumix-{{ section.id }} .dash-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    .account-dash-sumix-{{ section.id }} .dash-actions {
+      width: 100%;
+    }
+    .account-dash-sumix-{{ section.id }} .btn-dash {
+      flex: 1;
+      justify-content: center;
+    }
+    .account-dash-sumix-{{ section.id }} .dash-card {
+      padding: 1.5rem;
+    }
+  }
+{% endstyle %}
+
+<div class="account-dash-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <div class="dash-header">
+      <div class="dash-welcome">
+        <h1 class="dash-title">
+          {% if section.settings.custom_heading != blank %}
+            {{ section.settings.custom_heading }}
+          {% else %}
+            Welcome, {{ customer.first_name | default: 'Friend' }}
+          {% endif %}
+        </h1>
+        {% if section.settings.subheading != blank %}
+          <p class="dash-subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+
+      <div class="dash-actions">
+        {% if section.settings.support_cta_label != blank and section.settings.support_cta_link != blank %}
+          <a href="{{ section.settings.support_cta_link }}" class="btn-dash btn-support">
+            {{ section.settings.support_cta_label }}
+          </a>
+        {% endif %}
+        
+        {% if section.settings.rewards_cta_label != blank and section.settings.rewards_cta_link != blank %}
+          <a href="{{ section.settings.rewards_cta_link }}" class="btn-dash btn-rewards">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            {{ section.settings.rewards_cta_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="dash-grid">
+        {% for block in section.blocks %}
+          {% if block.settings.title != blank %}
+            <a href="{{ block.settings.link }}" class="dash-card" {{ block.shopify_attributes }}>
+              
+              <div class="card-icon">
+                {% if block.settings.icon_svg != blank %}
+                  {{ block.settings.icon_svg }}
+                {% else %}
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                {% endif %}
+              </div>
+              
+              <div class="card-content">
+                <h3 class="card-title">{{ block.settings.title }}</h3>
+                {% if block.settings.text != blank %}
+                  <p class="card-text">{{ block.settings.text }}</p>
+                {% endif %}
+              </div>
+
+              <div class="card-arrow">
+                Manage
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Account Dashboard",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_heading",
+      "label": "Custom Heading",
+      "info": "Leave blank to automatically display 'Welcome, [First Name]'"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Manage your orders, rewards, and child profiles in one place."
+    },
+    {
+      "type": "header",
+      "content": "Quick Actions"
+    },
+    {
+      "type": "text",
+      "id": "support_cta_label",
+      "label": "Support Button Label",
+      "default": "Get Help"
+    },
+    {
+      "type": "url",
+      "id": "support_cta_link",
+      "label": "Support Button Link",
+      "default": "/pages/contact"
+    },
+    {
+      "type": "text",
+      "id": "rewards_cta_label",
+      "label": "Rewards Button Label",
+      "default": "Sumix Tokens"
+    },
+    {
+      "type": "url",
+      "id": "rewards_cta_link",
+      "label": "Rewards Button Link",
+      "default": "/pages/rewards"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#6D28D9"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Dashboard Card",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG Code"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Dashboard Item"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "View details and manage settings."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Destination Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Account Dashboard",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Order History",
+            "text": "Track your recent orders and view receipts.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z\"/></svg>"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Child Profiles",
+            "text": "Update sizing, birthdays, and preferences.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/></svg>"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Wishlist",
+            "text": "View and manage your saved items.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\"/></svg>"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Account Settings",
+            "text": "Update addresses and password.",
+            "icon_svg": "<svg viewBox=\"0 0 24 24\"><path d=\"M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
