@@ -1,0 +1,465 @@
+{% style %}
+  .related-products-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+
+  .related-products-sumix-{{ section.id }} .section-header {
+    text-align: {{ section.settings.alignment }};
+    margin-bottom: 2.5rem;
+    padding: 0 var(--space-4);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .related-products-sumix-{{ section.id }} .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-color);
+  }
+
+  .related-products-sumix-{{ section.id }} .product-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 2rem 1.5rem;
+    padding: 0 var(--space-4);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Product Card (Matching Featured Collection Style) */
+  .related-products-sumix-{{ section.id }} .product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    background: transparent;
+    height: 100%;
+    {% if section.settings.card_style == 'bordered' %}
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding-bottom: 1.25rem;
+      background: var(--white);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    {% endif %}
+  }
+
+  {% if section.settings.card_style == 'bordered' %}
+    .related-products-sumix-{{ section.id }} .product-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transform: translateY(-4px);
+    }
+  {% else %}
+    .related-products-sumix-{{ section.id }} .product-card:hover .product-image-wrapper img {
+      transform: scale(1.05);
+    }
+  {% endif %}
+
+  .related-products-sumix-{{ section.id }} .product-image-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: var(--gray-100);
+    overflow: hidden;
+    {% if section.settings.image_ratio == 'portrait' %}
+      aspect-ratio: 3/4;
+    {% elsif section.settings.image_ratio == 'square' %}
+      aspect-ratio: 1/1;
+    {% endif %}
+    {% if section.settings.card_style == 'standard' %}
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    {% endif %}
+  }
+
+  {% if section.settings.image_ratio != 'adapt' %}
+    .related-products-sumix-{{ section.id }} .product-image-wrapper img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  {% else %}
+    .related-products-sumix-{{ section.id }} .product-image-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  {% endif %}
+
+  .related-products-sumix-{{ section.id }} .product-image-wrapper img {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease;
+  }
+  
+  .related-products-sumix-{{ section.id }} .product-image-hover {
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  .related-products-sumix-{{ section.id }} .product-card:hover .product-image-hover {
+    opacity: 1;
+  }
+
+  .related-products-sumix-{{ section.id }} .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--white);
+    color: var(--text-color);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 3;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .related-products-sumix-{{ section.id }} .quick-add-btn {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(4px);
+    color: var(--text-color);
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 3;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .related-products-sumix-{{ section.id }} .product-card:hover .quick-add-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .related-products-sumix-{{ section.id }} .quick-add-btn:hover {
+    background: var(--text-color);
+    color: var(--white);
+  }
+
+  .related-products-sumix-{{ section.id }} .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    {% if section.settings.card_style == 'bordered' %}
+      padding: 1.25rem 1rem 0;
+    {% endif %}
+  }
+
+  .related-products-sumix-{{ section.id }} .product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .related-products-sumix-{{ section.id }} .product-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  
+  .related-products-sumix-{{ section.id }} .price-current {
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  
+  .related-products-sumix-{{ section.id }} .price-compare {
+    color: var(--gray-400);
+    text-decoration: line-through;
+    font-size: 0.8125rem;
+  }
+
+  @media (max-width: 767px) {
+    /* Keep Quick Add visible on mobile if enabled */
+    .related-products-sumix-{{ section.id }} .quick-add-btn {
+      opacity: 1;
+      transform: translateY(0);
+      background: var(--white);
+      bottom: 8px; left: 8px; right: 8px;
+      padding: 8px;
+    }
+
+    {% if section.settings.mobile_carousel %}
+      .related-products-sumix-{{ section.id }} .product-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        grid-template-columns: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+        scrollbar-width: none;
+        scroll-padding-left: var(--space-4);
+        gap: 1rem;
+      }
+      
+      .related-products-sumix-{{ section.id }} .product-grid::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .related-products-sumix-{{ section.id }} .product-card {
+        flex: 0 0 calc(65% - 1rem);
+        scroll-snap-align: start;
+      }
+      
+      .related-products-sumix-{{ section.id }} .product-card:last-child {
+        margin-right: var(--space-4);
+      }
+    {% else %}
+      .related-products-sumix-{{ section.id }} .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem 1rem;
+      }
+    {% endif %}
+  }
+{% endstyle %}
+
+{%- assign has_products = false -%}
+{%- if section.settings.source == 'manual' and section.settings.product_list != blank -%}
+  {%- assign target_products = section.settings.product_list -%}
+  {%- assign has_products = true -%}
+{%- elsif section.settings.source == 'dynamic' and recommendations.performed and recommendations.products_count > 0 -%}
+  {%- assign target_products = recommendations.products -%}
+  {%- assign has_products = true -%}
+{%- endif -%}
+
+<div class="related-products-sumix-{{ section.id }}" 
+     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_count }}&intent=related">
+  
+  {% if has_products or section.settings.source == 'dynamic' %}
+    {% if section.settings.heading != blank %}
+      <div class="section-header">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <div class="product-grid">
+    {% if has_products %}
+      {% for item in target_products limit: section.settings.product_count %}
+        <a href="{{ item.url }}" class="product-card">
+          <div class="product-image-wrapper">
+            {% if item.compare_at_price > item.price %}
+              <span class="badge">Sale</span>
+            {% endif %}
+
+            {% if item.featured_image != blank %}
+              <img src="{{ item.featured_image | image_url: width: 600 }}" 
+                   alt="{{ item.title | escape }}"
+                   loading="lazy"
+                   class="product-image-main">
+              
+              {% if item.images[1] != blank %}
+                <img src="{{ item.images[1] | image_url: width: 600 }}" 
+                     alt="{{ item.title | escape }}"
+                     loading="lazy"
+                     class="product-image-hover">
+              {% endif %}
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+
+            {% if section.settings.show_quick_add %}
+              <button class="quick-add-btn" onclick="event.preventDefault(); Store.addToCart({{ item.id }}, '{{ item.variants.first.title | default: 'One Size' }}')">Quick Add</button>
+            {% endif %}
+          </div>
+          
+          <div class="product-info">
+            <h3 class="product-title">{{ item.title }}</h3>
+            <div class="product-price">
+              <span class="price-current">{{ item.price | money }}</span>
+              {% if item.compare_at_price > item.price %}
+                <span class="price-compare">{{ item.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% if section.settings.source == 'dynamic' and recommendations.performed == false %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const recWrapper = document.querySelector('.related-products-sumix-{{ section.id }}');
+    if (recWrapper && recWrapper.dataset.url) {
+      fetch(recWrapper.dataset.url)
+        .then(response => response.text())
+        .then(text => {
+          const html = document.createElement('div');
+          html.innerHTML = text;
+          const recommendations = html.querySelector('.related-products-sumix-{{ section.id }}');
+          if (recommendations && recommendations.innerHTML.trim().length) {
+            recWrapper.innerHTML = recommendations.innerHTML;
+          }
+        })
+        .catch(e => console.error("Error fetching recommendations", e));
+    }
+  });
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Sumix Related Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Product Source"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Recommendation Engine",
+      "options": [
+        { "value": "dynamic", "label": "Shopify Auto-Recommendations" },
+        { "value": "manual", "label": "Manual Product List" }
+      ],
+      "default": "dynamic",
+      "info": "Dynamic recommendations load automatically based on the current product."
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Manual Product List",
+      "info": "Only used if 'Manual Product List' is selected above."
+    },
+    {
+      "type": "range",
+      "id": "product_count",
+      "label": "Maximum products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card Style",
+      "options": [
+        { "value": "standard", "label": "Standard (Clean)" },
+        { "value": "bordered", "label": "Bordered Card" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "options": [
+        { "value": "portrait", "label": "Portrait (3:4)" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "adapt", "label": "Adapt to image" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show 'Quick Add' button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel",
+      "label": "Enable horizontal scroll on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Related Products"
+    }
+  ]
+}
+{% endschema %}
