@@ -1,0 +1,312 @@
+{% style %}
+  .size-guide-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .size-guide-sumix-{{ section.id }} .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .size-guide-sumix-{{ section.id }} .guide-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .size-guide-sumix-{{ section.id }} .guide-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: {{ section.settings.text_color }};
+  }
+
+  .size-guide-sumix-{{ section.id }} .guide-text {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    color: {{ section.settings.text_color }};
+    margin: 0 auto;
+    max-width: 600px;
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-table-wrapper {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-header-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    background: rgba(0,0,0,0.03);
+    padding: 1.25rem 2rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: {{ section.settings.text_color }};
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: {{ section.settings.text_color }};
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-row:last-child {
+    border-bottom: none;
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-row:hover {
+    background: rgba(0,0,0,0.01);
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .size-guide-sumix-{{ section.id }} .size-cell-primary {
+    font-weight: 600;
+    color: {{ section.settings.text_color }};
+  }
+
+  @media (max-width: 600px) {
+    .size-guide-sumix-{{ section.id }} .size-header-row {
+      display: none;
+    }
+    
+    .size-guide-sumix-{{ section.id }} .size-row {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+    
+    .size-guide-sumix-{{ section.id }} .size-cell {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .size-guide-sumix-{{ section.id }} .size-cell::before {
+      content: attr(data-label);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+    
+    .size-guide-sumix-{{ section.id }} .size-cell-primary {
+      font-size: 1.125rem;
+    }
+  }
+{% endstyle %}
+
+<div class="size-guide-sumix-{{ section.id }}">
+  <div class="container">
+    
+    {% if section.settings.heading != blank or section.settings.text != blank %}
+      <div class="guide-header">
+        {% if section.settings.heading != blank %}
+          <h2 class="guide-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="guide-text">{{ section.settings.text }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="size-table-wrapper">
+        
+        <div class="size-header-row">
+          <div>{{ section.settings.col_1_heading }}</div>
+          <div>{{ section.settings.col_2_heading }}</div>
+          <div>{{ section.settings.col_3_heading }}</div>
+        </div>
+
+        {% for block in section.blocks %}
+          <div class="size-row" {{ block.shopify_attributes }}>
+            <div class="size-cell size-cell-primary" data-label="{{ section.settings.col_1_heading }}">{{ block.settings.age }}</div>
+            <div class="size-cell" data-label="{{ section.settings.col_2_heading }}">{{ block.settings.weight }}</div>
+            <div class="size-cell" data-label="{{ section.settings.col_3_heading }}">{{ block.settings.height }}</div>
+          </div>
+        {% endfor %}
+
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Size Guide",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find the Perfect Fit"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>Babies grow fast! Use our size guide to find the most comfortable fit. If your little one is between sizes, we always recommend sizing up for longer wear.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Table Columns"
+    },
+    {
+      "type": "text",
+      "id": "col_1_heading",
+      "label": "Column 1 Heading",
+      "default": "Size / Age"
+    },
+    {
+      "type": "text",
+      "id": "col_2_heading",
+      "label": "Column 2 Heading",
+      "default": "Weight (kg)"
+    },
+    {
+      "type": "text",
+      "id": "col_3_heading",
+      "label": "Column 3 Heading",
+      "default": "Height (cm)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size_row",
+      "name": "Size Row",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "age",
+          "label": "Size / Age",
+          "default": "0-3 Months"
+        },
+        {
+          "type": "text",
+          "id": "weight",
+          "label": "Weight",
+          "default": "3.5 - 5.5 kg"
+        },
+        {
+          "type": "text",
+          "id": "height",
+          "label": "Height",
+          "default": "50 - 60 cm"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Size Guide",
+      "blocks": [
+        {
+          "type": "size_row",
+          "settings": {
+            "age": "Newborn",
+            "weight": "Up to 3.5 kg",
+            "height": "Up to 50 cm"
+          }
+        },
+        {
+          "type": "size_row",
+          "settings": {
+            "age": "0-3 Months",
+            "weight": "3.5 - 5.5 kg",
+            "height": "50 - 60 cm"
+          }
+        },
+        {
+          "type": "size_row",
+          "settings": {
+            "age": "3-6 Months",
+            "weight": "5.5 - 7.5 kg",
+            "height": "60 - 68 cm"
+          }
+        },
+        {
+          "type": "size_row",
+          "settings": {
+            "age": "6-12 Months",
+            "weight": "7.5 - 10 kg",
+            "height": "68 - 76 cm"
+          }
+        },
+        {
+          "type": "size_row",
+          "settings": {
+            "age": "12-18 Months",
+            "weight": "10 - 12 kg",
+            "height": "76 - 84 cm"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
