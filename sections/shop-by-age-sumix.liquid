@@ -1,0 +1,410 @@
+{% style %}
+  .shop-by-age-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 0 var(--space-4);
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .section-subtitle {
+    font-size: 1rem;
+    color: var(--gray-500);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.spacing }}px;
+    padding: 0 var(--space-4);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-card {
+    position: relative;
+    display: block;
+    border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden;
+    text-decoration: none;
+    background: {% if section.settings.card_style == 'outline' %}transparent{% else %}var(--white){% endif %};
+    {% if section.settings.card_style == 'outline' %}
+      border: 1px solid var(--gray-200);
+    {% endif %}
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: translateZ(0); /* Hardware acceleration */
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-card:hover {
+    transform: translateY(-6px);
+    {% if section.settings.card_style != 'image_bg' %}
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    {% else %}
+      box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+    {% endif %}
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {% if section.settings.card_style == 'image_bg' %}1/1{% else %}4/5{% endif %};
+    overflow: hidden;
+    {% if section.settings.card_style != 'image_bg' %}
+      background-color: var(--gray-100);
+    {% endif %}
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-card:hover .age-image img {
+    transform: scale(1.05);
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 3;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-content {
+    {% if section.settings.card_style == 'image_bg' %}
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 1rem;
+      z-index: 2;
+      text-align: center;
+      color: var(--white);
+    {% else %}
+      padding: 1.25rem 1rem;
+      text-align: center;
+    {% endif %}
+  }
+
+  {% if section.settings.card_style == 'image_bg' %}
+    .shop-by-age-sumix-{{ section.id }} .age-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+      z-index: 1;
+      pointer-events: none;
+    }
+  {% endif %}
+
+  .shop-by-age-sumix-{{ section.id }} .age-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    {% if section.settings.card_style == 'image_bg' %}
+      color: var(--white);
+    {% else %}
+      color: var(--text-color);
+    {% endif %}
+  }
+
+  .shop-by-age-sumix-{{ section.id }} .age-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    {% if section.settings.card_style == 'image_bg' %}
+      color: rgba(255,255,255,0.8);
+    {% else %}
+      color: var(--gray-500);
+    {% endif %}
+  }
+
+  /* Mobile Swipe Behavior */
+  @media (max-width: 767px) {
+    .shop-by-age-sumix-{{ section.id }} .section-header {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+
+    {% if section.settings.mobile_swipe %}
+      .shop-by-age-sumix-{{ section.id }} .age-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        grid-template-columns: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+        scrollbar-width: none; /* Firefox */
+        scroll-padding-left: var(--space-4);
+      }
+      
+      .shop-by-age-sumix-{{ section.id }} .age-grid::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+      }
+      
+      .shop-by-age-sumix-{{ section.id }} .age-card-wrapper {
+        flex: 0 0 calc(75% - {{ section.settings.spacing }}px);
+        scroll-snap-align: start;
+      }
+      
+      .shop-by-age-sumix-{{ section.id }} .age-card-wrapper:last-child {
+        margin-right: var(--space-4);
+      }
+    {% else %}
+      .shop-by-age-sumix-{{ section.id }} .age-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    {% endif %}
+  }
+{% endstyle %}
+
+<div class="shop-by-age-sumix-{{ section.id }}">
+  {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    <div class="section-header">
+      {% if section.settings.heading != blank %}
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="section-subtitle">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="age-grid">
+    {% for block in section.blocks %}
+      <div class="age-card-wrapper" {{ block.shopify_attributes }}>
+        <a href="{{ block.settings.link | default: '#' }}" class="age-card style-{{ section.settings.card_style }}">
+          
+          <div class="age-image">
+            {% if block.settings.badge != blank %}
+              <span class="badge">{{ block.settings.badge }}</span>
+            {% endif %}
+            
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 600 }}" 
+                   alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                   loading="lazy">
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          
+          <div class="age-content">
+            {% if block.settings.title != blank %}
+              <h3 class="age-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            
+            {% if block.settings.label != blank %}
+              <p class="age-label">{{ block.settings.label }}</p>
+            {% endif %}
+          </div>
+          
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Shop by Age",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Age"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find the perfect fit for every stage"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_swipe",
+      "label": "Enable swipe on mobile",
+      "info": "If unchecked, displays as a 2-column grid.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Card Spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card Style",
+      "options": [
+        { "value": "solid", "label": "Solid (White Background)" },
+        { "value": "outline", "label": "Outline" },
+        { "value": "image_bg", "label": "Text over Image" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Corner Radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "age_group",
+      "name": "Age Group",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Age Title",
+          "default": "0-3 Months"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Short Label",
+          "default": "Newborns"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link to Collection"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Optional Badge Text",
+          "info": "e.g. Best Seller"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Shop by Age",
+      "blocks": [
+        {
+          "type": "age_group",
+          "settings": {
+            "title": "0-6 Months",
+            "label": "Newborns"
+          }
+        },
+        {
+          "type": "age_group",
+          "settings": {
+            "title": "6-12 Months",
+            "label": "Infants"
+          }
+        },
+        {
+          "type": "age_group",
+          "settings": {
+            "title": "1-2 Years",
+            "label": "Toddlers"
+          }
+        },
+        {
+          "type": "age_group",
+          "settings": {
+            "title": "2-4 Years",
+            "label": "Kids"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
