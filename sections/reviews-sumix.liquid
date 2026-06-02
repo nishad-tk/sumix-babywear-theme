@@ -1,0 +1,435 @@
+{% style %}
+  .reviews-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+
+  .reviews-sumix-{{ section.id }} .reviews-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .reviews-sumix-{{ section.id }} .reviews-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .reviews-sumix-{{ section.id }} .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .reviews-sumix-{{ section.id }} .section-subtitle {
+    font-size: 1.125rem;
+    color: var(--gray-500);
+    margin: 0;
+  }
+
+  /* Review Card */
+  .reviews-sumix-{{ section.id }} .review-card {
+    background-color: {{ section.settings.card_bg_color }};
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.02);
+  }
+
+  .reviews-sumix-{{ section.id }} .review-stars {
+    color: {{ section.settings.star_color }};
+    display: flex;
+    gap: 4px;
+    margin-bottom: 1.25rem;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-stars svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: {{ section.settings.card_text_color }};
+    margin: 0 0 2rem 0;
+    flex-grow: 1;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--gray-100);
+    flex-shrink: 0;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gray-200);
+    color: var(--gray-500);
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: {{ section.settings.card_text_color }};
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Verified Badge */
+  .reviews-sumix-{{ section.id }} .verified-badge {
+    color: #10B981;
+    width: 16px;
+    height: 16px;
+  }
+
+  .reviews-sumix-{{ section.id }} .review-product {
+    font-size: 0.8125rem;
+    color: {{ section.settings.card_text_color }};
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  /* Layout Modes */
+  {% if section.settings.layout == 'grid' %}
+    .reviews-sumix-{{ section.id }} .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    
+    @media (max-width: 1024px) {
+      .reviews-sumix-{{ section.id }} .reviews-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .reviews-sumix-{{ section.id }} .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+      .reviews-sumix-{{ section.id }} .reviews-header {
+        text-align: left;
+        margin-bottom: 2rem;
+      }
+    }
+  {% else %}
+    /* Carousel Layout */
+    .reviews-sumix-{{ section.id }} .reviews-grid {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 2rem;
+      scrollbar-width: none; /* Firefox */
+      scroll-padding-left: var(--space-4);
+    }
+    
+    .reviews-sumix-{{ section.id }} .reviews-grid::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+    
+    .reviews-sumix-{{ section.id }} .review-card-wrapper {
+      flex: 0 0 calc(33.333% - 1.33rem);
+      scroll-snap-align: start;
+    }
+    
+    @media (max-width: 1024px) {
+      .reviews-sumix-{{ section.id }} .review-card-wrapper {
+        flex: 0 0 calc(50% - 1rem);
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .reviews-sumix-{{ section.id }} .reviews-header {
+        text-align: left;
+        margin-bottom: 2rem;
+      }
+      .reviews-sumix-{{ section.id }} .reviews-grid {
+        gap: 1rem;
+      }
+      .reviews-sumix-{{ section.id }} .review-card-wrapper {
+        flex: 0 0 calc(85% - 1rem);
+      }
+      .reviews-sumix-{{ section.id }} .review-card-wrapper:last-child {
+        margin-right: var(--space-4);
+      }
+    }
+  {% endif %}
+{% endstyle %}
+
+<div class="reviews-sumix-{{ section.id }}">
+  <div class="reviews-container">
+    
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="reviews-header">
+        {% if section.settings.heading != blank %}
+          <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="section-subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="reviews-grid">
+      {% for block in section.blocks %}
+        <div class="review-card-wrapper" {{ block.shopify_attributes }}>
+          <div class="review-card">
+            
+            <div class="review-stars">
+              {% for i in (1..5) %}
+                {% if i <= block.settings.rating %}
+                  <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            {% if block.settings.text != blank %}
+              <p class="review-text">"{{ block.settings.text }}"</p>
+            {% endif %}
+
+            <div class="review-meta">
+              <div class="review-image">
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | image_url: width: 100 }}" alt="{{ block.settings.author | escape }}" loading="lazy">
+                {% else %}
+                  <div class="review-image-placeholder">
+                    {{ block.settings.author | slice: 0 | upcase | default: 'S' }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="review-author">
+                <h4 class="review-name">
+                  {{ block.settings.author | default: 'Anonymous' }}
+                  <svg class="verified-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </h4>
+                {% if block.settings.product != blank %}
+                  <p class="review-product">Purchased: {{ block.settings.product }}</p>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Customer Reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by Parents"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Hear what our community has to say about our organic babywear."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop Layout",
+      "options": [
+        { "value": "carousel", "label": "Carousel Slider" },
+        { "value": "grid", "label": "Masonry Grid" }
+      ],
+      "default": "carousel",
+      "info": "On mobile, the Carousel layout becomes a swipeable slider."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#F9F8F6"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Rating Color",
+      "default": "#FBBF24"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "The quality is absolutely incredible. So soft after multiple washes and fits perfectly. Highly recommend!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Reviewer Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "product",
+          "label": "Product Purchased (Optional)",
+          "default": "Organic Cotton Romper"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Reviewer Photo or Product Image (Optional)",
+          "info": "If left blank, an elegant initial will be generated."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Customer Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "author": "Emily R.",
+            "text": "These are the softest clothes my baby owns. The fabric breathes so well, no more heat rashes! Will definitely be buying more.",
+            "product": "Everyday Essentials Set"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Jessica T.",
+            "text": "Beautiful packaging and stunning quality. It made the perfect gift for my sister's baby shower.",
+            "product": "Newborn Gift Box"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Michelle L.",
+            "text": "I love that everything is GOTS certified. It gives me such peace of mind knowing no harsh chemicals are touching my daughter's skin.",
+            "product": "Organic Sleepsuit"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Rachel B.",
+            "text": "The zippers are so smooth and the fold-over mittens are a lifesaver. You can tell real parents designed these clothes.",
+            "product": "Zip-Up Romper"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
