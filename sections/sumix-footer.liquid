@@ -1,51 +1,289 @@
-<footer class="footer">
+{% style %}
+  .footer-sumix-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.9375rem;
+  }
+  
+  .footer-sumix-{{ section.id }} a {
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .footer-sumix-{{ section.id }} a:hover {
+    opacity: 0.7;
+  }
+
+  .footer-sumix-{{ section.id }} .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .footer-sumix-{{ section.id }} .footer-top {
+    display: grid;
+    grid-template-columns: 2fr repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem 2rem;
+    padding-bottom: 4rem;
+  }
+
+  /* Brand Column */
+  .footer-sumix-{{ section.id }} .footer-brand {
+    max-width: 350px;
+  }
+  
+  .footer-sumix-{{ section.id }} .footer-logo {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  
+  .footer-sumix-{{ section.id }} .logo-text {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  .footer-sumix-{{ section.id }} .brand-text {
+    opacity: 0.8;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-sumix-{{ section.id }} .footer-social {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.25rem;
+  }
+  
+  /* Blocks */
+  .footer-sumix-{{ section.id }} .footer-block-heading {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    margin: 0 0 1.5rem 0;
+    color: {{ section.settings.heading_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-sumix-{{ section.id }} .footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .footer-sumix-{{ section.id }} .footer-menu a {
+    opacity: 0.8;
+  }
+
+  /* Newsletter Block */
+  .footer-sumix-{{ section.id }} .newsletter-form {
+    display: flex;
+    margin-top: 1rem;
+    gap: 0.5rem;
+  }
+  
+  .footer-sumix-{{ section.id }} .newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 4px;
+    background: var(--white);
+    font-family: inherit;
+  }
+  
+  .footer-sumix-{{ section.id }} .newsletter-btn {
+    padding: 0.75rem 1.25rem;
+    background: {{ section.settings.heading_color }};
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  
+  .footer-sumix-{{ section.id }} .newsletter-btn:hover {
+    opacity: 0.9;
+  }
+
+  .footer-sumix-{{ section.id }} .footer-text-block p {
+    opacity: 0.8;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Bottom Bar */
+  .footer-sumix-{{ section.id }} .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  
+  .footer-sumix-{{ section.id }} .footer-copyright {
+    opacity: 0.6;
+    font-size: 0.8125rem;
+  }
+
+  .footer-sumix-{{ section.id }} .footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+    opacity: 0.8;
+    font-size: 0.8125rem;
+  }
+
+  .footer-sumix-{{ section.id }} .footer-payment {
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0.7;
+    flex-wrap: wrap;
+  }
+  
+  .footer-sumix-{{ section.id }} .payment-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .footer-sumix-{{ section.id }} .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-sumix-{{ section.id }} .footer-brand {
+      grid-column: 1 / -1;
+      max-width: 100%;
+      margin-bottom: 1rem;
+    }
+    .footer-sumix-{{ section.id }} .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-sumix-{{ section.id }} .footer-top {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+{% endstyle %}
+
+<footer class="footer-sumix-{{ section.id }}">
   <div class="container">
-    <div class="footer-grid">
+    
+    <div class="footer-top">
+      <!-- Brand Column -->
       <div class="footer-brand">
-        {% if section.settings.logo != blank %}
-          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" style="max-height: {{ section.settings.logo_height }}px">
-        {% else %}
-          <div class="logo-text" style="font-size:2rem">{{ shop.name }}</div>
+        <a href="{{ routes.root_url }}" class="footer-logo">
+          {% if section.settings.logo != blank %}
+            <img src="{{ section.settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" style="max-height: {{ section.settings.logo_height }}px; width:auto;">
+          {% else %}
+            <div class="logo-text">{{ shop.name }}</div>
+          {% endif %}
+        </a>
+        
+        {% if section.settings.brand_text != blank %}
+          <p class="brand-text">{{ section.settings.brand_text }}</p>
         {% endif %}
-        <p>{{ section.settings.brand_text }}</p>
-        <div class="footer-social">
-          {% if settings.social_instagram_link != blank %}<a href="{{ settings.social_instagram_link }}" aria-label="Instagram">📷</a>{% endif %}
-          {% if settings.social_facebook_link != blank %}<a href="{{ settings.social_facebook_link }}" aria-label="Facebook">📘</a>{% endif %}
-          {% if settings.social_pinterest_link != blank %}<a href="{{ settings.social_pinterest_link }}" aria-label="Pinterest">📌</a>{% endif %}
-          {% if settings.social_youtube_link != blank %}<a href="{{ settings.social_youtube_link }}" aria-label="YouTube">▶️</a>{% endif %}
-        </div>
+        
+        {% if section.settings.show_social %}
+          <div class="footer-social">
+            {% if settings.social_instagram_link != blank %}<a href="{{ settings.social_instagram_link }}" aria-label="Instagram">📷</a>{% endif %}
+            {% if settings.social_facebook_link != blank %}<a href="{{ settings.social_facebook_link }}" aria-label="Facebook">📘</a>{% endif %}
+            {% if settings.social_pinterest_link != blank %}<a href="{{ settings.social_pinterest_link }}" aria-label="Pinterest">📌</a>{% endif %}
+            {% if settings.social_youtube_link != blank %}<a href="{{ settings.social_youtube_link }}" aria-label="YouTube">▶️</a>{% endif %}
+          </div>
+        {% endif %}
       </div>
       
+      <!-- Dynamic Blocks -->
       {% for block in section.blocks %}
-        <div class="footer-column" {{ block.shopify_attributes }}>
-          <h4>{{ block.settings.title }}</h4>
-          {% for link in linklists[block.settings.menu].links %}
-            <a href="{{ link.url }}">{{ link.title }}</a>
-          {% endfor %}
+        <div class="footer-block" {{ block.shopify_attributes }}>
+          {% if block.settings.title != blank %}
+            <h4 class="footer-block-heading">{{ block.settings.title }}</h4>
+          {% endif %}
+          
+          {% case block.type %}
+            {% when 'link_list' %}
+              {% if block.settings.menu != blank %}
+                <ul class="footer-menu">
+                  {% for link in linklists[block.settings.menu].links %}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              
+            {% when 'text' %}
+              <div class="footer-text-block">
+                {{ block.settings.text }}
+              </div>
+              
+            {% when 'newsletter' %}
+              <div class="footer-text-block">
+                {% if block.settings.text != blank %}
+                  <p>{{ block.settings.text }}</p>
+                {% endif %}
+                <form method="post" action="/contact#ContactFooter" class="newsletter-form">
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <input type="email" name="contact[email]" class="newsletter-input" placeholder="{{ 'Email Address' }}" required>
+                  <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+              </div>
+          {% endcase %}
         </div>
       {% endfor %}
     </div>
+
+    <!-- Bottom Bar -->
     <div class="footer-bottom">
-      <p>&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.</p>
-      <div class="footer-payment">
-        <div class="payment-icon">UPI</div>
-        <div class="payment-icon">Visa</div>
-        <div class="payment-icon">MC</div>
-        <div class="payment-icon">GPay</div>
-        <div class="payment-icon">Paytm</div>
+      <div class="footer-copyright">
+        &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ section.settings.copyright_text }}
       </div>
+      
+      {% if section.settings.bottom_menu != blank %}
+        <div class="footer-bottom-links">
+          {% for link in linklists[section.settings.bottom_menu].links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      {% if section.settings.show_payment_icons %}
+        <div class="footer-payment">
+          <div class="payment-icon">UPI</div>
+          <div class="payment-icon">Visa</div>
+          <div class="payment-icon">Mastercard</div>
+          <div class="payment-icon">GPay</div>
+          <div class="payment-icon">Paytm</div>
+        </div>
+      {% endif %}
     </div>
+
   </div>
 </footer>
 
-<!-- Mobile Bottom Nav (Global) -->
+<!-- Mobile Bottom Nav (Global App Style Navigation) -->
 <nav class="mobile-nav">
   <div class="mobile-nav-inner">
-    <a href="{{ routes.root_url }}" class="mobile-nav-item active"><span style="font-size:1.25rem">🏠</span>Home</a>
-    <a href="{{ routes.all_products_collection_url }}" class="mobile-nav-item"><span style="font-size:1.25rem">🛍️</span>Shop</a>
-    <a href="/pages/rewards" class="mobile-nav-item"><span style="font-size:1.25rem">🎁</span>Rewards</a>
-    <a href="/pages/wishlist" class="mobile-nav-item"><span style="font-size:1.25rem">🤍</span>Wishlist</a>
-    <a href="{% if customer %}/pages/rewards{% else %}{{ routes.account_login_url }}{% endif %}" class="mobile-nav-item"><span style="font-size:1.25rem">👤</span>Account</a>
+    <a href="{{ routes.root_url }}" class="mobile-nav-item {% if template.name == 'index' %}active{% endif %}"><span style="font-size:1.25rem">🏠</span>Home</a>
+    <a href="{{ routes.all_products_collection_url }}" class="mobile-nav-item {% if template.name == 'collection' or template.name == 'product' %}active{% endif %}"><span style="font-size:1.25rem">🛍️</span>Shop</a>
+    <a href="/pages/rewards" class="mobile-nav-item {% if page.handle == 'rewards' %}active{% endif %}"><span style="font-size:1.25rem">🎁</span>Rewards</a>
+    <a href="/pages/wishlist" class="mobile-nav-item {% if page.handle == 'wishlist' %}active{% endif %}"><span style="font-size:1.25rem">🤍</span>Wishlist</a>
+    <a href="{% if customer %}/pages/rewards{% else %}{{ routes.account_login_url }}{% endif %}" class="mobile-nav-item {% if template.name == 'account' %}active{% endif %}"><span style="font-size:1.25rem">👤</span>Account</a>
   </div>
 </nav>
 
@@ -53,6 +291,10 @@
 {
   "name": "Sumix Footer",
   "settings": [
+    {
+      "type": "header",
+      "content": "Brand Info"
+    },
     {
       "type": "image_picker",
       "id": "logo",
@@ -71,7 +313,68 @@
       "type": "textarea",
       "id": "brand_text",
       "label": "Brand Text",
-      "default": "Premium babywear and baby care, thoughtfully designed in Kerala for your little one's comfort and everyday joy."
+      "default": "Premium babywear and baby care, thoughtfully designed for your little one's comfort and everyday joy."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show Social Icons",
+      "info": "Pulls links from Theme Settings > Social Media",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar Settings"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Additional Copyright Text",
+      "default": "All rights reserved."
+    },
+    {
+      "type": "link_list",
+      "id": "bottom_menu",
+      "label": "Bottom Legal Menu",
+      "info": "Useful for Privacy Policy, Terms of Service, etc."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show Payment Icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading & Button Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
     }
   ],
   "blocks": [
@@ -92,6 +395,43 @@
           "default": "footer"
         }
       ]
+    },
+    {
+      "type": "text",
+      "name": "Text & Contact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Contact Us"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>hello@sumix.com<br>+91 98765 43210</p>"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Join the Family"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Subscribe to get special offers, free giveaways, and early access to new collections."
+        }
+      ]
     }
   ],
   "presets": [
@@ -100,7 +440,7 @@
       "blocks": [
         { "type": "link_list", "settings": { "title": "Shop", "menu": "footer" } },
         { "type": "link_list", "settings": { "title": "Help", "menu": "footer" } },
-        { "type": "link_list", "settings": { "title": "Company", "menu": "footer" } }
+        { "type": "newsletter", "settings": { "title": "Join our Newsletter" } }
       ]
     }
   ]
