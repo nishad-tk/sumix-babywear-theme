@@ -1,0 +1,412 @@
+{% style %}
+  .faq-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .faq-sumix-{{ section.id }} .container {
+    max-width: {{ section.settings.layout_width }}px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .faq-sumix-{{ section.id }} .faq-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .faq-sumix-{{ section.id }} .faq-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+  }
+
+  .faq-sumix-{{ section.id }} .faq-intro {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    color: {{ section.settings.text_color }};
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .faq-sumix-{{ section.id }} .faq-list {
+    display: flex;
+    flex-direction: column;
+    {% if section.settings.accordion_style == 'separated' %}
+      gap: 1rem;
+    {% endif %}
+  }
+
+  .faq-sumix-{{ section.id }} .faq-item {
+    {% if section.settings.accordion_style == 'separated' %}
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      transition: box-shadow 0.2s ease;
+    {% else %}
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    {% endif %}
+  }
+
+  {% if section.settings.accordion_style == 'separated' %}
+    .faq-sumix-{{ section.id }} .faq-item:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    }
+  {% else %}
+    .faq-sumix-{{ section.id }} .faq-item:first-child {
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+  {% endif %}
+
+  .faq-sumix-{{ section.id }} .faq-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: {{ section.settings.text_color }};
+    list-style: none;
+    transition: opacity 0.2s ease;
+    
+    {% if section.settings.accordion_style == 'separated' %}
+      padding: 1.5rem 1.75rem;
+    {% else %}
+      padding: 1.5rem 0;
+    {% endif %}
+  }
+
+  .faq-sumix-{{ section.id }} .faq-summary:hover {
+    opacity: 0.8;
+  }
+
+  .faq-sumix-{{ section.id }} .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-sumix-{{ section.id }} .faq-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    margin-left: 1rem;
+    color: {{ section.settings.text_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faq-sumix-{{ section.id }} .faq-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .faq-sumix-{{ section.id }} details[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-sumix-{{ section.id }} .faq-content {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    color: {{ section.settings.text_color }};
+    
+    {% if section.settings.accordion_style == 'separated' %}
+      padding: 0 1.75rem 1.75rem 1.75rem;
+    {% else %}
+      padding: 0 0 1.5rem 0;
+    {% endif %}
+  }
+
+  .faq-sumix-{{ section.id }} .faq-content p:first-child {
+    margin-top: 0;
+  }
+  .faq-sumix-{{ section.id }} .faq-content p:last-child {
+    margin-bottom: 0;
+  }
+  .faq-sumix-{{ section.id }} .faq-content a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  /* Footer CTA */
+  .faq-sumix-{{ section.id }} .faq-footer {
+    margin-top: 4rem;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .faq-sumix-{{ section.id }} .faq-footer-text {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .faq-sumix-{{ section.id }} .btn-contact {
+    display: inline-block;
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .faq-sumix-{{ section.id }} .btn-contact:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  @media (max-width: 600px) {
+    .faq-sumix-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+    .faq-sumix-{{ section.id }} .faq-summary {
+      font-size: 1rem;
+      {% if section.settings.accordion_style == 'separated' %}
+        padding: 1.25rem;
+      {% endif %}
+    }
+    .faq-sumix-{{ section.id }} .faq-content {
+      font-size: 1rem;
+      {% if section.settings.accordion_style == 'separated' %}
+        padding: 0 1.25rem 1.25rem 1.25rem;
+      {% endif %}
+    }
+    .faq-sumix-{{ section.id }} .faq-footer {
+      padding: 2rem 1.5rem;
+    }
+  }
+{% endstyle %}
+
+<div class="faq-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <div class="faq-header">
+      {% if section.settings.heading != blank %}
+        <h2 class="faq-title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      
+      {% if section.settings.intro != blank %}
+        <p class="faq-intro">{{ section.settings.intro }}</p>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="faq-list">
+        {% for block in section.blocks %}
+          {% if block.settings.question != blank %}
+            <details class="faq-item" {{ block.shopify_attributes }}>
+              <summary class="faq-summary">
+                <span>{{ block.settings.question }}</span>
+                <span class="faq-icon">
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </summary>
+              <div class="faq-content">
+                {{ block.settings.answer }}
+              </div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.contact_text != blank or section.settings.contact_cta_label != blank %}
+      <div class="faq-footer">
+        {% if section.settings.contact_text != blank %}
+          <h4 class="faq-footer-text">{{ section.settings.contact_text }}</h4>
+        {% endif %}
+        
+        {% if section.settings.contact_cta_label != blank and section.settings.contact_cta_link != blank %}
+          <a href="{{ section.settings.contact_cta_link }}" class="btn-contact">{{ section.settings.contact_cta_label }}</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix FAQ",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "Find answers to our most common questions below."
+    },
+    {
+      "type": "header",
+      "content": "Layout Options"
+    },
+    {
+      "type": "select",
+      "id": "layout_width",
+      "label": "Container Width",
+      "options": [
+        { "value": "700", "label": "Narrow (700px)" },
+        { "value": "900", "label": "Standard (900px)" },
+        { "value": "1100", "label": "Wide (1100px)" }
+      ],
+      "default": "900",
+      "info": "Narrower widths are often easier to read."
+    },
+    {
+      "type": "select",
+      "id": "accordion_style",
+      "label": "Accordion Style",
+      "options": [
+        { "value": "minimal", "label": "Minimal (Lines)" },
+        { "value": "separated", "label": "Separated Cards" }
+      ],
+      "default": "separated"
+    },
+    {
+      "type": "header",
+      "content": "Contact Box (Footer)"
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact Message",
+      "default": "Still have questions? We're here to help."
+    },
+    {
+      "type": "text",
+      "id": "contact_cta_label",
+      "label": "Button Label",
+      "default": "Contact Support"
+    },
+    {
+      "type": "url",
+      "id": "contact_cta_link",
+      "label": "Button Link",
+      "default": "/pages/contact"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We offer a hassle-free 15-day return policy for all unworn items with tags attached.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix FAQ",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What materials do you use?",
+            "answer": "<p>All of our garments are made from 100% GOTS Certified Organic Cotton. We never use harsh chemicals, synthetic blends, or toxic dyes.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do your sizes run?",
+            "answer": "<p>Our clothes are designed with a relaxed, comfortable fit to allow room for growth. If your child is between sizes, we always recommend sizing up.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a hassle-free 15-day return policy for all unworn items with tags attached. Simply contact our support team to initiate a return.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do I care for the organic cotton?",
+            "answer": "<p>Machine wash cold with like colors. Tumble dry on low or line dry to preserve fabric softness and prevent shrinking.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
