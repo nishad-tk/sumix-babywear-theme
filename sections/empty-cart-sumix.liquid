@@ -1,0 +1,342 @@
+{% style %}
+  .empty-cart-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    text-align: center;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .container {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .empty-illustration {
+    width: {{ section.settings.illustration_size }}px;
+    max-width: 100%;
+    margin-bottom: 2.5rem;
+    color: {{ section.settings.icon_color }};
+  }
+
+  .empty-cart-sumix-{{ section.id }} .empty-illustration img,
+  .empty-cart-sumix-{{ section.id }} .empty-illustration svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    fill: currentColor;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .empty-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: {{ section.settings.text_color }};
+    line-height: 1.1;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .empty-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin: 0 0 2.5rem 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .empty-cart-sumix-{{ section.id }} .btn-primary {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    padding: 1.125rem 3.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    margin-bottom: 3.5rem;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .btn-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  /* Suggested Destinations */
+  .empty-cart-sumix-{{ section.id }} .suggestions-wrapper {
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding-top: 3rem;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .suggestions-title {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .suggestions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .suggestion-pill {
+    padding: 0.875rem 1.5rem;
+    background: rgba(0,0,0,0.04);
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: background 0.2s ease, transform 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .empty-cart-sumix-{{ section.id }} .suggestion-pill:hover {
+    background: rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    .empty-cart-sumix-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+    .empty-cart-sumix-{{ section.id }} .btn-primary {
+      width: 100%;
+    }
+    .empty-cart-sumix-{{ section.id }} .suggestions-grid {
+      flex-direction: column;
+    }
+    .empty-cart-sumix-{{ section.id }} .suggestion-pill {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="empty-cart-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <div class="empty-illustration">
+      {% if section.settings.image != blank %}
+        <img src="{{ section.settings.image | image_url: width: 600 }}" alt="{{ section.settings.heading | escape }}" loading="lazy">
+      {% elsif section.settings.icon_svg != blank %}
+        {{ section.settings.icon_svg }}
+      {% else %}
+        <!-- Default Shopping Bag Icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      {% endif %}
+    </div>
+
+    {% if section.settings.heading != blank %}
+      <h1 class="empty-title">{{ section.settings.heading }}</h1>
+    {% endif %}
+
+    {% if section.settings.text != blank %}
+      <p class="empty-text">{{ section.settings.text }}</p>
+    {% endif %}
+
+    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+      <a href="{{ section.settings.cta_link }}" class="btn-primary">{{ section.settings.cta_label }}</a>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="suggestions-wrapper">
+        {% if section.settings.suggestions_title != blank %}
+          <div class="suggestions-title">{{ section.settings.suggestions_title }}</div>
+        {% endif %}
+        
+        <div class="suggestions-grid">
+          {% for block in section.blocks %}
+            {% if block.settings.label != blank and block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="suggestion-pill" {{ block.shopify_attributes }}>
+                {{ block.settings.label }}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Empty Cart",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Illustration"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom Image"
+    },
+    {
+      "type": "html",
+      "id": "icon_svg",
+      "label": "SVG Icon Fallback",
+      "info": "Paste raw SVG code. Used if no image is uploaded."
+    },
+    {
+      "type": "range",
+      "id": "illustration_size",
+      "label": "Illustration Size",
+      "min": 40,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Text & Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your cart is empty"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Looks like you haven't added anything yet. Let's find something special for your little one!"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary Button Label",
+      "default": "Start Shopping"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Primary Button Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "Suggestions Section"
+    },
+    {
+      "type": "text",
+      "id": "suggestions_title",
+      "label": "Suggestions Title",
+      "default": "Popular Destinations"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "SVG Icon Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "suggestion",
+      "name": "Suggested Link",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Label",
+          "default": "Shop New Arrivals"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link Destination"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Empty Cart",
+      "blocks": [
+        {
+          "type": "suggestion",
+          "settings": {
+            "label": "Newborn Essentials",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "suggestion",
+          "settings": {
+            "label": "Best Sellers",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "suggestion",
+          "settings": {
+            "label": "Gift Sets",
+            "link": "/collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
