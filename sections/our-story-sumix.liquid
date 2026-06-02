@@ -1,0 +1,423 @@
+{% style %}
+  .story-sumix-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .story-sumix-{{ section.id }} .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  /* Left Sidebar (Sticky) */
+  .story-sumix-{{ section.id }} .story-sidebar {
+    position: sticky;
+    top: 120px; /* Account for sticky headers */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .story-sumix-{{ section.id }} .story-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .story-sumix-{{ section.id }} .story-intro {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin: 0;
+    max-width: 500px;
+  }
+
+  .story-sumix-{{ section.id }} .story-main-image {
+    width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    position: relative;
+  }
+  
+  .story-sumix-{{ section.id }} .story-main-image::before {
+    content: "";
+    display: block;
+    padding-bottom: 75%; /* 4:3 aspect ratio */
+  }
+
+  .story-sumix-{{ section.id }} .story-main-image img,
+  .story-sumix-{{ section.id }} .story-main-image svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .story-sumix-{{ section.id }} .btn-story {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    padding: 1.125rem 2.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: max-content;
+  }
+
+  .story-sumix-{{ section.id }} .btn-story:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Right Timeline Column */
+  .story-sumix-{{ section.id }} .story-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+    padding-top: 1rem;
+    position: relative;
+  }
+
+  /* The vertical line */
+  .story-sumix-{{ section.id }} .story-timeline::before {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    bottom: 0;
+    left: 4px;
+    width: 2px;
+    background: rgba(0,0,0,0.08);
+  }
+
+  .story-sumix-{{ section.id }} .timeline-block {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  /* The timeline dot */
+  .story-sumix-{{ section.id }} .timeline-block::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: {{ section.settings.text_color }};
+    box-shadow: 0 0 0 6px {{ section.settings.bg_color }};
+    z-index: 2;
+  }
+
+  .story-sumix-{{ section.id }} .block-year {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.7;
+    display: block;
+  }
+
+  .story-sumix-{{ section.id }} .block-title {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    color: {{ section.settings.text_color }};
+  }
+
+  .story-sumix-{{ section.id }} .block-text {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin: 0;
+  }
+  
+  .story-sumix-{{ section.id }} .block-text p {
+    margin: 0 0 1rem 0;
+  }
+  .story-sumix-{{ section.id }} .block-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .story-sumix-{{ section.id }} .block-image {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+  
+  .story-sumix-{{ section.id }} .block-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 1024px) {
+    .story-sumix-{{ section.id }} .container {
+      grid-template-columns: 1fr;
+      gap: 5rem;
+    }
+    .story-sumix-{{ section.id }} .story-sidebar {
+      position: relative;
+      top: 0;
+    }
+    .story-sumix-{{ section.id }} .story-timeline::before {
+      display: none;
+    }
+    .story-sumix-{{ section.id }} .timeline-block {
+      padding-left: 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding-top: 2.5rem;
+    }
+    .story-sumix-{{ section.id }} .timeline-block::before {
+      display: none;
+    }
+    .story-sumix-{{ section.id }} .story-timeline {
+      gap: 0; /* Let the border-top padding handle spacing */
+    }
+    .story-sumix-{{ section.id }} .timeline-block:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .story-sumix-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.5 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.5 }}px;
+    }
+    .story-sumix-{{ section.id }} .btn-story {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="story-sumix-{{ section.id }}">
+  <div class="container">
+    
+    <!-- Left Sidebar -->
+    <div class="story-sidebar">
+      {% if section.settings.heading != blank %}
+        <h2 class="story-title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      
+      {% if section.settings.text != blank %}
+        <p class="story-intro">{{ section.settings.text }}</p>
+      {% endif %}
+
+      {% if section.settings.image != blank %}
+        <div class="story-main-image">
+          <img src="{{ section.settings.image | image_url: width: 800 }}" 
+               alt="{{ section.settings.heading | escape }}" 
+               loading="lazy">
+        </div>
+      {% else %}
+        <div class="story-main-image">
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="btn-story">{{ section.settings.cta_label }}</a>
+      {% endif %}
+    </div>
+
+    <!-- Right Timeline -->
+    <div class="story-timeline">
+      {% for block in section.blocks %}
+        <div class="timeline-block" {{ block.shopify_attributes }}>
+          
+          {% if block.settings.year != blank %}
+            <span class="block-year">{{ block.settings.year }}</span>
+          {% endif %}
+          
+          {% if block.settings.title != blank %}
+            <h3 class="block-title">{{ block.settings.title }}</h3>
+          {% endif %}
+          
+          {% if block.settings.text != blank %}
+            <div class="block-text">{{ block.settings.text }}</div>
+          {% endif %}
+
+          {% if block.settings.image != blank %}
+            <div class="block-image">
+              <img src="{{ block.settings.image | image_url: width: 800 }}" 
+                   alt="{{ block.settings.title | escape }}" 
+                   loading="lazy">
+            </div>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sumix Our Story",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Sticky Sidebar Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Introduction",
+      "default": "Sumix was born out of a desire to create better, softer, and safer clothing for our little ones. Here is how our journey began."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Main Image",
+      "info": "Displays underneath the intro text. Crops to 4:3."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Shop Our Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story_block",
+      "name": "Timeline Block",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Date / Subtitle",
+          "default": "The Beginning"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Searching for Better"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Content",
+          "default": "<p>When our first child was born, we struggled to find clothes that were both gentle on sensitive skin and ethically made. We realized we had to create it ourselves.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Optional Inline Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sumix Our Story",
+      "blocks": [
+        {
+          "type": "story_block",
+          "settings": {
+            "year": "Phase 01",
+            "title": "Searching for Better",
+            "text": "<p>When our first child was born, we struggled to find clothes that were both gentle on sensitive skin and ethically made. We realized we had to create it ourselves.</p>"
+          }
+        },
+        {
+          "type": "story_block",
+          "settings": {
+            "year": "Phase 02",
+            "title": "The Perfect Fabric",
+            "text": "<p>We spent months sourcing the highest quality, GOTS-certified organic cotton. We wanted a fabric that would get softer with every wash, without relying on harsh chemicals.</p>"
+          }
+        },
+        {
+          "type": "story_block",
+          "settings": {
+            "year": "Phase 03",
+            "title": "Built for Parents",
+            "text": "<p>We didn't just want beautiful clothes; we wanted functional ones. That meant two-way zippers, convertible cuffs, and stretchable necklines to make midnight changes effortless.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
